@@ -26,4 +26,28 @@ describe ChessBoard do
       expect(result).to be(nil)
     end
   end
+
+  describe '#row' do
+    it 'returns 0 for a, 1 for b, etc, up to 8 for h' do
+      result = board.row('a2')
+      expect(result).to eql(0)
+      result = board.row('h3')
+      expect(result).to eql(7)
+    end
+
+    it 'returns nil if it is not given a string' do
+      result = board.row(2)
+      expect(result).to be(nil)
+    end
+
+    it 'returns nil if it is given a string longer than 2 characters' do
+      result = board.row('b2b2')
+      expect(result).to be(nil)
+    end
+
+    it 'returns nil if it is given input off the board' do
+      result = board.row('i2')
+      expect(result).to be(nil)
+    end    
+  end
 end
