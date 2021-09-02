@@ -6,9 +6,11 @@ describe ChessBoard do
   subject(:chess_board) { ChessBoard.new }
 
   describe '#col' do
-    it 'returns one less than the integer of the second character' do
-      result = chess_board.col('b2')
-      expect(result).to eql(1)
+    it 'returns 0 for a, 1 for b, etc, up to 8 for h' do
+      result = chess_board.col('a2')
+      expect(result).to eql(0)
+      result = chess_board.col('h3')
+      expect(result).to eql(7)
     end
 
     it 'returns nil if it is not given a string' do
@@ -28,11 +30,9 @@ describe ChessBoard do
   end
 
   describe '#row' do
-    it 'returns 0 for a, 1 for b, etc, up to 8 for h' do
-      result = chess_board.row('a2')
-      expect(result).to eql(0)
-      result = chess_board.row('h3')
-      expect(result).to eql(7)
+    it 'returns one less than the integer of the second character' do
+      result = chess_board.row('b2')
+      expect(result).to eql(1)
     end
 
     it 'returns nil if it is not given a string' do
