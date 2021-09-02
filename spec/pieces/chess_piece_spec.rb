@@ -19,7 +19,7 @@ describe ChessPiece do
     it 'returns true when the given value is valid' do
       piece.add(1, 1)
       result = piece.valid?(1, 1)
-      expect(result).to be_truthy
+      expect(result).to be(true)
     end
   end
 
@@ -27,7 +27,7 @@ describe ChessPiece do
     it 'adds a relative cell to the valid moveset' do
       piece.add(-1, 1)
       result = piece.valid?(-1, 1)
-      expect(result).to be_truthy
+      expect(result).to be(true)
     end
   end
 
