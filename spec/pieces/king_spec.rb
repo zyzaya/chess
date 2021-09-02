@@ -4,7 +4,7 @@ describe King do
   subject(:king) { King.new(:white) }
 
   describe 'moveset' do
-    it 'can move one square diagonaly in any direction' do
+    it 'can move one square diagonally in any direction' do
       moveset = [[-1, 1], [1, 1], [-1, -1], [1, -1]]
       moveset.each do |move|
         result = king.valid?(move[0], move[1])
@@ -12,7 +12,7 @@ describe King do
       end
     end
 
-    it 'can move one square horizontaly in any direction' do
+    it 'can move one square horizontally in any direction' do
       moveset = [[-1, 0], [1, 0]]
       moveset.each do |move|
         result = king.valid?(move[0], move[1])
@@ -20,7 +20,7 @@ describe King do
       end
     end
 
-    it 'can move one square verticaly in any direction' do
+    it 'can move one square vertically in any direction' do
       moveset = [[0, 1], [0, -1]]
       moveset.each do |move|
         result = king.valid?(move[0], move[1])
