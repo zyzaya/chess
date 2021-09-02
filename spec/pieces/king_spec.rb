@@ -40,14 +40,28 @@ describe King do
       king.moved = true
     end
 
-    it 'has can castle queenside if it has not moved' do
+    it 'can castle queenside if it has not moved' do
       result = king.valid?(-3, 0)
-      expect(result).to equal(true)
+      expect(result).to be(true)
     end
 
-    it 'has can castle kingside if it has not moved' do
+    it 'can castle kingside if it has not moved' do
       result = king.valid?(2, 0)
-      expect(result).to equal(true)
+      expect(result).to be(true)
+    end
+  end
+
+  describe '#remove_castling' do
+    it 'removes the ability to castle queenside' do
+      king.remove_castling
+      result = king.valid?(-3, 0)
+      expect(result).to be(false)
+    end
+
+    it 'removes the ability to castle kingside' do
+      king.remove_castling
+      result = king.valid?(2, 0)
+      expect(result).to be(false)
     end
   end
 

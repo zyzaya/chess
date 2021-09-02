@@ -21,12 +21,13 @@ class King < ChessPiece
   def moved=(val)
     @moved = val
     return unless @moved
-    
+
     remove_castling
   end
 
   def remove_castling
-    
+    remove(QUEENSIDE_CASTLE[0], QUEENSIDE_CASTLE[1])
+    remove(KINGSIDE_CASTLE[0], KINGSIDE_CASTLE[1])
   end
 
   private
