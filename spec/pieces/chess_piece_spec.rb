@@ -1,4 +1,4 @@
-require 'chess_piece'
+require 'pieces/chess_piece'
 
 describe ChessPiece do
   subject(:piece) { ChessPiece.new(:white) }
