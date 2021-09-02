@@ -20,6 +20,10 @@ class Pawn < ChessPiece
     end
   end
 
+  def valid?(col, row)
+    super(col, row) || @en_passant.include?([col, row])
+  end
+
   def moved=(val)
     @moved = val
     return unless val
@@ -71,7 +75,10 @@ class Pawn < ChessPiece
       elsif side.eql?(:right) then 1 end
     unless @en_passant.include?([col, row])
       @en_passant << [col, row] 
-      add(col, row)
     end
+  end
+
+  def remove_en_passant
+    @en_passant.clear
   end
 end

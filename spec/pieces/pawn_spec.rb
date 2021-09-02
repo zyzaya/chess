@@ -126,17 +126,37 @@ describe Pawn do
     end
   end
 
-  # describe '#remove_en_passant' do
-  #   it 'removes diagonal down if black' do
-      
-  #   end 
+  describe '#remove_en_passant' do
+    before do
+      black_pawn.en_passant(:left)
+      black_pawn.en_passant(:right)
+      white_pawn.en_passant(:left)
+      white_pawn.en_passant(:right)
+    end
+    
+    it 'removes diagonal down if black' do
+      black_pawn.remove_en_passant
+      left = black_pawn.valid?(-1, -1)
+      right = black_pawn.valid?(1, -1)
+      expect(left).to be(false)
+      expect(right).to be(false)   
+    end 
 
-  #   it 'removes diagonal up if white' do
-      
-  #   end
+    it 'removes diagonal up if white' do
+      white_pawn.remove_en_passant
+      left = white_pawn.valid?(-1, 1)
+      right = white_pawn.valid?(1, 1)
+      expect(left).to be(false)
+      expect(right).to be(false)
+    end
 
-  #   it 'does not remove a previously set capture' do
-      
-  #   end
-  # end
+    it 'does not remove a previously set capture' do
+      white_pawn.add_capture(:left)
+      p white_pawn.instance_variable_get(:@valid)
+      white_pawn.remove_en_passant
+      result = white_pawn.valid?(-1 ,1)
+      p white_pawn.instance_variable_get(:@valid)
+      expect(result).to be(true) 
+    end
+  end
 end

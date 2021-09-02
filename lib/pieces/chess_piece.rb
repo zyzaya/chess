@@ -9,15 +9,15 @@ class ChessPiece
     @valid = []
   end
 
-  def valid?(rel_row, rel_col)
-    @valid.include?([rel_row, rel_col])
+  def valid?(col, row)
+    @valid.include?([col, row])
   end
 
-  def add(rel_row, rel_col)
-    @valid << [rel_row, rel_col] unless valid?(rel_row, rel_col)
+  def add(col, row)
+    @valid << [col, row] unless @valid.include?([col, row])
   end
 
-  def remove(rel_col, rel_row)
-    @valid.delete([rel_col, rel_row])
+  def remove(col, row)
+    @valid.delete([col, row])
   end
 end
