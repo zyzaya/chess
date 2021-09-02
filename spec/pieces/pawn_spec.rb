@@ -58,4 +58,24 @@ describe Pawn do
       expect(result).to be(false)
     end
   end
+
+  describe '#add_capture' do
+    it 'adds diagonal down if black' do
+      black_pawn.add_capture(:left)
+      black_pawn.add_capture(:right)
+      left = black_pawn.valid?(-1, -1)
+      right = black_pawn.valid?(1, -1)
+      expect(left).to be(true)
+      expect(right).to be(true)
+    end
+
+    it 'adds diagonal up if white' do
+      white_pawn.add_capture(:left)
+      white_pawn.add_capture(:right)
+      left = white_pawn.valid?(-1, 1)
+      right = white_pawn.valid?(1, 1)
+      expect(right).to be(true)
+      expect(left).to be(true)
+    end
+  end
 end
