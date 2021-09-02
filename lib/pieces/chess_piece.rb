@@ -20,5 +20,4 @@ class ChessPiece
   def remove(rel_col, rel_row)
     @valid.delete([rel_col, rel_row])
   end
-
 end
