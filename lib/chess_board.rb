@@ -84,6 +84,8 @@ class ChessBoard
 <<<<<<< HEAD
 =======
 
+  
+
   def reset_board
     board = Array.new(8).map { Array.new(8, nil) }
     set_bishops(board)
