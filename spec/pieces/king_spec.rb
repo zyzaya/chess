@@ -65,7 +65,16 @@ describe King do
     end
   end
 
-  # it 'can track if it has moved' do
-    
-  # end
+  describe 'moved' do
+    it 'is initialized as not having moved' do
+      result = king.moved
+      expect(result).to be(false)
+    end
+
+    it 'can set moved' do
+      king.moved = true
+      result = king.moved
+      expect(result).to be(true)
+    end
+  end
 end
