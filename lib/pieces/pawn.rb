@@ -9,6 +9,7 @@ class Pawn < ChessPiece
   def initialize(color)
     super(color)
     @moved = false
+    @en_passant = []
     case color
     when :black
       add(0, -1)
@@ -32,7 +33,7 @@ class Pawn < ChessPiece
   end
 
   def add_capture(side)
-    case color
+    case @color
     when :black
       case side
       when :left then add(-1, -1)
@@ -47,7 +48,7 @@ class Pawn < ChessPiece
   end
 
   def remove_capture(side)
-    case color
+    case @color
     when :black
       case side
       when :left then remove(-1, -1)
@@ -58,6 +59,19 @@ class Pawn < ChessPiece
       when :left then remove(-1, 1)
       when :right then remove(1, 1)
       end
+    end
+  end
+
+  def en_passant(side)
+    row =
+      if @color.eql?(:black) then -1
+      elsif @color.eql?(:white) then 1 end
+    col =
+      if side.eql?(:left) then -1
+      elsif side.eql?(:right) then 1 end
+    unless @en_passant.include?([col, row])
+      @en_passant << [col, row] 
+      add(col, row)
     end
   end
 end
