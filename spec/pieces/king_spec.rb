@@ -34,13 +34,22 @@ describe King do
     end
   end
 
-  # describe 'castling' do
-  #   it 'can castle if it has not moved' do
-      
-  #   end
+  describe 'castling' do
+    it 'removes the ability to castle if it has moved' do
+      expect(king).to receive(:remove_castling)
+      king.moved = true
+    end
 
-  #   it 
-  # end
+    it 'has can castle queenside if it has not moved' do
+      result = king.valid?(-3, 0)
+      expect(result).to equal(true)
+    end
+
+    it 'has can castle kingside if it has not moved' do
+      result = king.valid?(2, 0)
+      expect(result).to equal(true)
+    end
+  end
 
   # it 'can track if it has moved' do
     
