@@ -122,32 +122,64 @@ describe ChessBoard do
     end
   end
 
-  # describe '#valid?' do
-  #   let(:new_board) { :board}
+  describe '#valid?' do
+    let(:board) { chess_board.reset_board }
     
-  #   it 'returns false if the origin is a different color' do
-  #     color = :black
-  #     from = 'a1'
-  #   end
+    it 'returns false if the origin is a different color' do
+      color = :white
+      origin = 'a7'
+      dest = 'a5'
+      result = chess_board.valid?(board, color, origin, dest)
+      expect(result).to be(false)
+    end
 
-  #   it 'returns false if the destination is not a valid move as defined by the piece' do
-      
-  #   end
+    it 'returns false if origin is nil' do
+      color = :white
+      origin = 'a5'
+      dest = 'b5'
+      result = chess_board.valid?(board, color, origin, dest)
+      expect(result).to be(false)
+    end
 
-  #   it 'returns false if there is a piece obstructing the moves path (except knigts)' do
-      
-  #   end
+    it 'returns false if the destination is not a valid move as defined by the piece' do
+      color = :black
+      origin = 'a7'
+      dest = 'a4'
+      result = chess_board.valid?(board, color, origin, dest)
+      expect(result).to be(false)  
+    end
 
-  #   it 'returns false if the destination is off of the board' do
-      
-  #   end
+    it 'returns false if there is a piece obstructing the moves path (except knigts)' do
+      color = :white
+      origin = 'h1'
+      dest = 'h3'
+      result = chess_board.valid?(board, color, origin, dest)
+      expect(result).to be(false)
+    end
 
-  #   it 'returns false if it the king remains in check' do
-      
-  #   end
+    it 'returns false if the destination is off of the board' do
+      color = :white
+      origin = 'g1'
+      dest = 'e0'
+      result = chess_board.valid?(board, color, origin, dest)
+      expect(result).to be(false)  
+    end
+
+    it 'returns false if it the king remains in check' do
+      allow(chess_board).to receive(:check?).and_return(true)
+      color = :white
+      origin = 'c2'
+      dest = 'c3'
+      result = chess_board.valid?(board, color, origin, dest)
+      expect(result).to be(false)
+    end
     
-  #   it 'does not return false if there is a piece obstructing the path and the piece is a knight' do
-      
-  #   end
-  # end
+    it 'does not return false if there is a piece obstructing the path and the piece is a knight' do
+      color = :black
+      origin = 'b8'
+      dest = 'a6'
+      result = chess_board.valid?(board, color, origin, dest)
+      expect(result).to be(true)  
+    end
+  end
 end
