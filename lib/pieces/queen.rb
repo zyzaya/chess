@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 require_relative 'chess_piece'
 
+# The Queen piece in chess.
 class Queen < ChessPiece
   def initialize(color)
     super(color)
@@ -12,20 +15,20 @@ class Queen < ChessPiece
 
   private
 
-  def add_diagonal(i)
-    add(-i, i)
-    add(i, i)
-    add(-i, -i)
-    add(i, -i)
+  def add_diagonal(index)
+    add(-index, index)
+    add(index, index)
+    add(-index, -index)
+    add(index, -index)
   end
 
-  def add_horizontal(i)
-    add(0, i)
-    add(0, -i)
+  def add_horizontal(index)
+    add(0, index)
+    add(0, -index)
   end
 
-  def add_vertical(i)
-    add(i, 0)
-    add(-i, 0)
+  def add_vertical(index)
+    add(index, 0)
+    add(-index, 0)
   end
 end
