@@ -45,4 +45,19 @@ class Pawn < ChessPiece
       end
     end
   end
+
+  def remove_capture(side)
+    case color
+    when :black
+      case side
+      when :left then remove(-1, -1)
+      when :right then remove(1, -1)
+      end   
+    when :white
+      case side
+      when :left then remove(-1, 1)
+      when :right then remove(1, 1)
+      end
+    end
+  end
 end

@@ -78,4 +78,31 @@ describe Pawn do
       expect(left).to be(true)
     end
   end
+
+  describe '#remove_capture' do
+    before do
+      black_pawn.add_capture(:left)
+      black_pawn.add_capture(:right)
+      white_pawn.add_capture(:left)
+      white_pawn.add_capture(:right)
+    end
+    
+    it 'removes diagonal down if black' do
+      black_pawn.remove_capture(:left)
+      black_pawn.remove_capture(:right)
+      left = black_pawn.valid?(-1, -1)
+      right = black_pawn.valid?(1, -1)
+      expect(left).to be(false)
+      expect(right).to be(false)
+    end
+
+    it 'removes diagonal up if white' do
+      white_pawn.remove_capture(:left)
+      white_pawn.remove_capture(:right)
+      left = white_pawn.valid?(-1, 1)
+      right = white_pawn.valid?(1, 1)
+      expect(right).to be(false)
+      expect(left).to be(false)
+    end
+  end
 end
