@@ -152,10 +152,8 @@ describe Pawn do
 
     it 'does not remove a previously set capture' do
       white_pawn.add_capture(:left)
-      p white_pawn.instance_variable_get(:@valid)
       white_pawn.remove_en_passant
       result = white_pawn.valid?(-1 ,1)
-      p white_pawn.instance_variable_get(:@valid)
       expect(result).to be(true) 
     end
   end
