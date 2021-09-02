@@ -7,8 +7,8 @@ require_relative 'pieces/pawn'
 require_relative 'pieces/queen'
 require_relative 'pieces/rook'
 
+# A Chess board
 class ChessBoard
-
   def col(val)
     return nil unless valid_cell(val)
 
@@ -23,49 +23,49 @@ class ChessBoard
 
   def reset_board
     board = Array.new(8).map { Array.new(8, nil) }
-    set_bishops(board)
-    set_kings(board)
-    set_knights(board)
-    set_pawns(board)
-    set_queens(board)
-    set_rooks(board)
+    setup_bishops(board)
+    setup_kings(board)
+    setup_knights(board)
+    setup_pawns(board)
+    setup_queens(board)
+    setup_rooks(board)
     board
   end
 
   private
 
-  def set_bishops(board)
+  def setup_bishops(board)
     board[2][7] = Bishop.new(:black)
     board[5][7] = Bishop.new(:black)
     board[2][0] = Bishop.new(:white)
     board[2][0] = Bishop.new(:white)
   end
 
-  def set_kings(board)
+  def setup_kings(board)
     board[3][7] = King.new(:black)
     board[3][0] = King.new(:white)
   end
 
-  def set_knights(board)
+  def setup_knights(board)
     board[1][7] = Knight.new(:black)
     board[6][7] = Knight.new(:black)
     board[1][0] = Knight.new(:white)
     board[6][0] = Knight.new(:white)
   end
 
-  def set_pawns(board)
+  def setup_pawns(board)
     0.upto(6) do |col|
       board[col][6] = Pawn.new(:black)
       board[col][1] = Pawn.new(:white)
     end
   end
 
-  def set_queens(board)
+  def setup_queens(board)
     board[4][7] = Queen.new(:black)
     board[4][0] = Queen.new(:white)
   end
 
-  def set_rooks(board)
+  def setup_rooks(board)
     board[0][7] = Rook.new(:black, :left)
     board[7][7] = Rook.new(:black, :right)
     board[0][0] = Rook.new(:white, :left)
