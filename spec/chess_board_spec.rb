@@ -53,7 +53,7 @@ describe ChessBoard do
 
   describe '#reset_board' do
     let(:board) { chess_board.reset_board }
-    
+
     it 'places eight black pawns on the seventh row' do
       0.upto(6) do |col|
         piece = board[col][6]
@@ -61,7 +61,7 @@ describe ChessBoard do
         expect(piece.color).to eql(:black)
       end
     end
-    
+
     it 'places eight white pawns on the second row' do
       0.upto(6) do |col|
         piece = board[col][1]
@@ -124,7 +124,7 @@ describe ChessBoard do
 
   describe '#valid?' do
     let(:board) { chess_board.reset_board }
-    
+
     it 'returns false if the origin is a different color' do
       color = :white
       origin = 'a7'
@@ -164,7 +164,7 @@ describe ChessBoard do
       result = chess_board.on_board?('asfdasfg')
       expect(result).to be(false)
     end
-    
+
     it 'returns false if input is off the board' do
       result = chess_board.on_board?('i8')
       expect(result).to be(false)
