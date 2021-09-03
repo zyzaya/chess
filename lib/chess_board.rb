@@ -53,7 +53,7 @@ class ChessBoard
   end
 
   def removes_check?(board, origin, dest)
-    future = board.dup
+    future = board.map { |col| col.map { |cell| cell } }
     future[col(dest)][row(dest)] = board[col(origin)][row(origin)]
     future[col(origin)][row(origin)] = nil
 

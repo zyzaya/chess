@@ -48,7 +48,7 @@ describe ChessBoard do
     it 'returns nil if it is given input off the board' do
       result = chess_board.row('i2')
       expect(result).to be(nil)
-    end    
+    end
   end
 
   describe '#reset_board' do
@@ -210,6 +210,29 @@ describe ChessBoard do
       dest = 'a6'
       result = chess_board.obstructed?(board, origin, dest)
       expect(result).to be(false)
+    end
+  end
+
+  describe 'removes_check?' do
+    let(:board) { chess_board.reset_board }
+
+    it 'does not modify the board' do
+      current = board.map { |col| col.map { |cell| cell } }
+      origin = 'b8'
+      dest = 'c6'
+      chess_board.removes_check?(board, origin, dest)
+      expect(board).to eql(current)
+    end
+
+    it 'calls check? with a board as if the move has already happened' do
+      future = board.map { |col| col.map { |cell| cell } }
+      origin = 'b8'
+      dest = 'c6'
+      future[2][5] = board[1][7]
+      future[1][7] = nil
+      expect(chess_board).to receive(:check?).with(eql(future))
+      expect(chess_board).not_to receive(:check?).with(eql(board))
+      chess_board.removes_check?(board, origin, dest)
     end
   end
 end
