@@ -216,6 +216,10 @@ describe ChessBoard do
   describe 'removes_check?' do
     let(:board) { chess_board.reset_board }
 
+    before do
+      allow(chess_board).to receive(:check?).and_return(true)
+    end
+
     it 'does not modify the board' do
       current = board.map { |col| col.map { |cell| cell } }
       origin = 'b8'
@@ -230,9 +234,32 @@ describe ChessBoard do
       dest = 'c6'
       future[2][5] = board[1][7]
       future[1][7] = nil
-      expect(chess_board).to receive(:check?).with(eql(future))
-      expect(chess_board).not_to receive(:check?).with(eql(board))
+      expect(chess_board).to receive(:check?).with(eql(future), anything)
+      expect(chess_board).not_to receive(:check?).with(eql(board), anything)
       chess_board.removes_check?(board, origin, dest)
+    end
+  end
+
+  describe '#check?' do
+    let(:board) { chess_board.reset_board }
+
+    before do
+      allow(chess_board).to receive(:find_king).and_return('d8')
+    end
+
+    it 'returns false if no piece can capture the king' do
+      result = chess_board.check?(board, :black)
+      expect(result).to be(false)
+    end
+
+    it 'returns true if any piece can capture the king' do
+      board[4][6] = nil
+      board[3][1] = nil
+      board[6][4] = board[2][0]
+      board[2][0] = nil
+      puts "#{chess_board.valid?(board, :white, 'g5', 'd8')}"
+      result = chess_board.check?(board, :black)
+      expect(result).to be(true)
     end
   end
 end

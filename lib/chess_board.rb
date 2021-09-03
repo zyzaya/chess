@@ -9,6 +9,14 @@ require_relative 'pieces/rook'
 
 # A Chess board
 class ChessBoard
+  def to_input(original_col, original_row)
+    return nil unless
+      original_col >= 0 && original_col <= 8 &&
+      original_row >= 0 && original_row <= 7
+
+    "#{(original_col + 'a'.ord).chr}#{original_row + 1}"
+  end
+
   def col(val)
     return nil unless valid_cell(val)
 
@@ -44,7 +52,20 @@ class ChessBoard
       removes_check?(board, origin, dest)
   end
 
-  def check?(board) end
+  def check?(board, color)
+    enemy = color.eql?(:white) ? :black : :white
+    king = find_king(color)
+    board.each.with_index do |col, c_i|
+      col.each.with_index do |piece, r_i|
+        origin = to_input(c_i, r_i)
+        return true if
+          !piece.nil? &&
+          piece.color.eql?(enemy) &&
+          valid?(board, enemy, origin, king)
+      end
+    end
+    false
+  end
 
   def piece(board, cell)
     return nil unless on_board?(cell)
@@ -52,12 +73,17 @@ class ChessBoard
     board[col(cell)][row(cell)]
   end
 
+  def find_king(color)
+  end
+
   def removes_check?(board, origin, dest)
     future = board.map { |col| col.map { |cell| cell } }
-    future[col(dest)][row(dest)] = board[col(origin)][row(origin)]
-    future[col(origin)][row(origin)] = nil
+    origin_col = col(origin)
+    origin_row = row(origin)
+    future[col(dest)][row(dest)] = board[origin_col][origin_row]
+    future[origin_col][origin_row] = nil
 
-    !check?(future)
+    !check?(future, piece(board, origin).color)
   end
 
   def on_board?(cell)
