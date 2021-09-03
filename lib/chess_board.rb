@@ -33,32 +33,24 @@ class ChessBoard
   end
 
   def valid?(board, color, origin, dest)
-    # origin = [col(origin), row(origin)]
-    # dest = [col(dest), row(dest)]
-    return false unless on_board?(origin) && on_board?(dest)
-
-    return false unless taken_cell?(board, origin)
+    return false unless
+      on_board?(origin) && on_board?(dest) && taken_cell?(board, origin)
 
     origin_piece = board[col(origin)][row(origin)]
-    # dest_piece = board[dest[0]][dest[1]]
-    return false unless origin_piece.color.eql?(color)
 
-    return false unless valid_piece_move?(origin_piece, origin, dest)
-
-    return false if obstructed?(board, origin, dest)
-
-    return false unless removes_check?(board, origin, dest)
-    true
+    origin_piece.color.eql?(color) &&
+      valid_piece_move?(origin_piece, origin, dest) &&
+      !obstructed?(board, origin, dest) &&
+      removes_check?(board, origin, dest)
   end
 
-  def check?(board)
-  end
+  def check?(board) end
 
   def piece(board, cell)
+    return nil unless on_board?(cell)
+
     board[col(cell)][row(cell)]
   end
-
-  private
 
   def removes_check?(board, origin, dest)
     future = board.dup
@@ -96,16 +88,15 @@ class ChessBoard
     origin_row = row(origin)
     return false if piece(board, origin).is_a?(Knight)
 
-    dest_col = col(dest)
-    dest_row = row(dest)
-    origin_col.upto(dest_col) do |col|
-      origin_row.upto(dest_row) do |row|
+    origin_col.upto(col(dest)) do |col|
+      origin_row.upto(row(dest)) do |row|
         return true unless board[col][row].nil?
-
       end
     end
     false
   end
+
+  private
 
   def setup_bishops(board)
     board[2][7] = Bishop.new(:black)

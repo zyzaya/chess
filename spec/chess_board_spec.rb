@@ -182,4 +182,21 @@ describe ChessBoard do
       expect(result).to be(true)  
     end
   end
+
+  describe '#on_board?' do
+    it 'returns false if input is invalid' do
+      result = chess_board.on_board?('asfdasfg')
+      expect(result).to be(false)
+    end
+    
+    it 'returns false if input is off the board' do
+      result = chess_board.on_board?('i8')
+      expect(result).to be(false)
+    end
+
+    it 'returns true if the cell is on the board' do
+      result = chess_board.on_board?('c3')
+      expect(result).to be(true)
+    end
+  end
 end
