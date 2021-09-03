@@ -32,7 +32,80 @@ class ChessBoard
     board
   end
 
+  def valid?(board, color, origin, dest)
+    # origin = [col(origin), row(origin)]
+    # dest = [col(dest), row(dest)]
+    return false unless on_board?(origin) && on_board?(dest)
+
+    return false unless taken_cell?(board, origin)
+
+    origin_piece = board[col(origin)][row(origin)]
+    # dest_piece = board[dest[0]][dest[1]]
+    return false unless origin_piece.color.eql?(color)
+
+    return false unless valid_piece_move?(origin_piece, origin, dest)
+
+    return false if obstructed?(board, origin, dest)
+
+    return false unless removes_check?(board, origin, dest)
+    true
+  end
+
+  def check?(board)
+  end
+
+  def piece(board, cell)
+    board[col(cell)][row(cell)]
+  end
+
   private
+
+  def removes_check?(board, origin, dest)
+    future = board.dup
+    future[col(dest)][row(dest)] = board[col(origin)][row(origin)]
+    future[col(origin)][row(origin)] = nil
+
+    !check?(future)
+  end
+
+  def on_board?(cell)
+    curr_col = col(cell)
+    curr_row = row(cell)
+    return false if [curr_col, curr_row].any?(&:nil?)
+
+    curr_col >= 0 && curr_col < 8 &&
+      curr_row >= 0 && curr_row < 8
+  end
+
+  def valid_piece_move?(piece, origin, dest)
+    rel_col = col(dest) - col(origin)
+    rel_row = row(dest) - row(origin)
+    piece.valid?(rel_col, rel_row)
+  end
+
+  def taken_cell?(board, cell)
+    curr_col = col(cell)
+    curr_row = row(cell)
+    return false if [curr_col, curr_row].any?(&:nil?)
+
+    !board[curr_col][curr_row].nil?
+  end
+
+  def obstructed?(board, origin, dest)
+    origin_col = col(origin)
+    origin_row = row(origin)
+    return false if piece(board, origin).is_a?(Knight)
+
+    dest_col = col(dest)
+    dest_row = row(dest)
+    origin_col.upto(dest_col) do |col|
+      origin_row.upto(dest_row) do |row|
+        return true unless board[col][row].nil?
+
+      end
+    end
+    false
+  end
 
   def setup_bishops(board)
     board[2][7] = Bishop.new(:black)

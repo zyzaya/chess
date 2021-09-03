@@ -146,10 +146,10 @@ describe ChessBoard do
       origin = 'a7'
       dest = 'a4'
       result = chess_board.valid?(board, color, origin, dest)
-      expect(result).to be(false)  
+      expect(result).to be(false)
     end
 
-    it 'returns false if there is a piece obstructing the moves path (except knigts)' do
+    it 'returns false if there is a piece obstructing the moves path (except knights)' do
       color = :white
       origin = 'h1'
       dest = 'h3'
@@ -162,10 +162,10 @@ describe ChessBoard do
       origin = 'g1'
       dest = 'e0'
       result = chess_board.valid?(board, color, origin, dest)
-      expect(result).to be(false)  
+      expect(result).to be(false)
     end
 
-    it 'returns false if it the king remains in check' do
+    it 'returns false if the king remains in check' do
       allow(chess_board).to receive(:check?).and_return(true)
       color = :white
       origin = 'c2'
@@ -173,7 +173,7 @@ describe ChessBoard do
       result = chess_board.valid?(board, color, origin, dest)
       expect(result).to be(false)
     end
-    
+
     it 'does not return false if there is a piece obstructing the path and the piece is a knight' do
       color = :black
       origin = 'b8'
