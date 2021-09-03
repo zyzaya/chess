@@ -141,18 +141,6 @@ describe ChessBoard do
       expect(result).to be(false)
     end
 
-    it 'returns false if the destination is not a valid move as defined by the piece' do
-      
-    end
-
-    it 'returns false if there is a piece obstructing the moves path (except knights)' do
-      color = :white
-      origin = 'h1'
-      dest = 'h3'
-      result = chess_board.valid?(board, color, origin, dest)
-      expect(result).to be(false)
-    end
-
     it 'returns false if the destination is off of the board' do
       color = :white
       origin = 'g1'
@@ -168,14 +156,6 @@ describe ChessBoard do
       dest = 'c3'
       result = chess_board.valid?(board, color, origin, dest)
       expect(result).to be(false)
-    end
-
-    it 'does not return false if there is a piece obstructing the path and the piece is a knight' do
-      color = :black
-      origin = 'b8'
-      dest = 'a6'
-      result = chess_board.valid?(board, color, origin, dest)
-      expect(result).to be(true)  
     end
   end
 
@@ -212,6 +192,24 @@ describe ChessBoard do
       dest = 'a5'
       result = chess_board.valid_piece_move?(piece, origin, dest)
       expect(result).to be(true)
+    end
+  end
+
+  describe '#obstructed?' do
+    let(:board) { chess_board.reset_board }
+
+    it 'returns true if there is a piece obstructing the move (except knights)' do
+      origin = 'h1'
+      dest = 'h3'
+      result = chess_board.obstructed?(board, origin, dest)
+      expect(result).to be(true)
+    end
+
+    it 'returns false if there are obstructions but the piece is a knight' do
+      origin = 'b8'
+      dest = 'a6'
+      result = chess_board.obstructed?(board, origin, dest)
+      expect(result).to be(false)
     end
   end
 end
