@@ -142,11 +142,7 @@ describe ChessBoard do
     end
 
     it 'returns false if the destination is not a valid move as defined by the piece' do
-      color = :black
-      origin = 'a7'
-      dest = 'a4'
-      result = chess_board.valid?(board, color, origin, dest)
-      expect(result).to be(false)
+      
     end
 
     it 'returns false if there is a piece obstructing the moves path (except knights)' do
@@ -196,6 +192,25 @@ describe ChessBoard do
 
     it 'returns true if the cell is on the board' do
       result = chess_board.on_board?('c3')
+      expect(result).to be(true)
+    end
+  end
+
+  describe '#valid_piece_move?' do
+    let(:board) { chess_board.reset_board }
+    let(:piece) { board[0][6] }
+
+    it 'returns false if the move to dest is not a legal move by the piece at origin' do
+      origin = 'a7'
+      dest = 'a4'
+      result = chess_board.valid_piece_move?(piece, origin, dest)
+      expect(result).to be(false)
+    end
+
+    it 'returns true if the move to dest is a legal move by the piece at origin' do
+      origin = 'a7'
+      dest = 'a5'
+      result = chess_board.valid_piece_move?(piece, origin, dest)
       expect(result).to be(true)
     end
   end
