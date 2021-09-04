@@ -122,43 +122,6 @@ describe ChessBoard do
     end
   end
 
-  describe '#valid?' do
-    let(:board) { chess_board.reset_board }
-
-    it 'returns false if the origin is a different color' do
-      color = :white
-      origin = 'a7'
-      dest = 'a5'
-      result = chess_board.valid?(board, color, origin, dest)
-      expect(result).to be(false)
-    end
-
-    it 'returns false if origin is nil' do
-      color = :white
-      origin = 'a5'
-      dest = 'b5'
-      result = chess_board.valid?(board, color, origin, dest)
-      expect(result).to be(false)
-    end
-
-    it 'returns false if the destination is off of the board' do
-      color = :white
-      origin = 'g1'
-      dest = 'e0'
-      result = chess_board.valid?(board, color, origin, dest)
-      expect(result).to be(false)
-    end
-
-    it 'returns false if the king remains in check' do
-      allow(chess_board).to receive(:check?).and_return(true)
-      color = :white
-      origin = 'c2'
-      dest = 'c3'
-      result = chess_board.valid?(board, color, origin, dest)
-      expect(result).to be(false)
-    end
-  end
-
   describe '#on_board?' do
     it 'returns false if input is invalid' do
       result = chess_board.on_board?('asfdasfg')
@@ -172,93 +135,6 @@ describe ChessBoard do
 
     it 'returns true if the cell is on the board' do
       result = chess_board.on_board?('c3')
-      expect(result).to be(true)
-    end
-  end
-
-  describe '#valid_piece_move?' do
-    let(:board) { chess_board.reset_board }
-    let(:piece) { board[0][6] }
-
-    it 'returns false if the move to dest is not a legal move by the piece at origin' do
-      origin = 'a7'
-      dest = 'a4'
-      result = chess_board.valid_piece_move?(piece, origin, dest)
-      expect(result).to be(false)
-    end
-
-    it 'returns true if the move to dest is a legal move by the piece at origin' do
-      origin = 'a7'
-      dest = 'a5'
-      result = chess_board.valid_piece_move?(piece, origin, dest)
-      expect(result).to be(true)
-    end
-  end
-
-  describe '#obstructed?' do
-    let(:board) { chess_board.reset_board }
-
-    it 'returns true if there is a piece obstructing the move (except knights)' do
-      origin = 'h1'
-      dest = 'h3'
-      result = chess_board.obstructed?(board, origin, dest)
-      expect(result).to be(true)
-    end
-
-    it 'returns false if there are obstructions but the piece is a knight' do
-      origin = 'b8'
-      dest = 'a6'
-      result = chess_board.obstructed?(board, origin, dest)
-      expect(result).to be(false)
-    end
-  end
-
-  describe 'removes_check?' do
-    let(:board) { chess_board.reset_board }
-
-    before do
-      allow(chess_board).to receive(:check?).and_return(true)
-    end
-
-    it 'does not modify the board' do
-      current = board.map { |col| col.map { |cell| cell } }
-      origin = 'b8'
-      dest = 'c6'
-      chess_board.removes_check?(board, origin, dest)
-      expect(board).to eql(current)
-    end
-
-    it 'calls check? with a board as if the move has already happened' do
-      future = board.map { |col| col.map { |cell| cell } }
-      origin = 'b8'
-      dest = 'c6'
-      future[2][5] = board[1][7]
-      future[1][7] = nil
-      expect(chess_board).to receive(:check?).with(eql(future), anything)
-      expect(chess_board).not_to receive(:check?).with(eql(board), anything)
-      chess_board.removes_check?(board, origin, dest)
-    end
-  end
-
-  describe '#check?' do
-    let(:board) { chess_board.reset_board }
-
-    before do
-      allow(chess_board).to receive(:find_king).and_return('d8')
-    end
-
-    it 'returns false if no piece can capture the king' do
-      result = chess_board.check?(board, :black)
-      expect(result).to be(false)
-    end
-
-    it 'returns true if any piece can capture the king' do
-      board[4][6] = nil
-      board[3][1] = nil
-      board[6][4] = board[2][0]
-      board[2][0] = nil
-      puts "#{chess_board.valid?(board, :white, 'g5', 'd8')}"
-      result = chess_board.check?(board, :black)
       expect(result).to be(true)
     end
   end
