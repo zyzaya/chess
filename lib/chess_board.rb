@@ -45,7 +45,7 @@ class ChessBoard
     board
   end
 
-  def piece(board, cell)
+  def piece(cell)
     return nil unless on_board?(cell)
 
     board[col(cell)][row(cell)]

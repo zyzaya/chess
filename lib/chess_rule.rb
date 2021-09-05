@@ -4,9 +4,11 @@
 class ChessRule
   def valid?(board, color, origin, dest)
     return false unless
-      on_board?(origin) && on_board?(dest) && taken_cell?(board, origin)
+      board.on_board?(origin) &&
+      board.on_board?(dest) &&
+      taken_cell?(board, origin)
 
-    origin_piece = board[col(origin)][row(origin)]
+    origin_piece = board.piece(origin)
 
     origin_piece.color.eql?(color) &&
       valid_piece_move?(origin_piece, origin, dest) &&

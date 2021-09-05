@@ -1,43 +1,45 @@
 # frozen_string_literal: true
 
 require 'chess_rule'
-require 'chess_board'
+# require 'chess_board'
 
 describe ChessRule do
   subject(:chess_rule) { ChessRule.new }
-  let(:board) { ChessBoard.new.reset_board}
-  
+  # let(:board) { ChessBoard.new.reset_board }
+
   describe '#valid?' do
+    let(:origin) { instance_double('ChessPiece', color: :white) }
+    let(:board) { instance_double('ChessBoard') }
+
+    before do
+      allow(board).to receive(:on_board?).and_return(true)
+      allow(board).to receive(:piece).and_return(origin)
+      allow(chess_rule).to receive(:taken_cell?).and_return(true)
+      allow(chess_rule).to receive(:valid_piece_move?).and_return(true)
+      allow(chess_rule).to receive(:obstructed?).and_return(false)
+      allow(chess_rule).to receive(:removes_check?).and_return(true)
+    end
+
     it 'returns false if the origin is a different color' do
-      color = :white
-      origin = 'a7'
-      dest = 'a5'
-      result = chess_rule.valid?(board, color, origin, dest)
+      result = chess_rule.valid?(board, :black, 'a7', 'a5')
       expect(result).to be(false)
     end
 
     it 'returns false if origin is nil' do
-      color = :white
-      origin = 'a5'
-      dest = 'b5'
-      result = chess_rule.valid?(board, color, origin, dest)
+      allow(chess_rule).to receive(:taken_cell?).and_return(false)
+      result = chess_rule.valid?(board, :white, 'a5', 'a7')
       expect(result).to be(false)
     end
 
     it 'returns false if the destination is off of the board' do
-      color = :white
-      origin = 'g1'
-      dest = 'e0'
-      result = chess_rule.valid?(board, color, origin, dest)
+      allow(board).to receive(:on_board?).and_return(false)
+      result = chess_rule.valid?(board, :white, 'g1', 'e0')
       expect(result).to be(false)
     end
 
     it 'returns false if the king remains in check' do
-      allow(chess_board).to receive(:check?).and_return(true)
-      color = :white
-      origin = 'c2'
-      dest = 'c3'
-      result = chess_rule.valid?(board, color, origin, dest)
+      allow(chess_rule).to receive(:removes_check?).and_return(false)
+      result = chess_rule.valid?(board, :white, 'c2', 'c3')
       expect(result).to be(false)
     end
   end
