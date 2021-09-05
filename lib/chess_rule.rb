@@ -71,7 +71,7 @@ class ChessRule
     #   end
     # end
     # false
-    cells_between(board, origin, dest).all?(&:nil?)
+    !cells_between(board, origin, dest).all?(&:nil?)
   end
 
   def cells_between(board, origin, dest)
