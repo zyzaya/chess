@@ -89,6 +89,20 @@ describe ChessRule do
     end
   end
 
+  describe '#obstructed?' do
+    let(:board) { instance_double('ChessBoard') }
+
+    it 'returns true if there is a piece obstructing the move (except knights)' do
+      result = chess_rule.obstructed?(board, 'h1', 'h3')
+      expect(result).to be(true)
+    end
+
+    it 'returns false if there are obstructions but the piece is a knight' do
+      result = chess_rule.obstructed?(board, 'b8', 'a6')
+      expect(result).to be(false)
+    end
+  end
+
   describe '#valid_piece_move?' do
     let(:piece) { board[0][6] }
 

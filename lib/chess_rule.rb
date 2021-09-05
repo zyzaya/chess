@@ -56,8 +56,12 @@ class ChessRule
   end
 
   def obstructed?(board, origin, dest)
-    origin_col = col(origin)
-    origin_row = row(origin)
+    # for each cell directly between origin and dest
+    # if none are taken return true
+    # with the exception of the knight all
+    # pieces can only move horizontally or diagonally
+    origin_col = board.col(origin)
+    origin_row = board.row(origin)
     return false if piece(board, origin).is_a?(Knight)
 
     origin_col.upto(col(dest)) do |col|
@@ -66,23 +70,5 @@ class ChessRule
       end
     end
     false
-  end
-
-  describe '#obstructed?' do
-    let(:board) { chess_board.reset_board }
-
-    it 'returns true if there is a piece obstructing the move (except knights)' do
-      origin = 'h1'
-      dest = 'h3'
-      result = chess_board.obstructed?(board, origin, dest)
-      expect(result).to be(true)
-    end
-
-    it 'returns false if there are obstructions but the piece is a knight' do
-      origin = 'b8'
-      dest = 'a6'
-      result = chess_board.obstructed?(board, origin, dest)
-      expect(result).to be(false)
-    end
   end
 end
