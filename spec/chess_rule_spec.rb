@@ -92,6 +92,14 @@ describe ChessRule do
   describe '#obstructed?' do
     let(:board) { instance_double('ChessBoard') }
 
+    it 'call cells between' do
+      allow(chess_rule).to receive(:cells_between).and_return([nil])
+      origin = 'h1'
+      dest = 'h3'
+      expect(chess_rule).to receive(:cells_between).with(board, origin, dest)
+      chess_rule.obstructed?(board, origin, dest)
+    end
+
     it 'returns true if there is a piece obstructing the move (except knights)' do
       result = chess_rule.obstructed?(board, 'h1', 'h3')
       expect(result).to be(true)

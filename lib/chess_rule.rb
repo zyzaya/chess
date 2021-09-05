@@ -60,15 +60,20 @@ class ChessRule
     # if none are taken return true
     # with the exception of the knight all
     # pieces can only move horizontally or diagonally
-    origin_col = board.col(origin)
-    origin_row = board.row(origin)
-    return false if piece(board, origin).is_a?(Knight)
+    # passing.each do |cell| return true unless cell.nil?
+    # origin_col = board.col(origin)
+    # origin_row = board.row(origin)
+    # return false if piece(board, origin).is_a?(Knight)
 
-    origin_col.upto(col(dest)) do |col|
-      origin_row.upto(row(dest)) do |row|
-        return true unless board[col][row].nil?
-      end
-    end
-    false
+    # origin_col.upto(col(dest)) do |col|
+    #   origin_row.upto(row(dest)) do |row|
+    #     return true unless board[col][row].nil?
+    #   end
+    # end
+    # false
+    cells_between(board, origin, dest).all?(&:nil?)
+  end
+
+  def cells_between(board, origin, dest)
   end
 end
