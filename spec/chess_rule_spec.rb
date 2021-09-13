@@ -131,4 +131,43 @@ describe ChessRule do
       expect(result).to be(true)
     end
   end
+
+  describe '#cells_between' do
+    let(:board) { instance_double('ChessBoard') }
+    let(:piece) { instance_double('ChessPiece') }
+
+    before do
+      allow(board).to receive(:piece) do |arg|
+        arg.eql?('d5') ? piece : nil
+      end
+
+      allow(board).to receive(:to_input) do |col, row|
+        "#{(col + 'a'.ord).chr}#{row + 1}"
+      end
+
+      allow(board).to receive(:col) { |val| val[0].ord - 'a'.ord }
+      allow(board).to receive(:row) { |val| val[1].to_i - 1 }
+    end
+
+    it 'returns an array of the cells between origin and dest when horizontal' do
+      result = chess_rule.cells_between(board, 'a5', 'h5')
+      expect(result.length).to eql(6)
+      expect(result.one?(piece)).to eql(true)
+      expect(result.reject { |r| r.eql?(piece) }.all?(&:nil?)).to eql(true)
+    end
+
+    it 'returns an array of the cells between origin and dest when vertical' do
+      result = chess_rule.cells_between(board, 'd2', 'd7')
+      expect(result.length).to eql(4)
+      expect(result.one?(piece)).to eql(true)
+      expect(result.reject { |r| r.eql?(piece) }.all?(&:nil?)).to eql(true)
+    end
+
+    it 'returns an array of the cells between origin and dest when diagonal' do
+      result = chess_rule.cells_between(board, 'a2', 'g8')
+      expect(result.length).to eql(5)
+      expect(result.one?(piece)).to eql(true)
+      expect(result.reject { |r| r.eql?(piece) }.all?(&:nil?)).to eql(true)
+    end
+  end
 end

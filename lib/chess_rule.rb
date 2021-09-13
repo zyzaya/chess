@@ -75,5 +75,16 @@ class ChessRule
   end
 
   def cells_between(board, origin, dest)
+    col = board.col(origin)
+    row = board.row(origin)
+    dest_col = board.col(dest)
+    dest_row = board.row(dest)
+    result = []
+    until col >= dest_col && row >= dest_row
+      result << board.piece(board.to_input(col, row))
+      col += 1 unless col >= dest_col
+      row += 1 unless row >= dest_row
+    end
+    result.drop(1)
   end
 end
