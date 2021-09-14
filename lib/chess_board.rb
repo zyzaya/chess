@@ -49,7 +49,7 @@ class ChessBoard
       col = col(cell)
       row = row(cell)
     else col = cell end
-    return nil unless on_board?(cell)
+    return nil unless on_board?(col, row)
 
     @board[col][row]
   end
