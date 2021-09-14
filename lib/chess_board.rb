@@ -9,7 +9,6 @@ require_relative 'pieces/rook'
 
 # A Chess board
 class ChessBoard
-
   def initialize
     @board = reset_board
   end
@@ -45,10 +44,14 @@ class ChessBoard
     board
   end
 
-  def piece(cell)
+  def piece(cell, row = nil)
+    if row.nil?
+      col = col(cell)
+      row = row(cell)
+    else col = cell end
     return nil unless on_board?(cell)
 
-    board[col(cell)][row(cell)]
+    @board[col][row]
   end
 
   def find_king(color)

@@ -138,4 +138,28 @@ describe ChessBoard do
       expect(result).to be(true)
     end
   end
+
+  describe '#piece' do
+    before do
+      allow(chess_board).to receive(:on_board?).and_return(true)
+    end
+
+    it 'returns nil if the given input is off the board' do
+      allow(chess_board).to receive(:on_board?).and_return(false)
+      result = chess_board.piece('a9')
+      expect(result).to eql(nil)
+    end
+
+    it 'returns a piece when using a single string parameter' do
+      allow(chess_board).to receive(:col).and_return(1)
+      allow(chess_board).to receive(:row).and_return(6)
+      result = chess_board.piece('b7')
+      expect(result).not_to eql(nil)
+    end
+
+    it 'returns a piece when using col, row parameters' do
+      result = chess_board.piece(1, 6)
+      expect(result).not_to eql(nil)
+    end
+  end
 end
