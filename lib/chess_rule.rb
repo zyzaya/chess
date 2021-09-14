@@ -11,24 +11,40 @@ class ChessRule
     origin_piece = board.piece(origin)
 
     origin_piece.color.eql?(color) &&
-      valid_piece_move?(origin_piece, origin, dest) &&
+      valid_piece_move?(board, origin_piece, origin, dest) &&
       !obstructed?(board, origin, dest) &&
       removes_check?(board, origin, dest)
   end
 
   def check?(board, color)
+    # enemy = color.eql?(:white) ? :black : :white
+    # king = board.find_king(color)
+    # board.each.with_index do |col, c_i|
+    #   col.each.with_index do |piece, r_i|
+    #     origin = to_input(c_i, r_i)
+    #     return true if
+    #       !piece.nil? &&
+    #       piece.color.eql?(enemy) &&
+    #       valid?(board, enemy, origin, king)
+    #   end
+    # end
+    # false
+    # for each cell
+    #   if it can legally move to king it is check
+    #   an it is of the enemy colour
     enemy = color.eql?(:white) ? :black : :white
-    king = find_king(color)
-    board.each.with_index do |col, c_i|
-      col.each.with_index do |piece, r_i|
-        origin = to_input(c_i, r_i)
+    0.upto(7) do |col|
+      0.upto(7) do |row|
         return true if
-          !piece.nil? &&
-          piece.color.eql?(enemy) &&
-          valid?(board, enemy, origin, king)
+          board.piece(col, row).color.eql?(enemy) &&
+          capture_king?(board, col, row)
       end
     end
     false
+  end
+
+  def capture_king?(board, col, row)
+    
   end
 
   def removes_check?(board, origin, dest)

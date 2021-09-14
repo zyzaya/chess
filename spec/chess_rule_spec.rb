@@ -5,7 +5,6 @@ require 'chess_rule'
 
 describe ChessRule do
   subject(:chess_rule) { ChessRule.new }
-  # let(:board) { ChessBoard.new.reset_board }
 
   describe '#valid?' do
     let(:origin) { instance_double('ChessPiece', color: :white) }
@@ -77,22 +76,25 @@ describe ChessRule do
   end
 
   describe '#check?' do
+    let(:board) { instance_double('ChessBoard') }
+    let(:piece) { instance_double('ChessPiece', color: :black) }
+
     before do
-      allow(chess_rule).to receive(:find_king).and_return('d8')
+      allow(board).to receive(:piece).and_return(piece)
     end
 
-    it 'returns false if no piece can capture the king' do
-      result = chess_rule.check?(board, :black)
-      expect(result).to be(false)
+    it 'calls capture_king once for each cell if capture_king? always returns false' do
+      allow(chess_rule).to receive(:capture_king?).and_return(false)
+      expect(chess_rule).to receive(:capture_king?).with(board, anything, anything).exactly(64).times
+      result = chess_rule.check?(board, :white)
+      expect(result).to eql(false)
     end
 
-    it 'returns true if any piece can capture the king' do
-      board[4][6] = nil
-      board[3][1] = nil
-      board[6][4] = board[2][0]
-      board[2][0] = nil
-      result = chess_rule.check?(board, :black)
-      expect(result).to be(true)
+    it 'returns true as soon as capture_king? returns true' do
+      allow(chess_rule).to receive(:capture_king?).and_return(false, false, false, true)
+      expect(chess_rule).to receive(:capture_king?).with(board, anything, anything).exactly(4).times
+      result = chess_rule.check?(board, :white)
+      expect(result).to eql(true)
     end
   end
 
