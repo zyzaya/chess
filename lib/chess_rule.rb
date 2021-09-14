@@ -32,13 +32,9 @@ class ChessRule
   end
 
   def removes_check?(board, origin, dest)
-    future = board.map { |col| col.map { |cell| cell } }
-    origin_col = col(origin)
-    origin_row = row(origin)
-    future[col(dest)][row(dest)] = board[origin_col][origin_row]
-    future[origin_col][origin_row] = nil
-
-    !check?(future, piece(board, origin).color)
+    future = board.clone
+    future.move_piece(origin, dest)
+    !check?(future, board.piece(origin).color)
   end
 
   def valid_piece_move?(piece, origin, dest)

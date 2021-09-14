@@ -44,28 +44,35 @@ describe ChessRule do
     end
   end
 
-  describe 'removes_check?' do
+  describe '#removes_check?' do
+    let(:board) { instance_double('ChessBoard') }
+    let(:future) { instance_double('ChessBoard') }
+    let(:piece) { instance_double('ChessPiece') }
+
     before do
       allow(chess_rule).to receive(:check?).and_return(true)
+      allow(board).to receive(:clone).and_return(future)
+      allow(board).to receive(:piece).and_return(piece)
+      allow(future).to receive(:move_piece)
+      allow(piece).to receive(:color).and_return(:white)
     end
 
-    it 'does not modify the board' do
-      current = board.map { |col| col.map { |cell| cell } }
+    it 'clones the original board' do
+      expect(board).to receive(:clone)
+      chess_rule.removes_check?(board, 'b8', 'c6')
+    end
+
+    it 'moves piece from origin to dest on the future board' do
       origin = 'b8'
       dest = 'c6'
+      expect(future).to receive(:move_piece).with(origin, dest)
       chess_rule.removes_check?(board, origin, dest)
-      expect(board).to eql(current)
     end
 
     it 'calls check? with a board as if the move has already happened' do
-      future = board.map { |col| col.map { |cell| cell } }
-      origin = 'b8'
-      dest = 'c6'
-      future[2][5] = board[1][7]
-      future[1][7] = nil
       expect(chess_rule).to receive(:check?).with(eql(future), anything)
       expect(chess_rule).not_to receive(:check?).with(eql(board), anything)
-      chess_board.removes_check?(board, origin, dest)
+      chess_rule.removes_check?(board, 'b8', 'c6')
     end
   end
 

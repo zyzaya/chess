@@ -44,6 +44,9 @@ class ChessBoard
     board
   end
 
+  def move_piece(origin, dest) 
+  end
+
   def piece(cell, row = nil)
     if row.nil?
       col = col(cell)
