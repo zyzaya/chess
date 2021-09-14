@@ -37,9 +37,9 @@ class ChessRule
     !check?(future, board.piece(origin).color)
   end
 
-  def valid_piece_move?(piece, origin, dest)
-    rel_col = col(dest) - col(origin)
-    rel_row = row(dest) - row(origin)
+  def valid_piece_move?(board, piece, origin, dest)
+    rel_col = board.col(dest) - board.col(origin)
+    rel_row = board.row(dest) - board.row(origin)
     piece.valid?(rel_col, rel_row)
   end
 

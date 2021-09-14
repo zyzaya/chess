@@ -122,20 +122,26 @@ describe ChessRule do
   end
 
   describe '#valid_piece_move?' do
-    let(:piece) { board[0][6] }
+    let(:piece) { instance_double('ChessPiece') }
+    let(:board) { instance_double('ChessBoard') }
+    let(:origin) { 'a7' }
+    let(:dest) { 'a4' }
 
-    it 'returns false if the move to dest is not a legal move by the piece at origin' do
-      origin = 'a7'
-      dest = 'a4'
-      result = chess_rule.valid_piece_move?(piece, origin, dest)
-      expect(result).to be(false)
+    before do
+      allow(board).to receive(:col).with(origin).and_return(0)
+      allow(board).to receive(:row).with(origin).and_return(6)
+      allow(board).to receive(:col).with(dest).and_return(0)
+      allow(board).to receive(:row).with(dest).and_return(3)
     end
 
-    it 'returns true if the move to dest is a legal move by the piece at origin' do
-      origin = 'a7'
-      dest = 'a5'
-      result = chess_rule.valid_piece_move?(piece, origin, dest)
-      expect(result).to be(true)
+    it 'calls piece#valid? with the difference between the origin and destination column' do
+      expect(piece).to receive(:valid?).with(0, anything)
+      chess_rule.valid_piece_move?(board, piece, origin, dest)
+    end
+
+    it 'calls piece#valid? with the difference between the origin and destination column' do
+      expect(piece).to receive(:valid?).with(anything, -3)
+      chess_rule.valid_piece_move?(board, piece, origin, dest)
     end
   end
 
