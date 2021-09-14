@@ -137,12 +137,8 @@ describe ChessRule do
     let(:piece) { instance_double('ChessPiece') }
 
     before do
-      allow(board).to receive(:piece) do |arg|
-        arg.eql?('d5') ? piece : nil
-      end
-
-      allow(board).to receive(:to_input) do |col, row|
-        "#{(col + 'a'.ord).chr}#{row + 1}"
+      allow(board).to receive(:piece) do |col, row|
+        col.eql?(3) && row.eql?(4) ? piece : nil
       end
 
       allow(board).to receive(:col) { |val| val[0].ord - 'a'.ord }
