@@ -137,6 +137,11 @@ describe ChessBoard do
       result = chess_board.on_board?('c3')
       expect(result).to be(true)
     end
+
+    it 'returns true when input is on the board and using col, row parameters' do
+      result = chess_board.on_board?(3, 4)
+      expect(result).to be(true)
+    end
   end
 
   describe '#piece' do

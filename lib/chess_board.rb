@@ -57,13 +57,15 @@ class ChessBoard
   def find_king(color)
   end
 
-  def on_board?(cell)
-    curr_col = col(cell)
-    curr_row = row(cell)
-    return false if [curr_col, curr_row].any?(&:nil?)
+  def on_board?(cell, row = nil)
+    if row.nil?
+      col = col(cell)
+      row = row(cell)
+    else col = cell end
+    return false if [col, row].any?(&:nil?)
 
-    curr_col >= 0 && curr_col < 8 &&
-      curr_row >= 0 && curr_row < 8
+    col >= 0 && col < 8 &&
+      row >= 0 && row < 8
   end
 
   private
