@@ -181,4 +181,36 @@ describe ChessRule do
       expect(result.reject { |r| r.eql?(piece) }.all?(&:nil?)).to eql(true)
     end
   end
+
+  describe '#capture_king?' do
+    let(:board) { instance_double('ChessBoard') }
+    let(:piece) { instance_double('ChessPiece', color: :white) }
+    let(:col) { 3 }
+    let(:row) { 5 }
+
+    before do
+      allow(board).to receive(:piece).and_return(piece)
+      allow(board).to receive(:col).with('e8').and_return(4)
+      allow(board).to receive(:row).with('e8').and_return(7)
+      allow(chess_rule).to receive(:find_king).and_return('e8')
+      allow(piece).to receive(:valid?).and_return(false)
+      allow(piece).to receive(:valid?).with(4, 7).and_return(true)
+    end
+
+    it 'gets the piece at col, row' do
+      expect(board).to receive(:piece).with(col, row)
+      chess_rule.capture_king?(board, col, row)
+    end
+
+    it 'gets the location of the king of the opposite color to the piece at col, row' do
+      expect(chess_rule).to receive(:find_king).with(board, :black)
+      chess_rule.capture_king?(board, col, row)
+    end
+
+    it 'checks if the piece can move to the location of the king' do
+      expect(piece).to receive(:valid?).with(4, 7)
+      result = chess_rule.capture_king?(board, col, row)
+      expect(result).to eql(true)
+    end
+  end
 end

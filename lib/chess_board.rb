@@ -63,9 +63,6 @@ class ChessBoard
     @board[col][row]
   end
 
-  def find_king(color)
-  end
-
   def on_board?(cell, row = nil)
     if row.nil?
       col = col(cell)
