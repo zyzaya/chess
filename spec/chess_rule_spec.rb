@@ -245,4 +245,51 @@ describe ChessRule do
       expect(result).to eql(input)
     end
   end
+
+  describe '#checkmate?' do
+    let(:board) { instance_double('ChessBoard') }
+    let(:white_piece) { instance_double('ChessPiece', valid: [[0, 1], [0, 2]], color: :white) }
+    let(:black_piece) { instance_double('ChessPiece', valid: [[0, 1], [0, 2]], color: :black) }
+    let(:king) { instance_double('King', color: :white) }
+
+    before do
+      allow(chess_rule).to receive(:obstructed?).and_return(true)
+      allow(chess_rule).to receive(:find_king).and_return(king)
+      allow(board).to receive(:to_input)
+    end
+
+    it 'iterates over every cell' do
+      allow(board).to receive(:piece).and_return(nil)
+      expect(board).to receive(:piece).exactly(64).times
+      chess_rule.checkmate?(board, :white)
+    end
+
+    it 'checks if every potential move of every non-nil piece is unobstructed' do
+      allow(board).to receive(:piece).and_return(white_piece)
+      expect(chess_rule).to receive(:obstructed?).exactly(128).times
+      chess_rule.checkmate?(board, :black)
+    end
+
+    it 'does not check pieces of the wrong color' do
+      allow(board).to receive(:piece).and_return(black_piece)
+      expect(black_piece).not_to receive(:valid)
+      chess_rule.checkmate?(board, :black)
+    end
+
+    it 'returns false as soon as a legal move removes check' do
+      allow(board).to receive(:piece).and_return(white_piece)
+      allow(chess_rule).to receive(:obstructed?).and_return(true, true, true, false)
+      expect(board).to receive(:piece).exactly(2).times
+      expect(chess_rule).to receive(:obstructed?).exactly(4).times
+      result = chess_rule.checkmate?(board, :black)
+      expect(result).to eql(false)
+    end
+
+    it 'returns true if no legal move removes check' do
+      allow(board).to receive(:piece).and_return(black_piece)
+      allow(chess_rule).to receive(:obstructed?).and_return(true)
+      result = chess_rule.checkmate?(board, :white)
+      expect(result).to eql(true)
+    end
+  end
 end

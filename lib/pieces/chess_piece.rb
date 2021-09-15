@@ -2,7 +2,7 @@
 
 # A single piece of a Chess game
 class ChessPiece
-  attr_reader :color
+  attr_reader :color, :valid
 
   def initialize(color)
     @color = color

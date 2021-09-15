@@ -28,6 +28,23 @@ class ChessRule
     false
   end
 
+  def checkmate?(board, color)
+    enemy = color.eql?(:white) ? :black : :white
+    king = find_king(board, color)
+    0.upto(7) do |col|
+      0.upto(7) do |row|
+        piece = board.piece(col, row)
+        next unless !piece.nil? && piece.color.eql?(enemy)
+
+        piece.valid.each do |v|
+          origin = board.to_input(v[0], v[1])
+          return false unless obstructed?(board, origin, king)
+        end
+      end
+    end
+    true
+  end
+
   def capture_king?(board, col, row)
     piece = board.piece(col, row)
     enemy = piece.color ? :black : :white
