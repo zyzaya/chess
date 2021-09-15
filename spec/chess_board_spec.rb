@@ -169,11 +169,10 @@ describe ChessBoard do
   end
 
   describe '#move_piece' do
-    let(:origin) { 'b1' }
-    let(:dest) { 'c3' }
+    origin = 'b1'
+    dest = 'c3'
 
     before do
-      # b1 is (1, 0). c3 is (2, 2)
       allow(chess_board).to receive(:on_board?).and_return(true)
       allow(chess_board).to receive(:col).with(origin).and_return(1)
       allow(chess_board).to receive(:row).with(origin).and_return(0)
@@ -190,7 +189,6 @@ describe ChessBoard do
     end
 
     it 'sets the piece at origin to nil' do
-      # b1 is (1, 0). c3 is (2, 2)
       board = chess_board.instance_variable_get(:@board)
       chess_board.move_piece(origin, dest)
       result = board[1][0]

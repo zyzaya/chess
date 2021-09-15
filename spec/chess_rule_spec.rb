@@ -126,8 +126,8 @@ describe ChessRule do
   describe '#valid_piece_move?' do
     let(:piece) { instance_double('ChessPiece') }
     let(:board) { instance_double('ChessBoard') }
-    let(:origin) { 'a7' }
-    let(:dest) { 'a4' }
+    origin = 'a7'
+    dest = 'a4'
 
     before do
       allow(board).to receive(:col).with(origin).and_return(0)
@@ -185,8 +185,8 @@ describe ChessRule do
   describe '#capture_king?' do
     let(:board) { instance_double('ChessBoard') }
     let(:piece) { instance_double('ChessPiece', color: :white) }
-    let(:col) { 3 }
-    let(:row) { 5 }
+    col = 3
+    row = 5
 
     before do
       allow(board).to receive(:piece).and_return(piece)
