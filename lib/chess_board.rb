@@ -84,8 +84,8 @@ class ChessBoard
   end
 
   def setup_kings(board)
-    board[3][7] = King.new(:black)
-    board[3][0] = King.new(:white)
+    board[4][7] = King.new(:black)
+    board[4][0] = King.new(:white)
   end
 
   def setup_knights(board)
@@ -103,8 +103,8 @@ class ChessBoard
   end
 
   def setup_queens(board)
-    board[4][7] = Queen.new(:black)
-    board[4][0] = Queen.new(:white)
+    board[3][7] = Queen.new(:black)
+    board[3][0] = Queen.new(:white)
   end
 
   def setup_rooks(board)

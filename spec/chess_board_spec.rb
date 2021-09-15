@@ -103,23 +103,25 @@ describe ChessBoard do
       expect(bottom_right).to be_instance_of(Bishop)
     end
 
-    it 'places the king in column d' do
-      black_king = board[3][7]
-      white_king = board[3][0]
+    it 'places the queen in column d' do
+      black_queen = board[3][7]
+      white_queen = board[3][0]
+      expect(black_queen).to be_instance_of(Queen)
+      expect(black_queen.color).to eql(:black)
+      expect(white_queen).to be_instance_of(Queen)
+      expect(white_queen.color).to eql(:white)
+    end
+
+    it 'places the king in column e' do
+      black_king = board[4][7]
+      white_king = board[4][0]
       expect(black_king).to be_instance_of(King)
       expect(black_king.color).to eql(:black)
       expect(white_king).to be_instance_of(King)
       expect(white_king.color).to eql(:white)
     end
 
-    it 'places the queen in column e' do
-      black_queen = board[4][7]
-      white_queen = board[4][0]
-      expect(black_queen).to be_instance_of(Queen)
-      expect(black_queen.color).to eql(:black)
-      expect(white_queen).to be_instance_of(Queen)
-      expect(white_queen.color).to eql(:white)
-    end
+    
   end
 
   describe '#on_board?' do
