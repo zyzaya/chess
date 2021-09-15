@@ -36,7 +36,12 @@ class ChessRule
   end
 
   def find_king(board, color)
-    
+    0.upto(7) do |col|
+      0.upto(7) do |row|
+        piece = board.piece(col, row)
+        return board.to_input(col, row) if !piece.nil? && piece.color.eql?(color)
+      end
+    end
   end
 
   def removes_check?(board, origin, dest)

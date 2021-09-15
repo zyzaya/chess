@@ -213,4 +213,36 @@ describe ChessRule do
       expect(result).to eql(true)
     end
   end
+
+  describe '#find_king' do
+    let(:board) { instance_double('ChessBoard') }
+    let(:king) { instance_double('King', color: :white) }
+
+    it 'checks each cell' do
+      allow(board).to receive(:piece).and_return(nil)
+      expect(board).to receive(:piece).exactly(64).times
+      chess_rule.find_king(board, :white)
+    end
+
+    it 'does not return if a cell the king of the wrong color' do
+      allow(board).to receive(:piece).and_return(nil, nil, nil, king)
+      expect(board).to receive(:piece).exactly(64).times
+      chess_rule.find_king(board, :black)
+    end
+
+    it 'returns when the cell is the king of the correct color' do
+      allow(board).to receive(:to_input)
+      allow(board).to receive(:piece).and_return(nil, nil, nil, king)
+      expect(board).to receive(:piece).exactly(4).times
+      chess_rule.find_king(board, :white)
+    end
+
+    it 'converts the call row to input format and returns it' do
+      input = 'e8'
+      allow(board).to receive(:to_input).and_return(input)
+      allow(board).to receive(:piece).and_return(nil, nil, nil, king)
+      result = chess_rule.find_king(board, :white)
+      expect(result).to eql(input)
+    end
+  end
 end
