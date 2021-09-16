@@ -206,4 +206,8 @@ describe ChessBoard do
       expect(result).to eql('b1')
     end
   end
+
+  describe '#to_coords' do
+    
+  end
 end

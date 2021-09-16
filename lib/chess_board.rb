@@ -23,7 +23,7 @@ class ChessBoard
     "#{(coords[:col] + 'a'.ord).chr}#{coords[:row] + 1}"
   end
 
-  def convert_coord(cell = nil, **coords)
+  def to_coords(cell = nil, **coords)
     return coords if cell.nil?
 
     { col: col(cell), row: row(cell) }
@@ -53,8 +53,8 @@ class ChessBoard
   end
 
   def move_piece(origin = nil, dest = nil, **coord)
-    origin = convert_coord(origin, col: coord[:origin_col], row: [:origin_row])
-    dest = convert_coord(dest, col: coord[:dest_col], row: [:dest_row])
+    origin = to_coords(origin, col: coord[:origin_col], row: [:origin_row])
+    dest = to_coords(dest, col: coord[:dest_col], row: [:dest_row])
     return if [on_board?(**origin), on_board?(**dest)].any?(&:nil?)
 
     @board[dest[:col]][dest[:row]] = piece(**origin)
@@ -62,14 +62,14 @@ class ChessBoard
   end
 
   def piece(cell = nil, **coord)
-    coord = convert_coord(cell, **coord)
+    coord = to_coords(cell, **coord)
     return nil unless on_board?(**coord)
 
     @board[coord[:col]][coord[:row]]
   end
 
   def on_board?(cell = nil, **coord)
-    coord = convert_coord(cell, **coord)
+    coord = to_coords(cell, **coord)
     return false if coord.any? { |_, v| v.nil? }
 
     coord[:col] >= 0 && coord[:col] < 8 &&
