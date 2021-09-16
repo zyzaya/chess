@@ -20,8 +20,8 @@ class ChessRule
     0.upto(7) do |col|
       0.upto(7) do |row|
         return true if
-          board.piece(col, row).color.eql?(enemy) &&
-          capture_king?(board, col, row)
+          board.piece(col: col, row: row).color.eql?(enemy) &&
+          capture_king?(board, col: col, row: row)
       end
     end
     false

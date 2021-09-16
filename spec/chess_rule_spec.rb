@@ -82,14 +82,14 @@ describe ChessRule do
 
     it 'calls capture_king once for each cell if capture_king? always returns false' do
       allow(chess_rule).to receive(:capture_king?).and_return(false)
-      expect(chess_rule).to receive(:capture_king?).with(board, anything, anything).exactly(64).times
+      expect(chess_rule).to receive(:capture_king?).with(board, anything).exactly(64).times
       result = chess_rule.check?(board, :white)
       expect(result).to eql(false)
     end
 
     it 'returns true as soon as capture_king? returns true' do
       allow(chess_rule).to receive(:capture_king?).and_return(false, false, false, true)
-      expect(chess_rule).to receive(:capture_king?).with(board, anything, anything).exactly(4).times
+      expect(chess_rule).to receive(:capture_king?).with(board, anything).exactly(4).times
       result = chess_rule.check?(board, :white)
       expect(result).to eql(true)
     end
