@@ -189,4 +189,21 @@ describe ChessBoard do
       expect(result).to eql(nil)
     end
   end
+
+  describe '#to_input' do
+    it 'accepts a single two character argument' do
+      result = chess_board.to_input('b1')
+      expect(result).not_to eql(nil)
+    end
+
+    it 'accepts named col and named row arguments' do
+      result = chess_board.to_input(col: 1, row: 0)
+      expect(result).not_to eql(nil)
+    end
+
+    it 'converts named col and row arguments to a two character return value' do
+      result = chess_board.to_input(col: 1, row: 0)
+      expect(result).to eql('b1')
+    end
+  end
 end

@@ -13,12 +13,20 @@ class ChessBoard
     @board = reset_board
   end
 
-  def to_input(original_col, original_row)
+  def to_input(cell = nil, **coords)
+    return cell unless cell.nil?
+    
     return nil unless
-      original_col >= 0 && original_col <= 8 &&
-      original_row >= 0 && original_row <= 7
+      coords[:col] >= 0 && coords[:col] <= 7 &&
+      coords[:row] >= 0 && coords[:row] <= 7
 
-    "#{(original_col + 'a'.ord).chr}#{original_row + 1}"
+    "#{(coords[:col] + 'a'.ord).chr}#{coords[:row] + 1}"
+  end
+
+  def convert_coord(cell = nil, **coords)
+    return coords if cell.nil?
+
+    { col: col(cell), row: row(cell) }
   end
 
   def col(val)
@@ -69,12 +77,6 @@ class ChessBoard
   end
 
   private
-
-  def convert_coord(cell = nil, **coords)
-    return coords if cell.nil?
-
-    { col: col(cell), row: row(cell) }
-  end
 
   def setup_bishops(board)
     board[2][7] = Bishop.new(:black)
