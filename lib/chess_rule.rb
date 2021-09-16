@@ -75,8 +75,7 @@ class ChessRule
   def taken_cell?(board, cell = nil, **coords)
     return false unless board.on_board?(cell, **coords)
 
-    coords = board.to_coords(cell, **coords)
-    !board[coords[:col]][coords[:row]].nil?
+    !board.piece(cell, **coords).nil?
   end
 
   def obstructed?(board, origin = nil, dest = nil, **coords)
