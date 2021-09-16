@@ -15,7 +15,7 @@ class ChessBoard
 
   def to_input(cell = nil, **coords)
     return cell unless cell.nil?
-    
+
     return nil unless
       coords[:col] >= 0 && coords[:col] <= 7 &&
       coords[:row] >= 0 && coords[:row] <= 7

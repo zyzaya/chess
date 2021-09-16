@@ -208,6 +208,19 @@ describe ChessBoard do
   end
 
   describe '#to_coords' do
-    
+    it 'accepts a single two character argument' do
+      result = chess_board.to_coords('b1')
+      expect(result).not_to eql(nil)
+    end
+
+    it 'accepts named col and named row arguments' do
+      result = chess_board.to_coords(col: 1, row: 0)
+      expect(result).not_to eql(nil)
+    end
+
+    it 'converts a single two character argument to a two value hash' do
+      result = chess_board.to_coords('b1')
+      expect(result).to eql({ col: 1, row: 0 })
+    end
   end
 end
