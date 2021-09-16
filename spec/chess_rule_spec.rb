@@ -41,11 +41,14 @@ describe ChessRule do
     let(:board) { instance_double('ChessBoard') }
     let(:future) { instance_double('ChessBoard') }
     let(:piece) { instance_double('ChessPiece') }
+    origin = 'b8'
+    dest = 'c6'
 
     before do
       allow(chess_rule).to receive(:check?).and_return(true)
       allow(board).to receive(:clone).and_return(future)
       allow(board).to receive(:piece).and_return(piece)
+      allow(board).to receive(:to_input).with(origin, anything).and_return(origin)
       allow(future).to receive(:move_piece)
       allow(piece).to receive(:color).and_return(:white)
     end

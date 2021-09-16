@@ -60,9 +60,10 @@ class ChessRule
     end
   end
 
-  def removes_check?(board, origin, dest)
+  def removes_check?(board, origin = nil, dest = nil, **coords)
+    origin = board.to_input(origin, col: coords[:origin_col], row: coords[:origin_row])
     future = board.clone
-    future.move_piece(origin, dest)
+    future.move_piece(origin, dest, **coords)
     !check?(future, board.piece(origin).color)
   end
 
