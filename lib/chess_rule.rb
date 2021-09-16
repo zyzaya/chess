@@ -80,8 +80,8 @@ class ChessRule
     !board[curr_col][curr_row].nil?
   end
 
-  def obstructed?(board, origin, dest)
-    !cells_between(board, origin, dest).all?(&:nil?)
+  def obstructed?(board, origin = nil, dest = nil, **coords)
+    !cells_between(board, origin, dest, **coords).all?(&:nil?)
   end
 
   def cells_between(board, origin = nil, dest = nil, **coords)
