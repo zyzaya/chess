@@ -11,8 +11,8 @@ describe ChessRule do
     let(:board) { instance_double('ChessBoard') }
 
     before do
-      allow(board).to receive(:on_board?).and_return(true)
       allow(board).to receive(:piece).and_return(origin)
+      allow(board).to receive(:to_input)
       allow(chess_rule).to receive(:taken_cell?).and_return(true)
       allow(chess_rule).to receive(:valid_piece_move?).and_return(true)
       allow(chess_rule).to receive(:obstructed?).and_return(false)
@@ -27,12 +27,6 @@ describe ChessRule do
     it 'returns false if origin is nil' do
       allow(chess_rule).to receive(:taken_cell?).and_return(false)
       result = chess_rule.valid?(board, :white, 'a5', 'a7')
-      expect(result).to be(false)
-    end
-
-    it 'returns false if the destination is off of the board' do
-      allow(board).to receive(:on_board?).and_return(false)
-      result = chess_rule.valid?(board, :white, 'g1', 'e0')
       expect(result).to be(false)
     end
 
