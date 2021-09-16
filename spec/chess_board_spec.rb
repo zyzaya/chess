@@ -120,8 +120,6 @@ describe ChessBoard do
       expect(white_king).to be_instance_of(King)
       expect(white_king.color).to eql(:white)
     end
-
-    
   end
 
   describe '#on_board?' do
@@ -141,7 +139,7 @@ describe ChessBoard do
     end
 
     it 'returns true when input is on the board and using col, row parameters' do
-      result = chess_board.on_board?(3, 4)
+      result = chess_board.on_board?(col: 3, row: 4)
       expect(result).to be(true)
     end
   end

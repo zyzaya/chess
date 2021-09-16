@@ -60,15 +60,12 @@ class ChessBoard
     @board[coord[:col]][coord[:row]]
   end
 
-  def on_board?(cell, row = nil)
-    if row.nil?
-      col = col(cell)
-      row = row(cell)
-    else col = cell end
-    return false if [col, row].any?(&:nil?)
+  def on_board?(cell = nil, **coord)
+    coord = convert_coord(cell, **coord)
+    return false if coord.any? { |_, v| v.nil? }
 
-    col >= 0 && col < 8 &&
-      row >= 0 && row < 8
+    coord[:col] >= 0 && coord[:col] < 8 &&
+      coord[:row] >= 0 && coord[:row] < 8
   end
 
   private
