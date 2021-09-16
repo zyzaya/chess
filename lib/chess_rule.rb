@@ -56,8 +56,8 @@ class ChessRule
   def find_king(board, color)
     0.upto(7) do |col|
       0.upto(7) do |row|
-        piece = board.piece(col, row)
-        return board.to_input(col, row) if !piece.nil? && piece.color.eql?(color)
+        piece = board.piece(col: col, row: row)
+        return board.to_input(col: col, row: row) if !piece.nil? && piece.color.eql?(color)
       end
     end
   end
