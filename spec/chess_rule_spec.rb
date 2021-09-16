@@ -186,12 +186,10 @@ describe ChessRule do
 
     before do
       allow(board).to receive(:piece).and_return(piece)
-      allow(board).to receive(:to_coords).with('e8').and_return({ col: 4, row: 7 })
-      allow(board).to receive(:to_coords).with(nil, **coords).and_return(coords)
-      allow(board).to receive(:to_coords).with(**coords).and_return(coords)
+      allow(board).to receive(:to_input).with(nil, **coords).and_return('c6')
       allow(chess_rule).to receive(:find_king).and_return('e8')
-      allow(piece).to receive(:valid?).and_return(false)
-      allow(piece).to receive(:valid?).with(1, 2).and_return(true)
+      allow(chess_rule).to receive(:valid_piece_move?).with(board, piece, 'c6', 'e8').and_return(true)
+      allow(chess_rule).to receive(:obstructed?).and_return(true)
     end
 
     it 'gets the piece at col, row' do
@@ -204,8 +202,15 @@ describe ChessRule do
       chess_rule.capture_king?(board, **coords)
     end
 
+    it 'returns false if the pieces movement is obstructed' do
+      allow(chess_rule).to receive(:obstructed?).and_return(true)
+      expect(chess_rule).to receive(:obstructed?)
+      result = chess_rule.capture_king?(board, **coords)
+      expect(result).to eql(false)
+    end
+
     it 'checks if the piece can move to the location of the king' do
-      expect(piece).to receive(:valid?).with(1, 2)
+      allow(chess_rule).to receive(:obstructed?).and_return(false)
       result = chess_rule.capture_king?(board, **coords)
       expect(result).to eql(true)
     end

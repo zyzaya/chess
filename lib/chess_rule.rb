@@ -46,11 +46,10 @@ class ChessRule
   def capture_king?(board, cell = nil, **coords)
     piece = board.piece(cell, **coords)
     enemy = piece.color ? :black : :white
-    origin = board.to_coords(cell, **coords)
-    king = board.to_coords(find_king(board, enemy))
-    rel_col = king[:col] - origin[:col]
-    rel_row = king[:row] - origin[:row]
-    piece.valid?(rel_col, rel_row)
+    origin = board.to_input(cell, **coords)
+    king = find_king(board, enemy)
+    valid_piece_move?(board, piece, origin, king) &&
+      !obstructed?(board, origin, king)
   end
 
   def find_king(board, color)
