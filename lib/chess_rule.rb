@@ -44,11 +44,14 @@ class ChessRule
     true
   end
 
-  def capture_king?(board, col, row)
-    piece = board.piece(col, row)
+  def capture_king?(board, cell = nil, **coords)
+    piece = board.piece(cell, **coords)
     enemy = piece.color ? :black : :white
-    king = find_king(board, enemy)
-    piece.valid?(board.col(king), board.row(king))
+    origin = board.to_coords(cell, **coords)
+    king = board.to_coords(find_king(board, enemy))
+    rel_col = king[:col] - origin[:col]
+    rel_row = king[:row] - origin[:row]
+    piece.valid?(rel_col, rel_row)
   end
 
   def find_king(board, color)
@@ -70,8 +73,6 @@ class ChessRule
   def valid_piece_move?(board, piece, origin = nil, dest = nil, **coords)
     origin = board.to_coords(origin, col: coords[:origin_col], row: coords[:origin_row])
     dest = board.to_coords(dest, col: coords[:dest_col], row: coords[:dest_col])
-    # rel_col = board.col(dest) - board.col(origin)
-    # rel_row = board.row(dest) - board.row(origin)
     rel_col = dest[:col] - origin[:col]
     rel_row = dest[:row] - origin[:row]
     piece.valid?(rel_col, rel_row)
