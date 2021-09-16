@@ -32,12 +32,11 @@ class ChessRule
     king = find_king(board, color)
     0.upto(7) do |col|
       0.upto(7) do |row|
-        piece = board.piece(col, row)
+        piece = board.piece(col: col, row: row)
         next unless !piece.nil? && piece.color.eql?(enemy)
 
         piece.valid.each do |v|
-          origin = board.to_input(v[0], v[1])
-          return false unless obstructed?(board, origin, king)
+          return false unless obstructed?(board, nil, king, origin_col: v[0], origin_row: v[1])
         end
       end
     end
