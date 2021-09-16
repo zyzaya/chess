@@ -66,9 +66,13 @@ class ChessRule
     !check?(future, board.piece(origin).color)
   end
 
-  def valid_piece_move?(board, piece, origin, dest)
-    rel_col = board.col(dest) - board.col(origin)
-    rel_row = board.row(dest) - board.row(origin)
+  def valid_piece_move?(board, piece, origin = nil, dest = nil, **coords)
+    origin = board.to_coords(origin, col: coords[:origin_col], row: coords[:origin_row])
+    dest = board.to_coords(dest, col: coords[:dest_col], row: coords[:dest_col])
+    # rel_col = board.col(dest) - board.col(origin)
+    # rel_row = board.row(dest) - board.row(origin)
+    rel_col = dest[:col] - origin[:col]
+    rel_row = dest[:row] - origin[:row]
     piece.valid?(rel_col, rel_row)
   end
 

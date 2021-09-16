@@ -124,10 +124,8 @@ describe ChessRule do
     dest = 'a4'
 
     before do
-      allow(board).to receive(:col).with(origin).and_return(0)
-      allow(board).to receive(:row).with(origin).and_return(6)
-      allow(board).to receive(:col).with(dest).and_return(0)
-      allow(board).to receive(:row).with(dest).and_return(3)
+      allow(board).to receive(:to_coords).with(origin, anything).and_return({ col: 0, row: 6 })
+      allow(board).to receive(:to_coords).with(dest, anything).and_return({ col: 0, row: 3 })
     end
 
     it 'calls piece#valid? with the difference between the origin and destination column' do
