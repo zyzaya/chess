@@ -172,10 +172,6 @@ describe ChessBoard do
 
     before do
       allow(chess_board).to receive(:on_board?).and_return(true)
-      allow(chess_board).to receive(:col).with(origin).and_return(1)
-      allow(chess_board).to receive(:row).with(origin).and_return(0)
-      allow(chess_board).to receive(:col).with(dest).and_return(2)
-      allow(chess_board).to receive(:row).with(dest).and_return(2)
     end
 
     it 'sets dest to the piece at origin' do
