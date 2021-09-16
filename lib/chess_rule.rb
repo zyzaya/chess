@@ -72,12 +72,11 @@ class ChessRule
     piece.valid?(rel_col, rel_row)
   end
 
-  def taken_cell?(board, cell)
-    curr_col = col(cell)
-    curr_row = row(cell)
-    return false if [curr_col, curr_row].any?(&:nil?)
+  def taken_cell?(board, cell = nil, **coords)
+    return false unless board.on_board?(cell, **coords)
 
-    !board[curr_col][curr_row].nil?
+    coords = board.to_coords(cell, **coords)
+    !board[coords[:col]][coords[:row]].nil?
   end
 
   def obstructed?(board, origin = nil, dest = nil, **coords)
