@@ -146,15 +146,13 @@ describe ChessRule do
     let(:piece) { instance_double('ChessPiece') }
 
     before do
-      allow(board).to receive(:piece) do |col, row|
-        col.eql?(3) && row.eql?(4) ? piece : nil
-      end
-
-      allow(board).to receive(:col) { |val| val[0].ord - 'a'.ord }
-      allow(board).to receive(:row) { |val| val[1].to_i - 1 }
+      allow(board).to receive(:piece).and_return(nil)
+      allow(board).to receive(:piece).with({ col: 3, row: 4 }).and_return(piece)
     end
 
     it 'returns an array of the cells between origin and dest when horizontal' do
+      allow(board).to receive(:to_coords).with('a5', anything).and_return({ col: 0, row: 4 })
+      allow(board).to receive(:to_coords).with('h5', anything).and_return({ col: 7, row: 4 })
       result = chess_rule.cells_between(board, 'a5', 'h5')
       expect(result.length).to eql(6)
       expect(result.one?(piece)).to eql(true)
@@ -162,6 +160,8 @@ describe ChessRule do
     end
 
     it 'returns an array of the cells between origin and dest when vertical' do
+      allow(board).to receive(:to_coords).with('d2', anything).and_return({ col: 3, row: 1 })
+      allow(board).to receive(:to_coords).with('d7', anything).and_return({ col: 3, row: 6 })
       result = chess_rule.cells_between(board, 'd2', 'd7')
       expect(result.length).to eql(4)
       expect(result.one?(piece)).to eql(true)
@@ -169,6 +169,8 @@ describe ChessRule do
     end
 
     it 'returns an array of the cells between origin and dest when diagonal' do
+      allow(board).to receive(:to_coords).with('a2', anything).and_return({ col: 0, row: 1 })
+      allow(board).to receive(:to_coords).with('g8', anything).and_return({ col: 6, row: 7 })
       result = chess_rule.cells_between(board, 'a2', 'g8')
       expect(result.length).to eql(5)
       expect(result.one?(piece)).to eql(true)

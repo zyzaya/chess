@@ -84,16 +84,16 @@ class ChessRule
     !cells_between(board, origin, dest).all?(&:nil?)
   end
 
-  def cells_between(board, origin, dest)
-    col = board.col(origin)
-    row = board.row(origin)
-    dest_col = board.col(dest)
-    dest_row = board.row(dest)
+  def cells_between(board, origin = nil, dest = nil, **coords)
+    origin = board.to_coords(origin, col: coords[:origin_col], row: coords[:origin_row])
+    dest = board.to_coords(dest, col: coords[:dest_col], row: coords[:dest_col])
+    col = origin[:col]
+    row = origin[:row]
     result = []
-    until col >= dest_col && row >= dest_row
-      result << board.piece(col, row)
-      col += 1 unless col >= dest_col
-      row += 1 unless row >= dest_row
+    until col >= dest[:col] && row >= dest[:row]
+      result << board.piece(col: col, row: row)
+      col += 1 unless col >= dest[:col]
+      row += 1 unless row >= dest[:row]
     end
     result.drop(1)
   end
