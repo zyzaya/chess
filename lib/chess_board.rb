@@ -53,14 +53,11 @@ class ChessBoard
     @board[col(origin)][row(origin)] = nil
   end
 
-  def piece(cell, row = nil)
-    if row.nil?
-      col = col(cell)
-      row = row(cell)
-    else col = cell end
-    return nil unless on_board?(col, row)
+  def piece(cell = nil, **coord)
+    coord = convert_coord(cell, **coord)
+    return nil unless on_board?(**coord)
 
-    @board[col][row]
+    @board[coord[:col]][coord[:row]]
   end
 
   def on_board?(cell, row = nil)
@@ -75,6 +72,12 @@ class ChessBoard
   end
 
   private
+
+  def convert_coord(cell = nil, **coords)
+    return coords if cell.nil?
+
+    { col: col(cell), row: row(cell) }
+  end
 
   def setup_bishops(board)
     board[2][7] = Bishop.new(:black)

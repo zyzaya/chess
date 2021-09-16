@@ -158,14 +158,12 @@ describe ChessBoard do
     end
 
     it 'returns a piece when using a single string parameter' do
-      allow(chess_board).to receive(:col).and_return(1)
-      allow(chess_board).to receive(:row).and_return(6)
       result = chess_board.piece('b7')
       expect(result).not_to eql(nil)
     end
 
     it 'returns a piece when using col, row parameters' do
-      result = chess_board.piece(1, 6)
+      result = chess_board.piece(col: 1, row: 6)
       expect(result).not_to eql(nil)
     end
   end
