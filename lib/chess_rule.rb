@@ -2,11 +2,12 @@
 
 # Validates chess movements
 class ChessRule
-  def valid?(board, color, origin, dest)
-    return false unless
-      board.on_board?(origin) &&
-      board.on_board?(dest) &&
-      taken_cell?(board, origin)
+  def valid?(board, color, origin = nil, dest = nil, **coord)
+    origin = board.to_input(origin, dest, **coord)
+    dest = board.to_input(origin, dest, **coord)
+    return false unless board.on_board?(origin) &&
+                        board.on_board?(dest) &&
+                        taken_cell?(board, origin)
 
     origin_piece = board.piece(origin)
 
