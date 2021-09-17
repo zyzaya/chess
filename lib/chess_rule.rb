@@ -30,14 +30,11 @@ class ChessRule
   def checkmate?(board, color)
     enemy = color.eql?(:white) ? :black : :white
     king = find_king(board, color)
-    0.upto(7) do |col|
-      0.upto(7) do |row|
-        piece = board.piece(col: col, row: row)
-        next unless !piece.nil? && piece.color.eql?(enemy)
+    board.each_cell do |piece|
+      next unless !piece.nil? && piece.color.eql?(enemy)
 
-        piece.valid.each do |v|
-          return false unless obstructed?(board, nil, king, origin_col: v[0], origin_row: v[1])
-        end
+      piece.valid.each do |v|
+        return false unless obstructed?(board, nil, king, origin_col: v[0], origin_row: v[1])
       end
     end
     true

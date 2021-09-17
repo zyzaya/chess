@@ -257,38 +257,36 @@ describe ChessRule do
     before do
       allow(chess_rule).to receive(:obstructed?).and_return(true)
       allow(chess_rule).to receive(:find_king).and_return(king)
-      allow(board).to receive(:to_input)
     end
 
     it 'iterates over every cell' do
-      allow(board).to receive(:piece).and_return(nil)
-      expect(board).to receive(:piece).exactly(64).times
+      allow(board).to receive(:each_cell).and_yield(nil)
+      expect(board).to receive(:each_cell)
       chess_rule.checkmate?(board, :white)
     end
 
     it 'checks if every potential move of every non-nil piece is unobstructed' do
-      allow(board).to receive(:piece).and_return(white_piece)
-      expect(chess_rule).to receive(:obstructed?).exactly(128).times
+      allow(board).to receive(:each_cell).and_yield(white_piece)
+      expect(chess_rule).to receive(:obstructed?).exactly(2).times
       chess_rule.checkmate?(board, :black)
     end
 
     it 'does not check pieces of the wrong color' do
-      allow(board).to receive(:piece).and_return(black_piece)
+      allow(board).to receive(:each_cell).and_yield(black_piece)
       expect(black_piece).not_to receive(:valid)
       chess_rule.checkmate?(board, :black)
     end
 
     it 'returns false as soon as a legal move removes check' do
-      allow(board).to receive(:piece).and_return(white_piece)
+      allow(board).to receive(:each_cell).and_yield(white_piece).and_yield(white_piece)
       allow(chess_rule).to receive(:obstructed?).and_return(true, true, true, false)
-      expect(board).to receive(:piece).exactly(2).times
       expect(chess_rule).to receive(:obstructed?).exactly(4).times
       result = chess_rule.checkmate?(board, :black)
       expect(result).to eql(false)
     end
 
     it 'returns true if no legal move removes check' do
-      allow(board).to receive(:piece).and_return(black_piece)
+      allow(board).to receive(:each_cell).and_yield(black_piece)
       allow(chess_rule).to receive(:obstructed?).and_return(true)
       result = chess_rule.checkmate?(board, :white)
       expect(result).to eql(true)
