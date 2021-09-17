@@ -13,6 +13,16 @@ class ChessBoard
     @board = reset_board
   end
 
+  def initialize_copy(original)
+    super
+    @board = Array.new(8).map { Array.new(8, nil) }
+    0.upto(7) do |col|
+      0.upto(7) do |row|
+        @board[col][row] = original.piece(col: col, row: row).clone
+      end
+    end
+  end
+
   def to_input(cell = nil, **coords)
     return cell unless cell.nil?
 

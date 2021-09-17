@@ -223,4 +223,27 @@ describe ChessBoard do
       expect(result).to eql({ col: 1, row: 0 })
     end
   end
+
+  describe '#clone' do
+    it 'creates a new objects' do
+      clone = chess_board.clone
+      expect(clone).not_to eql(chess_board)
+      expect(clone.object_id).not_to eql(chess_board.object_id)
+    end
+
+    it 'does a deep copy of board' do
+      clone = chess_board.clone
+      original = []
+      result = []
+      0.upto(7) do |col|
+        0.upto(7) do |row|
+          original << chess_board.piece(col: col, row: row)
+          result << clone.piece(col: col, row: row)
+        end
+      end
+      expect(result.each_with_index.none? do |v, i|
+        !v.nil? && v.equal?(original[i])
+      end).to eql(true)
+    end
+  end
 end
