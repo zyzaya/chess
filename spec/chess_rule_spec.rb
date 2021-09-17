@@ -359,4 +359,43 @@ describe ChessRule do
       expect(result).to eql(true)
     end
   end
+
+  describe '#dead_position?' do
+    let(:board) { instance_double('ChessBoard') }
+    let(:black_king) { instance_double('King', color: :black, instance_of?: false) }
+    let(:white_king) { instance_double('King', color: :white, instance_of?: false) }
+    let(:bishop) { instance_double('Bishop', color: :white, instance_of?: false) }
+    let(:knight) { instance_double('Knight', color: :white,instance_of?: false) }
+
+    before do
+      allow(black_king).to receive(:instance_of?).with(King).and_return(true)
+      allow(white_king).to receive(:instance_of?).with(King).and_return(true)
+      allow(bishop).to receive(:instance_of?).with(Bishop).and_return(true)
+      allow(knight).to receive(:instance_of?).with(Knight).and_return(true)
+    end
+
+    it 'returns true if only two kings remain' do
+      allow(board).to receive(:piece).and_return(white_king, black_king, nil)
+      result = chess_rule.dead_position?(board)
+      expect(result).to eql(true)
+    end
+
+    it 'returns true if only a king against king and bishop remain' do
+      allow(board).to receive(:piece).and_return(white_king, black_king, bishop, nil)
+      result = chess_rule.dead_position?(board)
+      expect(result).to eql(true)
+    end
+
+    it 'returns true if only a king against a king and knight remain' do
+      allow(board).to receive(:piece).and_return(white_king, black_king, knight, nil)
+      result = chess_rule.dead_position?(board)
+      expect(result).to eql(true)
+    end
+
+    it 'returns false if no dead position' do
+      allow(board).to receive(:piece).and_return(white_king, black_king, bishop, knight, nil)
+      result = chess_rule.dead_position?(board)
+      expect(result).to eql(true)
+    end
+  end
 end

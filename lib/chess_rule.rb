@@ -57,6 +57,32 @@ class ChessRule
     true
   end
 
+  def dead_position?(board)
+    pieces = []
+    0.upto(7) do |col|
+      0.upto(7) do |row|
+        piece = board.piece(col: col, row: row)
+        pieces << piece unless piece.nil?
+      end
+    end
+    return true if
+      pieces.length == 2 &&
+      pieces.one? { |p| p.instance_of?(King) && p.color.eql?(:white) } &&
+      pieces.one? { |p| p.instance_of?(King) && p.color.eql?(:black) }
+
+    return true if
+      pieces.one? { |p| p.instance_of?(King) && p.color.eql?(:white) } &&
+      pieces.one? { |p| p.instance_of?(King) && p.color.eql?(:black) } &&
+      pieces.one? { |p| p.instance_of?(Bishop) }
+
+    return true if
+      pieces.one? { |p| p.instance_of?(King) && p.color.eql?(:white) } &&
+      pieces.one? { |p| p.instance_of?(King) && p.color.eql?(:black) } &&
+      pieces.one? { |p| p.instance_of?(Knight) }
+
+    false
+  end
+
   def capture_king?(board, cell = nil, **coords)
     piece = board.piece(cell, **coords)
     enemy = piece.color ? :black : :white
