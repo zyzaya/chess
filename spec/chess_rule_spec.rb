@@ -371,25 +371,40 @@ describe ChessRule do
     end
 
     it 'returns true if only two kings remain' do
-      allow(board).to receive(:piece).and_return(white_king, black_king, nil)
+      allow(board).to receive(:each_cell)
+        .and_yield(white_king)
+        .and_yield(black_king)
+        .and_yield(nil)
       result = chess_rule.dead_position?(board)
       expect(result).to eql(true)
     end
 
     it 'returns true if only a king against king and bishop remain' do
-      allow(board).to receive(:piece).and_return(white_king, black_king, bishop, nil)
+      allow(board).to receive(:each_cell)
+        .and_yield(white_king)
+        .and_yield(black_king)
+        .and_yield(bishop)
+        .and_yield(nil)
       result = chess_rule.dead_position?(board)
       expect(result).to eql(true)
     end
 
     it 'returns true if only a king against a king and knight remain' do
-      allow(board).to receive(:piece).and_return(white_king, black_king, knight, nil)
+      allow(board).to receive(:each_cell)
+        .and_yield(white_king)
+        .and_yield(black_king)
+        .and_yield(knight)
+        .and_yield(nil)
       result = chess_rule.dead_position?(board)
       expect(result).to eql(true)
     end
 
     it 'returns false if no dead position' do
-      allow(board).to receive(:piece).and_return(white_king, black_king, bishop, knight, nil)
+      allow(board).to receive(:each_cell)
+        .and_yield(white_king)
+        .and_yield(black_king)
+        .and_yield(bishop)
+        .and_yield(knight)
       result = chess_rule.dead_position?(board)
       expect(result).to eql(true)
     end

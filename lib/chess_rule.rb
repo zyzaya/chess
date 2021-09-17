@@ -53,11 +53,8 @@ class ChessRule
 
   def dead_position?(board)
     pieces = []
-    0.upto(7) do |col|
-      0.upto(7) do |row|
-        piece = board.piece(col: col, row: row)
-        pieces << piece unless piece.nil?
-      end
+    board.each_cell do |piece|
+      pieces << piece unless piece.nil?
     end
     only_kings?(pieces) ||
       only_kings_and_one_bishop?(pieces) ||
