@@ -17,12 +17,10 @@ class ChessRule
 
   def check?(board, color)
     enemy = color.eql?(:white) ? :black : :white
-    0.upto(7) do |col|
-      0.upto(7) do |row|
-        return true if
-          board.piece(col: col, row: row).color.eql?(enemy) &&
-          capture_king?(board, col: col, row: row)
-      end
+    board.each_cell do |piece, col, row|
+      return true if
+        piece.color.eql?(enemy) &&
+        capture_king?(board, col: col, row: row)
     end
     false
   end
