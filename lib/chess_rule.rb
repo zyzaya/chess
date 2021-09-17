@@ -65,22 +65,9 @@ class ChessRule
         pieces << piece unless piece.nil?
       end
     end
-    return true if
-      pieces.length == 2 &&
-      pieces.one? { |p| p.instance_of?(King) && p.color.eql?(:white) } &&
-      pieces.one? { |p| p.instance_of?(King) && p.color.eql?(:black) }
-
-    return true if
-      pieces.one? { |p| p.instance_of?(King) && p.color.eql?(:white) } &&
-      pieces.one? { |p| p.instance_of?(King) && p.color.eql?(:black) } &&
-      pieces.one? { |p| p.instance_of?(Bishop) }
-
-    return true if
-      pieces.one? { |p| p.instance_of?(King) && p.color.eql?(:white) } &&
-      pieces.one? { |p| p.instance_of?(King) && p.color.eql?(:black) } &&
-      pieces.one? { |p| p.instance_of?(Knight) }
-
-    false
+    only_kings?(pieces) ||
+      only_kings_and_one_bishop?(pieces) ||
+      only_kings_and_one_knight?(pieces)
   end
 
   def capture_king?(board, cell = nil, **coords)
@@ -138,5 +125,25 @@ class ChessRule
       row += 1 unless row >= dest[:row]
     end
     result.drop(1)
+  end
+
+  private
+
+  def only_kings?(pieces)
+    pieces.length == 2 &&
+      pieces.one? { |p| p.instance_of?(King) && p.color.eql?(:white) } &&
+      pieces.one? { |p| p.instance_of?(King) && p.color.eql?(:black) }
+  end
+
+  def only_kings_and_one_bishop?(pieces)
+    pieces.one? { |p| p.instance_of?(King) && p.color.eql?(:white) } &&
+      pieces.one? { |p| p.instance_of?(King) && p.color.eql?(:black) } &&
+      pieces.one? { |p| p.instance_of?(Bishop) }
+  end
+
+  def only_kings_and_one_knight?(pieces)
+    pieces.one? { |p| p.instance_of?(King) && p.color.eql?(:white) } &&
+      pieces.one? { |p| p.instance_of?(King) && p.color.eql?(:black) } &&
+      pieces.one? { |p| p.instance_of?(Knight) }
   end
 end
