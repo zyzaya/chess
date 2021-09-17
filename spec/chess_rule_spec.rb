@@ -76,11 +76,6 @@ describe ChessRule do
     let(:board) { instance_double('ChessBoard') }
     let(:piece) { instance_double('ChessPiece', color: :black) }
 
-    before do
-      # allow(board).to receive(:piece).and_return(piece)
-      allow(board).to receive(:each_cell).and_yield(piece, 0, 0)
-    end
-
     it 'calls capture_king once for each cell if capture_king? always returns false' do
       allow(board).to receive(:each_cell).and_yield(piece, 0, 0)
       allow(chess_rule).to receive(:capture_king?).and_return(false)
@@ -330,7 +325,7 @@ describe ChessRule do
 
     before do
       allow(chess_rule).to receive(:check?).and_return(false)
-      allow(board).to receive(:piece).and_return(piece)
+      allow(board).to receive(:each_cell).and_yield(piece, 0, 0).and_yield(piece, 0, 1)
     end
 
     it 'returns false if white is in check' do
@@ -348,8 +343,8 @@ describe ChessRule do
     end
 
     it 'returns false if there is at least one legal move available' do
-      allow(chess_rule).to receive(:valid?).and_return(false, false, true)
-      expect(chess_rule).to receive(:valid?).exactly(3).times
+      allow(chess_rule).to receive(:valid?).and_return(false, true)
+      expect(chess_rule).to receive(:valid?).exactly(2).times
       result = chess_rule.stalemate?(board)
       expect(result).to eql(false)
     end
