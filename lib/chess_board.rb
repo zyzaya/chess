@@ -86,6 +86,14 @@ class ChessBoard
       coord[:row] >= 0 && coord[:row] < 8
   end
 
+  def each_cell
+    0.upto(@board.length - 1) do |col|
+      0.upto(@board[col].length - 1) do |row|
+        yield(piece(col: col, row: row), col, row)
+      end
+    end
+  end
+
   private
 
   def setup_bishops(board)

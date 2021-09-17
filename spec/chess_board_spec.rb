@@ -246,4 +246,32 @@ describe ChessBoard do
       end).to eql(true)
     end
   end
+
+  describe '#each_cell' do
+    let(:first_piece) { instance_double('ChessPiece') }
+    let(:second_piece) { instance_double('ChessPiece') }
+
+    before do
+      allow(chess_board).to receive(:piece).and_return(first_piece, second_piece, nil)
+    end
+
+    it 'iterates over each cell' do
+      count = 0
+      chess_board.each_cell { count += 1 }
+      expect(count).to eql(64)
+    end
+
+    it 'returns the piece, col, and row of each cell' do
+      count = 0
+      expect(chess_board).to receive(:piece).exactly(64).times
+      chess_board.each_cell do |p, col, row|
+        expect(p).to eql(first_piece) if count.zero?
+        expect(p).to eql(second_piece) if count == 1
+
+        expect(col).to be_a_kind_of(Integer)
+        expect(row).to be_a_kind_of(Integer)
+        count += 1
+      end
+    end
+  end
 end
