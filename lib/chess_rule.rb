@@ -43,6 +43,20 @@ class ChessRule
     true
   end
 
+  def stalemate?(board)
+    return false if check?(board, :white) || check?(board, :black)
+
+    0.upto(7) do |col|
+      0.upto(7) do |row|
+        board.piece(col: col, row: row).valid.each do |v|
+          return false if valid?(board, origin_col: col, origin_row: row,
+                                        dest_col: col + v[0], dest_row: row + v[1])
+        end
+      end
+    end
+    true
+  end
+
   def capture_king?(board, cell = nil, **coords)
     piece = board.piece(cell, **coords)
     enemy = piece.color ? :black : :white

@@ -322,4 +322,41 @@ describe ChessRule do
       expect(result).to eql(true)
     end
   end
+
+  describe '#stalemate?' do
+    let(:board) { instance_double('ChessBoard') }
+    let(:piece) { instance_double('ChessPiece', valid: [0, 1]) }
+
+    before do
+      allow(chess_rule).to receive(:check?).and_return(false)
+      allow(board).to receive(:piece).and_return(piece)
+    end
+
+    it 'returns false if white is in check' do
+      allow(chess_rule).to receive(:valid?).and_return(true)
+      allow(chess_rule).to receive(:check?).with(board, :white).and_return(true)
+      result = chess_rule.stalemate?(board)
+      expect(result).to eql(false)
+    end
+
+    it 'returns false if black is in check' do
+      allow(chess_rule).to receive(:valid?).and_return(true)
+      allow(chess_rule).to receive(:check?).with(board, :black).and_return(true)
+      result = chess_rule.stalemate?(board)
+      expect(result).to eql(false)
+    end
+
+    it 'returns false if there is at least one legal move available' do
+      allow(chess_rule).to receive(:valid?).and_return(false, false, true)
+      expect(chess_rule).to receive(:valid?).exactly(3).times
+      result = chess_rule.stalemate?(board)
+      expect(result).to eql(false)
+    end
+
+    it 'returns true if there is no check and no legal moves available' do
+      allow(chess_rule).to receive(:valid?).and_return(false)
+      result = chess_rule.stalemate?(board)
+      expect(result).to eql(true)
+    end
+  end
 end
