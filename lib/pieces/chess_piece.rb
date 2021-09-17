@@ -9,6 +9,12 @@ class ChessPiece
     @valid = []
   end
 
+  def initialize_copy(original)
+    super
+    @valid = []
+    original.valid.each { |v| @valid << v.clone }
+  end
+
   def valid?(col, row)
     @valid.include?([col, row])
   end

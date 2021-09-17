@@ -41,4 +41,29 @@ describe ChessPiece do
       expect(result).to be(false)
     end
   end
+
+  describe '#clone' do
+    before do
+      0.upto(10) { |i| piece.add(i, i + 1) }
+    end
+
+    it 'creates a new object' do
+      clone = piece.clone
+      expect(clone).not_to eql(piece)
+      expect(clone.object_id).not_to eql(piece.object_id)
+    end
+
+    it 'does a deep copy of board' do
+      clone = piece.clone
+      original = []
+      result = []
+      piece.valid.each_index do |i|
+        original << piece.valid[i]
+        result << clone.valid[i]
+      end
+      expect(result.each_with_index.none? do |v, i|
+        !v.nil? && v.equal?(original[i])
+      end).to eql(true)
+    end
+  end
 end
