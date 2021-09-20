@@ -26,7 +26,7 @@ class ChessInput
     #   true
     # end
     result = get("#{color.to_s}'s turn.") do |val|
-      return valid_turn_input?(val)
+      return valid_turn_input?(board, rule, color, val)
     end
     result = result.split
     {
@@ -35,23 +35,18 @@ class ChessInput
       dest_col: board.col(result[2]),
       dest_row: board.row(result[2])
     }
-    
-    # p "r #{result}"
-    # a1 to b3
-    # is a valid move if
-    #  in the format c# to c#
-    #   where c is characters a to h
-    #   and # is the numebers 1 to 8
-    # the board defines the move as legal
-    # returns the format 
-    #   {origin_col: c#, origin_row: c#, dest_col: c#, dest_row: c#}
-    # *additional information about the invalid movement is
-    # handled by ChessGame
   end
 
-  def valid_turn_input?(val)
-    p 'avl'
-    p val
-    !val.nil?
+  def valid_turn_input?(board, rule, color, val)
+    return false unless 
+      val.is_a?(String) &&
+      val.length == 8
+    val = val.split
+    return false unless
+      val.length == 3 &&
+      val.all? { |v| v.length == 2 }
+    return false if
+      [board.col(val[0]), board.row(val[0]), board.col(val[2]), board.col(val[2])].any?(&:nil?)
+    return rule.valid?(board, color, val[0], val[2])
   end
 end
