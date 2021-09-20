@@ -6,8 +6,7 @@ module Input
     puts info
     valid = false
     valid_values = valid_values&.map(&:downcase)
-    input = gets until 
-      block&.call(input) || valid_values&.include?(input.to_s&.downcase)
+    input = gets until block&.call(input) || valid_values&.include?(input.to_s&.downcase)
     input
   end
 end
