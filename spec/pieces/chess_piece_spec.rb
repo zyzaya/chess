@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'pieces/chess_piece'
 
 describe ChessPiece do
