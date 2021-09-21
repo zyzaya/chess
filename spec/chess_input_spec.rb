@@ -14,7 +14,7 @@ describe ChessInput do
     it 'calls input with a block' do
       allow(board).to receive(:col).and_return(0)
       allow(board).to receive(:row).and_return(0)
-      allow(input).to receive(:get) do |info, &block|
+      allow(input).to receive(:get) do |_, &block|
         expect(block).not_to eq(nil)
         'a1 to a3'
       end
