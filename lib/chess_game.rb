@@ -15,6 +15,14 @@ class ChessGame
   end
 
   def play_game
+    move = @input.turn(@board, @rule, :white)
+    p move
+    @board.move_piece(**move)
+    puts @board.display
+    warn_check if @rule.check?(@board, :white)
+    end_game(:stalemate) if @rule.stalemate?(board)
+    end_game(:dead_position) if @rule.dead_position?(board)
+    end_game(:checkmate) if @rule.checkmate?(board, :black)
     # get input
     # update state of board
     # display board
@@ -23,5 +31,8 @@ class ChessGame
     # check for end of game
     #   stalemate, dead position, checkmate?
     # next round or win state
+  end
+
+  def end_game(reason)
   end
 end
