@@ -25,7 +25,7 @@ class ChessInput
     #   p val
     #   true
     # end
-    result = get("#{color.to_s}'s turn.") do |val|
+    result = get("#{color}'s turn.") do |val|
       return valid_turn_input?(board, rule, color, val)
     end
     result = result.split
@@ -38,15 +38,17 @@ class ChessInput
   end
 
   def valid_turn_input?(board, rule, color, val)
-    return false unless 
-      val.is_a?(String) &&
-      val.length == 8
-    val = val.split
-    return false unless
-      val.length == 3 &&
-      val.all? { |v| v.length == 2 }
+    return false unless val.is_a?(String)
+
+    match = val.match(/\A[abcdefgh][12345678] to [abcdefgh][12345678]\z/)
+    return false if match.nil?
+
+    match = match[0].split
+    origin = match[0]
+    dest = match[2]
     return false if
-      [board.col(val[0]), board.row(val[0]), board.col(val[2]), board.col(val[2])].any?(&:nil?)
-    return rule.valid?(board, color, val[0], val[2])
+      [board.col(origin), board.row(origin), board.col(dest), board.row(dest)].any?(&:nil?)
+
+    rule.valid?(board, color, origin, dest)
   end
 end

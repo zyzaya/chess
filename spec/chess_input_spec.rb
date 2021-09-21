@@ -41,10 +41,6 @@ describe ChessInput do
   end
 
   describe '#valid_turn_input?' do
-    before do
-      
-    end
-
     it 'returns false if val is not a string' do
       result = input.valid_turn_input?(board, rule, :white, 5)
       expect(result).to be(false)
