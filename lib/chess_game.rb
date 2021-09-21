@@ -1,8 +1,17 @@
 # frozen_string_literal: true
 
+require_relative 'chess_rule'
+require_relative 'chess_board'
+require_relative 'chess_input'
+
 # Runs a game of chess
 class ChessGame
+  attr_reader :rule, :board, :input
+
   def initialize
+    @rule = ChessRule.new
+    @board = ChessBoard.new
+    @input = ChessInput.new
   end
 
   def play_game
