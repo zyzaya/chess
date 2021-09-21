@@ -49,22 +49,22 @@ describe ChessGame do
     end
 
     it 'determines if a player is in check' do
-      expect(game.rule).to receive(:check?).with(board, anything)
+      expect(game.rule).to receive(:check?).with(game.board, anything)
       game.play_game
     end
 
     it 'checks for stalemate' do
-      expect(game.rule).to receive(:stalemate?).with(board, anything)
+      expect(game.rule).to receive(:stalemate?).with(game.board)
       game.play_game
     end
 
     it 'checks for dead position' do
-      expect(game.rule).to receive(:dead_position?).with(board, anything)
+      expect(game.rule).to receive(:dead_position?).with(game.board)
       game.play_game
     end
 
     it 'checks for checkmate' do
-      expect(game.rule).to receive(:checkmate?).with(board, anything)
+      expect(game.rule).to receive(:checkmate?).with(game.board, anything)
       game.play_game
     end
 

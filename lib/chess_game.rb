@@ -16,7 +16,6 @@ class ChessGame
 
   def play_game
     move = @input.turn(@board, @rule, :white)
-    p move
     @board.move_piece(**move)
     puts @board.display
     warn_check if @rule.check?(@board, :white)
