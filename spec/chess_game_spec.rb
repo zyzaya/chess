@@ -29,7 +29,7 @@ describe ChessGame do
       allow(game.rule).to receive(:check?).and_return(false)
       allow(game.rule).to receive(:stalemate?).and_return(false)
       allow(game.rule).to receive(:dead_position?).and_return(false)
-      allow(game.rule).to receive(:checkmate?).and_return(false)
+      allow(game.rule).to receive(:checkmate?).and_return(false, true)
     end
     
     it 'gets player input for a turn' do
@@ -38,13 +38,13 @@ describe ChessGame do
     end
 
     it 'updates the state of the board' do
-      expect(game.board).to receive(:move_piece).with(move)
+      expect(game.board).to receive(:move_piece).with(move).twice
       game.play_game
     end
 
     it 'draws the board' do
-      expect(game.board).to receive(:display)
-      expect(game).to receive(:puts).with(display)
+      expect(game.board).to receive(:display).twice
+      expect(game).to receive(:puts).with(display).twice
       game.play_game
     end
 
@@ -87,7 +87,9 @@ describe ChessGame do
     end
 
     it 'continues the game if there is not stalemate, dead position, or checkmate' do
-      expect(game).not_to receive(:end_game)
+      expect(game.rule).to receive(:checkmate?).twice
+      expect(game.rule).to receive(:stalemate?).once
+      expect(game.rule).to receive(:dead_position?).once
       game.play_game
     end
   end
