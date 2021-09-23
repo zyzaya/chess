@@ -13,6 +13,10 @@ class Queen < ChessPiece
     end
   end
 
+  def draw
+    @color.eql?(:white) ? '♕' : '♛'
+  end
+
   private
 
   def add_diagonal(index)
