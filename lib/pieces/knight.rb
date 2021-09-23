@@ -10,6 +10,10 @@ class Knight < ChessPiece
     add_vertical
   end
 
+  def draw
+    @color.eql?(:white) ? '♘' : '♞'
+  end
+
   private
 
   def add_horizontal
