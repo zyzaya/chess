@@ -118,7 +118,9 @@ class ChessBoard
     BOARD
     i = 1
     each_cell do |piece|
-      board = board.sub(i.to_s, piece.draw) unless piece.nil?
+      board =
+        if piece.nil? then board.sub(i.to_s, ' ')
+        else board.sub(i.to_s, piece.draw) end
       i += 1
       i = 1 if i == 9
     end
