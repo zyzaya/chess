@@ -31,7 +31,7 @@ class King < ChessPiece
   end
 
   def draw
-    
+    @color.eql?(:white) ? '♔' : '♚'
   end
 
   private
