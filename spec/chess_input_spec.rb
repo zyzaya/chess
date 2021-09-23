@@ -74,12 +74,13 @@ describe ChessInput do
     end
 
     it 'accepts the format c# to c#' do
+      allow(rule).to receive(:valid?).and_return(true)
       allow(board).to receive(:col).with('a1').and_return(0)
       allow(board).to receive(:row).with('a1').and_return(0)
       allow(board).to receive(:col).with('a3').and_return(0)
       allow(board).to receive(:row).with('a3').and_return(2)
-      result = input.turn(board, rule, :white)
-      expect(result).not_to eql(nil)
+      result = input.valid_turn_input?(board, rule, :white, 'a1 to a3')
+      expect(result).to be(true)
     end
   end
 end
