@@ -7,7 +7,7 @@ class ChessInput
   include Input
 
   def turn(board, rule, color)
-    result = get("#{color}'s turn.") do |val|
+    result = get("#{color}'s turn.", 'Invalid input.') do |val|
       valid_turn_input?(board, rule, color, val)
     end
     result = result.split
