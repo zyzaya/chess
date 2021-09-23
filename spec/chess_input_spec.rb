@@ -22,6 +22,11 @@ describe ChessInput do
     end
 
     it 'checks the inputs validity with valid_turn_input?' do
+      allow(board).to receive(:col).with('a1').and_return(0)
+      allow(board).to receive(:row).with('a1').and_return(0)
+      allow(board).to receive(:col).with('a3').and_return(0)
+      allow(board).to receive(:row).with('a3').and_return(2)
+      allow(input).to receive(:valid_turn_input?).and_return(false, false, false, true)
       expect(input).to receive(:valid_turn_input?).with(board, rule, :white, anything)
       input.turn(board, rule, :white)
     end

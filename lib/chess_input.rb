@@ -8,7 +8,7 @@ class ChessInput
 
   def turn(board, rule, color)
     result = get("#{color}'s turn.") do |val|
-      return valid_turn_input?(board, rule, color, val)
+      valid_turn_input?(board, rule, color, val)
     end
     result = result.split
     {
