@@ -8,7 +8,7 @@ module Input
     input = ''
     valid = false
     until valid
-      input = gets
+      input = gets.chomp
       valid = block&.call(input) || valid_values&.include?(input.to_s&.downcase)
       puts invalid unless valid
     end

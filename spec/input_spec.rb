@@ -10,10 +10,18 @@ describe 'Input' do
   valid = %w[something s]
   invalid = 'try again'
   before do
-    allow(input).to receive(:gets).and_return('asdf', 5, 's')
+    allow(input).to receive(:gets).and_return('asdf', '5', 's')
   end
 
   describe '#get' do
+    it 'calls chomp' do
+      text = 's\n'
+      allow(input).to receive(:gets).and_return(text)
+      allow(text).to receive(:chomp).and_return('s')
+      expect(text).to receive(:chomp).at_least(1)
+      input.get(info, invalid, valid)
+    end
+
     it 'prints info' do
       allow(input).to receive(:gets).and_return('s')
       expect(input).to receive(:puts).with(info)
@@ -39,7 +47,7 @@ describe 'Input' do
     end
 
     it 'does not care about case' do
-      allow(input).to receive(:gets).and_return('asdf', 5, 'SOMETHING')
+      allow(input).to receive(:gets).and_return('asdf', '5', 'SOMETHING')
       expect(input).to receive(:gets).exactly(3).times
       input.get(info, invalid, valid)
     end

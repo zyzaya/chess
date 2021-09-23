@@ -8,7 +8,7 @@ describe ChessInput do
 
   describe '#turn' do
     before do
-      allow(input).to receive(:gets).and_return('asdf', 5, 'a1 to a3')
+      allow(input).to receive(:gets).and_return('asdf', '5', 'a1 to a3')
     end
 
     it 'calls input with a block' do
