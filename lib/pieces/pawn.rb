@@ -42,7 +42,7 @@ class Pawn < ChessPiece
       case side
       when :left then add(-1, -1)
       when :right then add(1, -1)
-      end   
+      end
     when :white
       case side
       when :left then add(-1, 1)
@@ -57,7 +57,7 @@ class Pawn < ChessPiece
       case side
       when :left then remove(-1, -1)
       when :right then remove(1, -1)
-      end   
+      end
     when :white
       case side
       when :left then remove(-1, 1)
@@ -74,11 +74,15 @@ class Pawn < ChessPiece
       if side.eql?(:left) then -1
       elsif side.eql?(:right) then 1 end
     unless @en_passant.include?([col, row])
-      @en_passant << [col, row] 
+      @en_passant << [col, row]
     end
   end
 
   def remove_en_passant
     @en_passant.clear
+  end
+
+  def draw
+    @color.eql?(:white) ? '♙' : '♟︎'
   end
 end
