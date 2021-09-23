@@ -21,11 +21,11 @@ describe ChessGame do
 
   describe '#play_game' do
     move = {origin_col: 0, origin_row: 1, dest_col: 0, dest_row: 3}
-    display = '[] <- a chess board'
+    draw = '[] <- a chess board'
 
     before do
       allow(game.input).to receive(:turn).and_return(move)
-      allow(game.board).to receive(:display).and_return(display)
+      allow(game.board).to receive(:draw).and_return(draw)
       allow(game.rule).to receive(:check?).and_return(false)
       allow(game.rule).to receive(:stalemate?).and_return(false)
       allow(game.rule).to receive(:dead_position?).and_return(false)
@@ -43,8 +43,8 @@ describe ChessGame do
     end
 
     it 'draws the board' do
-      expect(game.board).to receive(:display).twice
-      expect(game).to receive(:puts).with(display).twice
+      expect(game.board).to receive(:draw).twice
+      expect(game).to receive(:puts).with(draw).twice
       game.play_game
     end
 

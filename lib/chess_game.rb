@@ -17,9 +17,9 @@ class ChessGame
   def play_game
     finish = false
     until finish
+      puts @board.draw
       move = @input.turn(@board, @rule, :white)
       @board.move_piece(**move)
-      puts @board.display
       if @rule.checkmate?(board, :black) then finish = :checkmate
       elsif @rule.stalemate?(board) then finish = :stalemate
       elsif @rule.dead_position?(board) then finish = :dead_position end

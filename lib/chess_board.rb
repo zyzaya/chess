@@ -94,6 +94,10 @@ class ChessBoard
     end
   end
 
+  def draw
+    
+  end
+
   private
 
   def setup_bishops(board)
