@@ -13,4 +13,8 @@ class Bishop < ChessPiece
       add(i, -i)
     end
   end
+
+  def draw
+    '♗'
+  end
 end
