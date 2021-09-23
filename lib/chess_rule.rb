@@ -19,7 +19,7 @@ class ChessRule
     enemy = color.eql?(:white) ? :black : :white
     board.each_cell do |piece, col, row|
       return true if
-        piece.color.eql?(enemy) &&
+        piece&.color.eql?(enemy) &&
         capture_king?(board, col: col, row: row)
     end
     false

@@ -21,16 +21,16 @@ class ChessInput
 
   def valid_turn_input?(board, rule, color, val)
     return false unless val.is_a?(String)
-
+    p 'is a string'
     match = val.match(/\A[abcdefgh][12345678] to [abcdefgh][12345678]\z/)
     return false if match.nil?
-
+    p 'is a match'
     match = match[0].split
     origin = match[0]
     dest = match[2]
     return false if
       [board.col(origin), board.row(origin), board.col(dest), board.row(dest)].any?(&:nil?)
-
+    p 'is on board'
     rule.valid?(board, color, origin, dest)
   end
 end
