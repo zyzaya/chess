@@ -30,6 +30,10 @@ class King < ChessPiece
     remove(KINGSIDE_CASTLE[0], KINGSIDE_CASTLE[1])
   end
 
+  def draw
+    
+  end
+
   private
 
   def add_diagonal
