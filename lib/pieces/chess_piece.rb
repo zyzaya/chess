@@ -26,4 +26,8 @@ class ChessPiece
   def remove(col, row)
     @valid.delete([col, row])
   end
+
+  def draw
+    '?'
+  end
 end
