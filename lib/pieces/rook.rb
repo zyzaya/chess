@@ -6,8 +6,8 @@ require_relative 'chess_piece'
 class Rook < ChessPiece
   attr_reader :moved
 
-  QUEENSIDE_CASTLE = [3, 0]
-  KINGSIDE_CASTLE = [-2, 0]
+  QUEENSIDE_CASTLE = [3, 0].freeze
+  KINGSIDE_CASTLE = [-2, 0].freeze
 
   def initialize(color, side)
     super(color)
@@ -29,6 +29,10 @@ class Rook < ChessPiece
   def remove_castling
     remove(KINGSIDE_CASTLE[0], KINGSIDE_CASTLE[1])
     remove(QUEENSIDE_CASTLE[0], QUEENSIDE_CASTLE[1])
+  end
+
+  def draw
+    @color.eql?(:white) ? '♖' : '♜'
   end
 
   private
