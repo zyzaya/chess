@@ -8,16 +8,28 @@ class ChessRule
     return false unless taken_cell?(board, origin)
 
     origin_piece = board.piece(origin)
-
-    origin_piece.color.eql?(color) &&
-      valid_piece_move?(board, origin_piece, origin, dest) &&
-      !obstructed?(board, origin, dest) &&
-      removes_check?(board, origin, dest)
+    # origin_piece.color.eql?(color) &&
+    #   valid_piece_move?(board, origin_piece, origin, dest) &&
+    #   !obstructed?(board, origin, dest) &&
+    #   removes_check?(board, origin, dest)
+    p "color: #{color}, o: #{origin}, pc: #{origin_piece.color}"
+    p "check?: #{check?(board, color)}"
+    return false unless origin_piece.color.eql?(color)
+    p "is correct color"
+    return false unless valid_piece_move?(board, origin_piece, origin, dest)
+    p "is valid piece move"
+    return false unless !obstructed?(board, origin, dest)
+    p 'is not obstructed'
+    return false unless removes_check?(board, origin, dest)
+    p 'removes check'
+    true
   end
 
   def check?(board, color)
     enemy = color.eql?(:white) ? :black : :white
     board.each_cell do |piece, col, row|
+      p "cp: #{col}, #{row}" if 
+        !piece.nil? && capture_king?(board, col: col, row: row)
       return true if
         piece&.color.eql?(enemy) &&
         capture_king?(board, col: col, row: row)
