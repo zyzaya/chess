@@ -14,7 +14,7 @@ class ChessRule
     #   valid_piece_move?(board, origin_piece, origin, dest) &&
     #   !obstructed?(board, origin, dest) &&
     #   removes_check?(board, origin, dest)
-    p "color: #{color}, o: #{origin}, pc: #{origin_piece.color}"
+    p "color: #{color}, from #{origin} to #{dest}"
     # p "check?: #{check?(board, color)}"
     return false unless origin_piece.color.eql?(color)
     p "is correct color"
@@ -110,8 +110,7 @@ class ChessRule
 
   def valid_piece_move?(board, piece, origin = nil, dest = nil, **coords)
     origin = board.to_coords(origin, col: coords[:origin_col], row: coords[:origin_row])
-    dest = board.to_coords(dest, col: coords[:dest_col], row: coords[:dest_col])
-    p "ivpm: #{dest}, #{origin}"
+    dest = board.to_coords(dest, col: coords[:dest_col], row: coords[:dest_col])    
     rel_col = dest[:col] - origin[:col]
     rel_row = dest[:row] - origin[:row]
     piece.valid?(rel_col, rel_row)
@@ -124,6 +123,8 @@ class ChessRule
   end
 
   def obstructed?(board, origin = nil, dest = nil, **coords)
+    return false if board.piece(origin).instance_of?(Knight)
+
     !cells_between(board, origin, dest, **coords).all?(&:nil?)
   end
 
