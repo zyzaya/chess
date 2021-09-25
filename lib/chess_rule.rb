@@ -13,7 +13,7 @@ class ChessRule
     #   !obstructed?(board, origin, dest) &&
     #   removes_check?(board, origin, dest)
     p "color: #{color}, o: #{origin}, pc: #{origin_piece.color}"
-    p "check?: #{check?(board, color)}"
+    # p "check?: #{check?(board, color)}"
     return false unless origin_piece.color.eql?(color)
     p "is correct color"
     return false unless valid_piece_move?(board, origin_piece, origin, dest)
@@ -75,7 +75,7 @@ class ChessRule
 
   def capture_king?(board, cell = nil, **coords)
     piece = board.piece(cell, **coords)
-    enemy = piece.color ? :black : :white
+    enemy = piece.color.eql?(:white) ? :black : :white
     origin = board.to_input(cell, **coords)
     king = find_king(board, enemy)
     p "cpi: #{king}, #{origin}"

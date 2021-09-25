@@ -195,8 +195,14 @@ describe ChessRule do
       chess_rule.capture_king?(board, **coords)
     end
 
-    it 'gets the location of the king of the opposite color to the piece at col, row' do
+    it 'gets the location of the king of the opposite color when the piece is white' do
       expect(chess_rule).to receive(:find_king).with(board, :black)
+      chess_rule.capture_king?(board, **coords)
+    end
+
+    it 'gets the location of the king of the opposite color when the piece is white' do
+      allow(piece).to receive(:color).and_return(:black)
+      expect(chess_rule).to receive(:find_king).with(board, :white)
       chess_rule.capture_king?(board, **coords)
     end
 
@@ -212,6 +218,10 @@ describe ChessRule do
       result = chess_rule.capture_king?(board, **coords)
       expect(result).to eql(true)
     end
+
+    # it 'returns false if the piece can attack its own king, but not the enemy' do
+    #   allow(h)
+    # end
   end
 
   describe '#find_king' do
