@@ -28,7 +28,7 @@ class ChessRule
   def check?(board, color)
     enemy = color.eql?(:white) ? :black : :white
     board.each_cell do |piece, col, row|
-      p "cp: #{col}, #{row}" if 
+      p "cp: #{col}, #{row}" if
         !piece.nil? && capture_king?(board, col: col, row: row)
       return true if
         piece&.color.eql?(enemy) &&
@@ -78,6 +78,7 @@ class ChessRule
     enemy = piece.color ? :black : :white
     origin = board.to_input(cell, **coords)
     king = find_king(board, enemy)
+    p "cpi: #{king}, #{origin}"
     valid_piece_move?(board, piece, origin, king) &&
       !obstructed?(board, origin, king)
   end
@@ -86,7 +87,10 @@ class ChessRule
     0.upto(7) do |col|
       0.upto(7) do |row|
         piece = board.piece(col: col, row: row)
-        return board.to_input(col: col, row: row) if !piece.nil? && piece.color.eql?(color)
+        return board.to_input(col: col, row: row) if
+          !piece.nil? &&
+          piece.color.eql?(color) &&
+          piece.instance_of?(King)
       end
     end
   end

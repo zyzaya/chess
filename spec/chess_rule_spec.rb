@@ -217,6 +217,12 @@ describe ChessRule do
   describe '#find_king' do
     let(:board) { instance_double('ChessBoard') }
     let(:king) { instance_double('King', color: :white) }
+    let(:not_king) { instance_double('ChessPiece', color: :white) }
+
+    before do
+      allow(king).to receive(:instance_of?).with(King).and_return(true)
+      allow(not_king).to receive(:instance_of?).with(King).and_return(false)
+    end
 
     it 'checks each cell' do
       allow(board).to receive(:piece).and_return(nil)
@@ -243,6 +249,13 @@ describe ChessRule do
       allow(board).to receive(:piece).and_return(nil, nil, nil, king)
       result = chess_rule.find_king(board, :white)
       expect(result).to eql(input)
+    end
+
+    it 'does not return if it finds the location of a non-king piece' do
+      allow(board).to receive(:to_input)
+      allow(board).to receive(:piece).and_return(nil, nil, not_king, nil)
+      expect(board).to receive(:piece).exactly(64).times
+      chess_rule.find_king(board, :white)
     end
   end
 
