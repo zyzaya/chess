@@ -344,7 +344,7 @@ describe ChessRule do
 
   describe '#stalemate?' do
     let(:board) { instance_double('ChessBoard') }
-    let(:piece) { instance_double('ChessPiece', valid: [0, 1]) }
+    let(:piece) { instance_double('ChessPiece', valid: [0, 1], color: :white) }
 
     before do
       allow(chess_rule).to receive(:check?).and_return(false)
