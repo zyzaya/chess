@@ -56,8 +56,9 @@ class ChessRule
     board.each_cell do |piece, col, row|
       piece.valid.each do |v|
         return false if
-          valid?(board, origin_col: col, origin_row: row,
-                        dest_col: col + v[0], dest_row: row + v[1])
+          valid?(board, piece.color,
+                 origin_col: col, origin_row: row,
+                 dest_col: col + v[0], dest_row: row + v[1])
       end
     end
     true
