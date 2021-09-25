@@ -63,7 +63,7 @@ describe ChessBoard do
     end
 
     it 'places eight white pawns on the second row' do
-      0.upto(6) do |col|
+      0.upto(7) do |col|
         piece = board[col][1]
         expect(piece).to be_instance_of(Pawn)
         expect(piece.color).to eql(:white)

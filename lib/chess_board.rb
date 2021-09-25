@@ -149,7 +149,7 @@ class ChessBoard
   end
 
   def setup_pawns(board)
-    0.upto(6) do |col|
+    0.upto(7) do |col|
       board[col][6] = Pawn.new(:black)
       board[col][1] = Pawn.new(:white)
     end
