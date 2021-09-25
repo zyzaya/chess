@@ -5,7 +5,9 @@ class ChessRule
   def valid?(board, color, origin = nil, dest = nil, **coords)
     origin = board.to_input(origin, col: coords[:origin_col], row: coords[:origin_row])
     dest = board.to_input(dest, col: coords[:dest_col], row: coords[:dest_col])
-    return false unless taken_cell?(board, origin)
+    return false unless
+      taken_cell?(board, origin) &&
+      board.on_board?(dest)
 
     origin_piece = board.piece(origin)
     # origin_piece.color.eql?(color) &&
@@ -55,6 +57,7 @@ class ChessRule
 
     board.each_cell do |piece, col, row|
       piece.valid.each do |v|
+        p "sv: #{v}, #{col}, #{row}"
         return false if
           valid?(board, piece.color,
                  origin_col: col, origin_row: row,
@@ -106,6 +109,7 @@ class ChessRule
   def valid_piece_move?(board, piece, origin = nil, dest = nil, **coords)
     origin = board.to_coords(origin, col: coords[:origin_col], row: coords[:origin_row])
     dest = board.to_coords(dest, col: coords[:dest_col], row: coords[:dest_col])
+    p "ivpm: #{dest}, #{origin}"
     rel_col = dest[:col] - origin[:col]
     rel_row = dest[:row] - origin[:row]
     piece.valid?(rel_col, rel_row)

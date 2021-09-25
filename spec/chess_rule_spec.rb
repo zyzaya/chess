@@ -13,6 +13,7 @@ describe ChessRule do
     before do
       allow(board).to receive(:piece).and_return(origin)
       allow(board).to receive(:to_input)
+      allow(board).to receive(:on_board?).and_return(true)
       allow(chess_rule).to receive(:taken_cell?).and_return(true)
       allow(chess_rule).to receive(:valid_piece_move?).and_return(true)
       allow(chess_rule).to receive(:obstructed?).and_return(false)
@@ -34,6 +35,12 @@ describe ChessRule do
       allow(chess_rule).to receive(:removes_check?).and_return(false)
       result = chess_rule.valid?(board, :white, 'c2', 'c3')
       expect(result).to be(false)
+    end
+
+    it 'checks if dest is on board' do
+      allow(board).to receive(:to_input).with('c3', col: nil, row: nil).and_return('c3')
+      expect(board).to receive(:on_board?).with('c3')
+      chess_rule.valid?(board, :white, 'c2', 'c3')
     end
   end
 
@@ -218,10 +225,6 @@ describe ChessRule do
       result = chess_rule.capture_king?(board, **coords)
       expect(result).to eql(true)
     end
-
-    # it 'returns false if the piece can attack its own king, but not the enemy' do
-    #   allow(h)
-    # end
   end
 
   describe '#find_king' do
