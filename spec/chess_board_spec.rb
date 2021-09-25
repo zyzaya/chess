@@ -93,9 +93,9 @@ describe ChessBoard do
     end
 
     it 'places one bishop adjacent to each knight' do
-      top_left = board[2][7]
-      top_right = board[5][7]
-      bottom_left = board[2][0]
+      top_left = board[2][0]
+      top_right = board[5][0]
+      bottom_left = board[2][7]
       bottom_right = board[5][7]
       expect(top_left).to be_instance_of(Bishop)
       expect(top_right).to be_instance_of(Bishop)

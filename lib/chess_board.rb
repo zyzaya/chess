@@ -133,7 +133,7 @@ class ChessBoard
     board[2][7] = Bishop.new(:black)
     board[5][7] = Bishop.new(:black)
     board[2][0] = Bishop.new(:white)
-    board[2][0] = Bishop.new(:white)
+    board[5][0] = Bishop.new(:white)
   end
 
   def setup_kings(board)
