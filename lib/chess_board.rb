@@ -38,7 +38,6 @@ class ChessBoard
       cell.nil? &&
       [coords[:col], coords[:row]].none?(&:nil?)
 
-    # { col: col(cell), row: row(cell) }
     cell.nil? ? { col: nil, row: nil } : { col: col(cell), row: row(cell) }
   end
 
@@ -82,9 +81,7 @@ class ChessBoard
   end
 
   def on_board?(cell = nil, **coord)
-    p "#{cell}, #{coord}"
     coord = to_coords(cell, **coord)
-    p coord
     return false if coord.any? { |_, v| v.nil? }
 
     coord[:col] >= 0 && coord[:col] < 8 &&
