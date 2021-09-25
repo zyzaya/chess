@@ -237,6 +237,11 @@ describe ChessBoard do
       result = chess_board.to_coords('b1')
       expect(result).to eql({ col: 1, row: 0 })
     end
+
+    it 'returns a a two character with col and row as nil when only one nil argument' do
+      result = chess_board.to_coords(nil)
+      expect(result).to eql({col: nil, row: nil})
+    end
   end
 
   describe '#clone' do
