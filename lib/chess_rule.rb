@@ -56,6 +56,8 @@ class ChessRule
     return false if check?(board, :white) || check?(board, :black)
 
     board.each_cell do |piece, col, row|
+      next if piece.nil?
+
       piece.valid.each do |v|
         p "sv: #{v}, #{col}, #{row}"
         return false if

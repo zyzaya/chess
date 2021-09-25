@@ -351,7 +351,10 @@ describe ChessRule do
 
     before do
       allow(chess_rule).to receive(:check?).and_return(false)
-      allow(board).to receive(:each_cell).and_yield(piece, 0, 0).and_yield(piece, 0, 1)
+      allow(board).to receive(:each_cell)
+        .and_yield(piece, 0, 0)
+        .and_yield(piece, 0, 1)
+        .and_yield(nil, 0, 2)
     end
 
     it 'returns false if white is in check' do
