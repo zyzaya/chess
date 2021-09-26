@@ -189,6 +189,15 @@ describe ChessRule do
       expect(result.one?(piece)).to eql(true)
       expect(result.reject { |r| r.eql?(piece) }.all?(&:nil?)).to eql(true)
     end
+
+    it 'returns an array of cells when dest is left and down compared to origin' do
+      allow(board).to receive(:to_coords).with('a2', anything).and_return({ col: 0, row: 1 })
+      allow(board).to receive(:to_coords).with('g8', anything).and_return({ col: 6, row: 7 })
+      result = chess_rule.cells_between(board, 'g8', 'a2')
+      expect(result.length).to eql(5)
+      expect(result.one?(piece)).to eql(true)
+      expect(result.reject { |r| r.eql?(piece) }.all?(&:nil?)).to eql(true)
+    end
   end
 
   describe '#capture_king?' do
@@ -286,40 +295,42 @@ describe ChessRule do
     let(:king) { instance_double('King', color: :white) }
 
     before do
-      allow(chess_rule).to receive(:obstructed?).and_return(true)
+      allow(chess_rule).to receive(:removes_check?).and_return(true)
       allow(chess_rule).to receive(:find_king).and_return(king)
     end
 
     it 'iterates over every cell' do
-      allow(board).to receive(:each_cell).and_yield(nil)
+      allow(board).to receive(:each_cell).and_yield(nil, 0, 0)
       expect(board).to receive(:each_cell)
       chess_rule.checkmate?(board, :white)
     end
 
-    it 'checks if every potential move of every non-nil piece is unobstructed' do
-      allow(board).to receive(:each_cell).and_yield(white_piece)
-      expect(chess_rule).to receive(:obstructed?).exactly(2).times
+    it 'checks if every potential move of every non-nil piece removes_check' do
+      allow(board).to receive(:each_cell).and_yield(black_piece, 0, 0)
+      expect(chess_rule).to receive(:removes_check?).exactly(1).times
       chess_rule.checkmate?(board, :black)
     end
 
     it 'does not check pieces of the wrong color' do
-      allow(board).to receive(:each_cell).and_yield(black_piece)
+      allow(board).to receive(:each_cell).and_yield(white_piece, 0, 0)
       expect(black_piece).not_to receive(:valid)
       chess_rule.checkmate?(board, :black)
     end
 
     it 'returns false as soon as a legal move removes check' do
-      allow(board).to receive(:each_cell).and_yield(white_piece).and_yield(white_piece)
-      allow(chess_rule).to receive(:obstructed?).and_return(true, true, true, false)
-      expect(chess_rule).to receive(:obstructed?).exactly(4).times
-      result = chess_rule.checkmate?(board, :black)
+      allow(board).to receive(:each_cell)
+        .and_yield(white_piece, 0, 0)
+        .and_yield(white_piece, 0, 1)
+      allow(chess_rule).to receive(:removes_check?).and_return(false, false, false, true)
+      expect(chess_rule).to receive(:removes_check?).exactly(4).times
+      result = chess_rule.checkmate?(board, :white)
       expect(result).to eql(false)
     end
 
     it 'returns true if no legal move removes check' do
-      allow(board).to receive(:each_cell).and_yield(black_piece)
-      allow(chess_rule).to receive(:obstructed?).and_return(true)
-      result = chess_rule.checkmate?(board, :white)
+      allow(board).to receive(:each_cell).and_yield(black_piece, 0, 1)
+      allow(chess_rule).to receive(:removes_check?).and_return(false)
+      result = chess_rule.checkmate?(board, :black)
       expect(result).to eql(true)
     end
   end

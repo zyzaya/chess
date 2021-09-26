@@ -31,5 +31,6 @@ class ChessGame
   end
 
   def end_game(reason)
+    p "endgame: #{reason}"
   end
 end

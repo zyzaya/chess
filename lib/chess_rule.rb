@@ -30,8 +30,6 @@ class ChessRule
   def check?(board, color)
     enemy = color.eql?(:white) ? :black : :white
     board.each_cell do |piece, col, row|
-      p "cp: #{col}, #{row}" if
-        !piece.nil? && capture_king?(board, col: col, row: row)
       return true if
         piece&.color.eql?(enemy) &&
         capture_king?(board, col: col, row: row)
@@ -40,13 +38,14 @@ class ChessRule
   end
 
   def checkmate?(board, color)
-    enemy = color.eql?(:white) ? :black : :white
-    king = find_king(board, color)
-    board.each_cell do |piece|
-      next unless !piece.nil? && piece.color.eql?(enemy)
+    board.each_cell do |piece, col, row|
+      next unless !piece.nil? && piece.color.eql?(color)
 
       piece.valid.each do |v|
-        return false unless obstructed?(board, nil, king, origin_col: v[0], origin_row: v[1])
+        return false if
+          removes_check?(board,
+                         origin_col: col, origin_row: row,
+                         dest_col: col + v[0], dest_row: row + v[1])
       end
     end
     true
@@ -133,11 +132,13 @@ class ChessRule
     dest = board.to_coords(dest, col: coords[:dest_col], row: coords[:dest_col])
     col = origin[:col]
     row = origin[:row]
+    col_i = dest[:col] >= origin[:col] ? 1 : -1
+    row_i = dest[:row] >= origin[:row] ? 1 : -1
     result = []
-    until col >= dest[:col] && row >= dest[:row]
+    until col == dest[:col] && row == dest[:row]
       result << board.piece(col: col, row: row)
-      col += 1 unless col >= dest[:col]
-      row += 1 unless row >= dest[:row]
+      col += col_i unless col == dest[:col]
+      row += row_i unless row == dest[:row]
     end
     result.drop(1)
   end
