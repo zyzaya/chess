@@ -7,40 +7,50 @@ describe ChessRule do
   subject(:chess_rule) { ChessRule.new }
 
   describe '#valid?' do
-    let(:origin) { instance_double('ChessPiece', color: :white) }
+    let(:white_piece) { instance_double('ChessPiece', color: :white) }
     let(:board) { instance_double('ChessBoard') }
 
+    origin = 'a5'
+    dest = 'a7'
+
     before do
-      allow(board).to receive(:piece).and_return(origin)
-      allow(board).to receive(:to_input)
+      allow(board).to receive(:piece).and_return(white_piece)
+      allow(board).to receive(:to_input).with(origin, col: nil, row: nil).and_return(origin)
+      allow(board).to receive(:to_input).with(dest, col: nil, row: nil).and_return(dest)
       allow(board).to receive(:on_board?).and_return(true)
-      allow(chess_rule).to receive(:taken_cell?).and_return(true)
+      allow(chess_rule).to receive(:taken_cell?).with(board, origin).and_return(true)
+      allow(chess_rule).to receive(:taken_cell?).with(board, dest).and_return(false)
       allow(chess_rule).to receive(:valid_piece_move?).and_return(true)
       allow(chess_rule).to receive(:obstructed?).and_return(false)
       allow(chess_rule).to receive(:removes_check?).and_return(true)
     end
 
     it 'returns false if the origin is a different color' do
-      result = chess_rule.valid?(board, :black, 'a7', 'a5')
+      result = chess_rule.valid?(board, :black, origin, dest)
       expect(result).to be(false)
     end
 
     it 'returns false if origin is nil' do
-      allow(chess_rule).to receive(:taken_cell?).and_return(false)
-      result = chess_rule.valid?(board, :white, 'a5', 'a7')
+      allow(chess_rule).to receive(:taken_cell?).with(board, origin).and_return(false)
+      result = chess_rule.valid?(board, :white, origin, dest)
+      expect(result).to be(false)
+    end
+
+    it 'returns false if dest is not nil' do
+      allow(chess_rule).to receive(:taken_cell?).with(board, dest).and_return(true)
+      result = chess_rule.valid?(board, :white, origin, dest)
       expect(result).to be(false)
     end
 
     it 'returns false if the king remains in check' do
       allow(chess_rule).to receive(:removes_check?).and_return(false)
-      result = chess_rule.valid?(board, :white, 'c2', 'c3')
+      result = chess_rule.valid?(board, :white, origin, dest)
       expect(result).to be(false)
     end
 
     it 'checks if dest is on board' do
-      allow(board).to receive(:to_input).with('c3', col: nil, row: nil).and_return('c3')
-      expect(board).to receive(:on_board?).with('c3')
-      chess_rule.valid?(board, :white, 'c2', 'c3')
+      expect(board).to receive(:on_board?).with(dest)
+      chess_rule.valid?(board, :white, origin, dest)
     end
   end
 

@@ -7,6 +7,7 @@ class ChessRule
     dest = board.to_input(dest, col: coords[:dest_col], row: coords[:dest_col])
     return false unless
       taken_cell?(board, origin) &&
+      !taken_cell?(board, dest) &&
       board.on_board?(dest)
 
     origin_piece = board.piece(origin)
