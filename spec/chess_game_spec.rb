@@ -112,4 +112,28 @@ describe ChessGame do
       expect(result).to eql(:black)
     end
   end
+
+  describe '#end_game' do
+    before do
+      allow(game.rule).to receive(:checkmate?).and_return(false)
+      allow(game.rule).to receive(:checkmate?).with(game.board, :black).and_return(true)
+      allow(game.input).to receive(:replay).and_return(false)
+    end
+
+    it 'prints information about why the game ends' do
+      expect(game).to receive(:puts)
+      game.end_game(:checkmate)
+    end
+
+    it 'calls play game if replaying' do
+      allow(game.input).to receive(:replay).and_return(true)
+      expect(game).to receive(:play_game)
+      game.end_game(:checkmate)
+    end
+
+    it 'does not call play when not replaying' do
+      expect(game).not_to receive(:play_game)
+      game.end_game(:stalemate)
+    end
+  end
 end

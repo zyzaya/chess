@@ -19,6 +19,9 @@ class ChessInput
     }
   end
 
+  def replay
+  end
+
   def valid_turn_input?(board, rule, color, val)
     return false unless val.is_a?(String)
     p 'is a string'

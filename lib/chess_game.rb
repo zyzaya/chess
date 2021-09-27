@@ -21,7 +21,7 @@ class ChessGame
       puts @board.draw
       move = @input.turn(@board, @rule, current)
       @board.move_piece(**move)
-      if @rule.checkmate?(board, :black) then finish = :checkmate
+      if @rule.checkmate?(board, current) then finish = :checkmate
       elsif @rule.stalemate?(board) then finish = :stalemate
       elsif @rule.dead_position?(board) then finish = :dead_position end
       break unless finish == false
@@ -33,7 +33,16 @@ class ChessGame
   end
 
   def end_game(reason)
-    p "endgame: #{reason}"
+    case reason
+    when :stalemate
+      puts 'stalemate. No legal moves are possible'
+    when :dead_position
+      puts 'dead position.'
+    when :checkmate
+      color = @rule.checkmate?(@board, :black)
+      puts "checkmate. #{color.eql?(:black) ? :black : :white} wins"
+    end
+    play_game if @input.replay
   end
 
   def next_turn(current)
