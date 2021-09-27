@@ -61,7 +61,7 @@ describe ChessGame do
     end
 
     it 'checks for stalemate' do
-      expect(game.rule).to receive(:stalemate?).with(game.board)
+      expect(game.rule).to receive(:stalemate?).with(game.board, anything)
       game.play_game
     end
 
@@ -101,7 +101,7 @@ describe ChessGame do
     end
 
     it 'switches turns' do
-      expect(game).to receive(:next_turn).with(:white).once
+      expect(game).to receive(:next_turn).with(:white).at_least(1)
       game.play_game
     end
   end

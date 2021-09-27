@@ -22,7 +22,7 @@ class ChessGame
       move = @input.turn(@board, @rule, current)
       @board.move_piece(**move)
       if @rule.checkmate?(board, current) then finish = :checkmate
-      elsif @rule.stalemate?(board) then finish = :stalemate
+      elsif @rule.stalemate?(board, next_turn(current)) then finish = :stalemate
       elsif @rule.dead_position?(board) then finish = :dead_position end
       break unless finish == false
 
