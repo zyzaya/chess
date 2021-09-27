@@ -20,10 +20,12 @@ describe ChessGame do
   end
 
   describe '#play_game' do
-    move = {origin_col: 0, origin_row: 1, dest_col: 0, dest_row: 3}
+    move = { origin_col: 0, origin_row: 1, dest_col: 0, dest_row: 3 }
     draw = '[] <- a chess board'
 
     before do
+      allow(game).to receive(:next_turn).with(:white).and_return(:black)
+      allow(game).to receive(:next_turn).with(:black).and_return(:white)
       allow(game.input).to receive(:turn).and_return(move)
       allow(game.board).to receive(:draw).and_return(draw)
       allow(game.rule).to receive(:check?).and_return(false)
@@ -31,7 +33,7 @@ describe ChessGame do
       allow(game.rule).to receive(:dead_position?).and_return(false)
       allow(game.rule).to receive(:checkmate?).and_return(false, true)
     end
-    
+
     it 'gets player input for a turn' do
       expect(game.input).to receive(:turn)
       game.play_game
@@ -91,6 +93,23 @@ describe ChessGame do
       expect(game.rule).to receive(:stalemate?).once
       expect(game.rule).to receive(:dead_position?).once
       game.play_game
+    end
+
+    it 'switches turns' do
+      expect(game).to receive(:next_turn).with(:white).once
+      game.play_game
+    end
+  end
+
+  describe '#next_turn' do
+    it 'returns white when black is given' do
+      result = game.next_turn(:black)
+      expect(result).to eql(:white)
+    end
+
+    it 'returns white when black is given' do
+      result = game.next_turn(:black)
+      expect(result).to eql(:white)
     end
   end
 end

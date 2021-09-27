@@ -16,21 +16,26 @@ class ChessGame
 
   def play_game
     finish = false
+    current = :white
     until finish
       puts @board.draw
-      move = @input.turn(@board, @rule, :white)
+      move = @input.turn(@board, @rule, current)
       @board.move_piece(**move)
       if @rule.checkmate?(board, :black) then finish = :checkmate
       elsif @rule.stalemate?(board) then finish = :stalemate
       elsif @rule.dead_position?(board) then finish = :dead_position end
       break unless finish == false
 
-      warn_check if @rule.check?(@board, :white)
+      warn_check if @rule.check?(@board, current)
+      current = next_turn(current)
     end
     end_game(finish)
   end
 
   def end_game(reason)
     p "endgame: #{reason}"
+  end
+
+  def next_turn(current)
   end
 end
