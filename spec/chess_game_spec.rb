@@ -4,7 +4,7 @@ require 'chess_game'
 
 describe ChessGame do
   let(:game) { ChessGame.new }
-  
+
   describe '#initialize' do
     it 'initializes a ChessRule' do
       expect(game.rule).to be_instance_of(ChessRule)

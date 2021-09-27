@@ -17,17 +17,18 @@ class ChessRule
     p "color: #{color}, from #{origin} to #{dest}"
     # p "check?: #{check?(board, color)}"
     return false unless origin_piece.color.eql?(color)
-    p "is correct color"
+    p "is correct color, #{board.piece(col: 0, row: 0)&.class&.name}"
     return false unless valid_piece_move?(board, origin_piece, origin, dest)
-    p "is valid piece move"
+    p "is valid piece move, #{board.piece(col: 0, row: 0)&.class&.name}"
     return false unless !obstructed?(board, origin, dest)
-    p 'is not obstructed'
+    p "is not obstructed, #{board.piece(col: 0, row: 0)&.class&.name}"
     return false unless removes_check?(board, origin, dest)
-    p 'removes check'
+    p "removes check, #{board.piece(col: 0, row: 0)&.class&.name}"
     true
   end
 
   def check?(board, color)
+    p "c? #{board.piece('a1')&.class&.name}, #{board.piece('b2')&.class&.name}"
     enemy = color.eql?(:white) ? :black : :white
     board.each_cell do |piece, col, row|
       return true if
@@ -54,6 +55,7 @@ class ChessRule
   def stalemate?(board)
     return false if check?(board, :white) || check?(board, :black)
 
+    p 'no check'
     board.each_cell do |piece, col, row|
       next if piece.nil?
 
@@ -89,21 +91,27 @@ class ChessRule
   end
 
   def find_king(board, color)
+    p "fk: #{board.piece('a1')&.class&.name}"
     0.upto(7) do |col|
       0.upto(7) do |row|
         piece = board.piece(col: col, row: row)
+        p "#{piece&.class&.name}, #{col}, #{row}, #{piece&.color}"
         return board.to_input(col: col, row: row) if
           !piece.nil? &&
           piece.color.eql?(color) &&
           piece.instance_of?(King)
       end
     end
+    p "no #{color} king"
   end
 
   def removes_check?(board, origin = nil, dest = nil, **coords)
     origin = board.to_input(origin, col: coords[:origin_col], row: coords[:origin_row])
     future = board.clone
+    p "fp #{origin}, #{dest}, #{future.piece(origin)&.class&.name}, #{future.piece(dest)&.class&.name}"
     future.move_piece(origin, dest, **coords)
+    p "fp2 #{origin}, #{dest}, #{future.piece(origin)&.class&.name}, #{future.piece(dest)&.class&.name}"
+    p "fp3 #{origin}, #{dest}, #{board.piece(origin)&.class&.name}, #{board.piece(dest)&.class&.name}"
     !check?(future, board.piece(origin).color)
   end
 
