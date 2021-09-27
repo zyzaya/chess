@@ -52,17 +52,17 @@ class ChessRule
     true
   end
 
-  def stalemate?(board)
+  def stalemate?(board, color)
     return false if check?(board, :white) || check?(board, :black)
 
     board.each_cell do |piece, col, row|
-      next if piece.nil?
+      next if piece.nil? || !piece.color.eql?(color)
 
       piece.valid.each do |v|
-        return false if
-          valid?(board, piece.color,
-                 origin_col: col, origin_row: row,
-                 dest_col: col + v[0], dest_row: row + v[1])
+        if valid?(board, piece.color, origin_col: col, origin_row: row, dest_col: col + v[0], dest_row: row + v[1])
+          p "#{piece.class.name}, #{col}, #{row}"
+          return false
+        end
       end
     end
     true

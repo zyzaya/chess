@@ -375,41 +375,48 @@ describe ChessRule do
 
   describe '#stalemate?' do
     let(:board) { instance_double('ChessBoard') }
-    let(:piece) { instance_double('ChessPiece', valid: [0, 1], color: :white) }
+    let(:white_piece) { instance_double('ChessPiece', valid: [0, 1], color: :white) }
+    let(:black_piece) { instance_double('ChessPiece', valid: [0, 1], color: :black) }
 
     before do
       allow(chess_rule).to receive(:check?).and_return(false)
       allow(board).to receive(:each_cell)
-        .and_yield(piece, 0, 0)
-        .and_yield(piece, 0, 1)
+        .and_yield(white_piece, 0, 0)
+        .and_yield(black_piece, 0, 1)
         .and_yield(nil, 0, 2)
     end
 
     it 'returns false if white is in check' do
       allow(chess_rule).to receive(:valid?).and_return(true)
       allow(chess_rule).to receive(:check?).with(board, :white).and_return(true)
-      result = chess_rule.stalemate?(board)
+      result = chess_rule.stalemate?(board, :white)
       expect(result).to eql(false)
     end
 
     it 'returns false if black is in check' do
       allow(chess_rule).to receive(:valid?).and_return(true)
       allow(chess_rule).to receive(:check?).with(board, :black).and_return(true)
-      result = chess_rule.stalemate?(board)
+      result = chess_rule.stalemate?(board, :white)
       expect(result).to eql(false)
     end
 
     it 'returns false if there is at least one legal move available' do
       allow(chess_rule).to receive(:valid?).and_return(false, true)
       expect(chess_rule).to receive(:valid?).exactly(2).times
-      result = chess_rule.stalemate?(board)
+      result = chess_rule.stalemate?(board, :white)
       expect(result).to eql(false)
     end
 
     it 'returns true if there is no check and no legal moves available' do
       allow(chess_rule).to receive(:valid?).and_return(false)
-      result = chess_rule.stalemate?(board)
+      result = chess_rule.stalemate?(board, :white)
       expect(result).to eql(true)
+    end
+
+    it 'returns false if the white is in stalemate but the given color (black) is not' do
+      allow(chess_rule).to receive(:valid?).and_return(false, true)
+      result = chess_rule.stalemate?(board, :black)
+      expect(result).to eql(false)
     end
   end
 
