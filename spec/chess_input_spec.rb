@@ -83,4 +83,24 @@ describe ChessInput do
       expect(result).to be(true)
     end
   end
+
+  describe '#replay' do
+    it 'calls get with %[y yes n no] as valid values' do
+      allow(input).to receive(:get)
+      expect(input).to receive(:get).with(anything, anything, %w[y yes n no])
+      input.replay
+    end
+
+    it 'returns true when given input is y or yes' do
+      allow(input).to receive(:get).and_return('yes')
+      result = input.replay
+      expect(result).to eql(true)
+    end
+
+    it 'returns false when the given input is n or no' do
+      allow(input).to receive(:get).and_return('n')
+      result = input.replay
+      expect(result).to eql(false)
+    end
+  end
 end

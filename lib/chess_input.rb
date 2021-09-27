@@ -20,6 +20,8 @@ class ChessInput
   end
 
   def replay
+    result = get('play again?', 'Invalid input.', %w[y yes n no])
+    %w[y yes].include?(result)
   end
 
   def valid_turn_input?(board, rule, color, val)
