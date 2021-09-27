@@ -5,6 +5,10 @@ require 'chess_game'
 describe ChessGame do
   let(:game) { ChessGame.new }
 
+  before do
+    allow(game.input).to receive(:replay).and_return(false)
+  end
+
   describe '#initialize' do
     it 'initializes a ChessRule' do
       expect(game.rule).to be_instance_of(ChessRule)
@@ -26,6 +30,7 @@ describe ChessGame do
     before do
       allow(game).to receive(:next_turn).with(:white).and_return(:black)
       allow(game).to receive(:next_turn).with(:black).and_return(:white)
+      allow(game).to receive(:end_game)
       allow(game.input).to receive(:turn).and_return(move)
       allow(game.board).to receive(:draw).and_return(draw)
       allow(game.rule).to receive(:check?).and_return(false)
