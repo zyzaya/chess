@@ -261,40 +261,28 @@ describe ChessRule do
     before do
       allow(king).to receive(:instance_of?).with(King).and_return(true)
       allow(not_king).to receive(:instance_of?).with(King).and_return(false)
+      allow(board).to receive(:each_cell)
+        .and_yield(nil, 0, 1)
+        .and_yield(not_king, 0, 2)
+        .and_yield(king, 0, 3)
+      allow(board).to receive(:to_input)
     end
 
-    it 'checks each cell' do
-      allow(board).to receive(:piece).and_return(nil)
-      expect(board).to receive(:piece).exactly(64).times
+    it 'checks pieces if they are the right color' do
+      expect(king).to receive(:color).once
       chess_rule.find_king(board, :white)
     end
 
-    it 'does not return if a cell the king of the wrong color' do
-      allow(board).to receive(:piece).and_return(nil, nil, nil, king)
-      expect(board).to receive(:piece).exactly(64).times
-      chess_rule.find_king(board, :black)
-    end
-
-    it 'returns when the cell is the king of the correct color' do
-      allow(board).to receive(:to_input)
-      allow(board).to receive(:piece).and_return(nil, nil, nil, king)
-      expect(board).to receive(:piece).exactly(4).times
+    it 'checks pieces if they are an instance of King' do
+      expect(not_king).to receive(:instance_of?).with(King).once
       chess_rule.find_king(board, :white)
     end
 
     it 'converts the call row to input format and returns it' do
       input = 'e8'
       allow(board).to receive(:to_input).and_return(input)
-      allow(board).to receive(:piece).and_return(nil, nil, nil, king)
       result = chess_rule.find_king(board, :white)
       expect(result).to eql(input)
-    end
-
-    it 'does not return if it finds the location of a non-king piece' do
-      allow(board).to receive(:to_input)
-      allow(board).to receive(:piece).and_return(nil, nil, not_king, nil)
-      expect(board).to receive(:piece).exactly(64).times
-      chess_rule.find_king(board, :white)
     end
   end
 
