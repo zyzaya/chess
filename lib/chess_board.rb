@@ -67,7 +67,7 @@ class ChessBoard
   def move_piece(origin = nil, dest = nil, **coord)
     origin = to_coords(origin, col: coord[:origin_col], row: coord[:origin_row])
     dest = to_coords(dest, col: coord[:dest_col], row: coord[:dest_row])
-    return if [on_board?(**origin), on_board?(**dest)].any?(&:nil?)
+    return unless on_board?(**origin) && on_board?(**dest)
 
     @board[dest[:col]][dest[:row]] = piece(**origin)
     @board[origin[:col]][origin[:row]] = nil

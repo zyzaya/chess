@@ -36,7 +36,20 @@ class DeadPositionBoard < ChessBoard
 end
 
 class CheckmateBoard < ChessBoard
-
+  def reset_board
+    board = Array.new(8).map { Array.new(8, nil) }
+    board[7][0] = King.new(:black)
+    board[7][0].moved = true
+    board[7][4] = Rook.new(:black, :right)
+    board[7][4].moved = true
+    board[4][7] = Queen.new(:black)
+    board[6][0] = Queen.new(:white)
+    board[5][0] = Rook.new(:white, :right)
+    board[5][0].moved = true
+    board[6][1] = Pawn.new(:white)
+    board[5][1] = Pawn.new(:white)
+    board
+  end
 end
 
 describe 'end of game conditions' do
@@ -56,6 +69,15 @@ describe 'end of game conditions' do
     it 'is in dead position' do
       puts dead.draw
       result = rule.dead_position?(dead)
+      expect(result).to eql(true)
+    end
+  end
+
+  describe 'checkmate' do
+    let(:checkmate) { CheckmateBoard.new }
+    it 'is in checkmate' do
+      puts checkmate.draw
+      result = rule.checkmate?(checkmate, :black)
       expect(result).to eql(true)
     end
   end

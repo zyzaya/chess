@@ -203,6 +203,14 @@ describe ChessBoard do
       result = board[1][0]
       expect(result).to eql(nil)
     end
+
+    it 'does nothing if origin or dest is off the board' do
+      allow(chess_board).to receive(:on_board?).and_return(false)
+      board = chess_board.instance_variable_get(:@board)
+      chess_board.move_piece(origin, dest)
+      result = board[1][0]
+      expect(result).not_to eql(nil)
+    end
   end
 
   describe '#to_input' do
