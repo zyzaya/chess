@@ -37,5 +37,6 @@ class ChessGame
   end
 
   def next_turn(current)
+    current.eql?(:white) ? :black : :white
   end
 end

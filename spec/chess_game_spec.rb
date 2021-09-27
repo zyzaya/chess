@@ -107,9 +107,9 @@ describe ChessGame do
       expect(result).to eql(:white)
     end
 
-    it 'returns white when black is given' do
-      result = game.next_turn(:black)
-      expect(result).to eql(:white)
+    it 'returns black when white is given' do
+      result = game.next_turn(:white)
+      expect(result).to eql(:black)
     end
   end
 end
