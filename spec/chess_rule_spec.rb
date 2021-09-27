@@ -66,8 +66,19 @@ describe ChessRule do
       allow(board).to receive(:clone).and_return(future)
       allow(board).to receive(:piece).and_return(piece)
       allow(board).to receive(:to_input).with(origin, anything).and_return(origin)
+      allow(board).to receive(:to_input).with(dest, anything).and_return(dest)
       allow(future).to receive(:move_piece)
       allow(piece).to receive(:color).and_return(:white)
+    end
+
+    it 'converts origin to coords format' do
+      expect(board).to receive(:to_input).with(origin, col: nil, row: nil).at_least(1)
+      chess_rule.removes_check?(board, origin, dest)
+    end
+
+    it 'converts dest to coords format' do
+      expect(board).to receive(:to_input).with(dest, col: nil, row: nil)
+      chess_rule.removes_check?(board, origin, dest)
     end
 
     it 'clones the original board' do
