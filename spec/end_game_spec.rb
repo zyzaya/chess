@@ -37,7 +37,7 @@ describe 'end of game conditions' do
     let(:stalemate) { StalemateBoard.new }
     it 'is in stalemate' do
       puts stalemate.draw
-      result = rule.stalemate?(stalemate)
+      result = rule.stalemate?(stalemate, :black)
       expect(result).to eql(true)
     end
   end
