@@ -32,7 +32,7 @@ class ChessRule
 
   def valid_transition?(board, origin = nil, dest = nil, **coords)
     origin = board.to_input(origin, col: coords[:origin_col], row: coords[:origin_row])
-    dest = board.to_input(dest, col: coords[:dest_col], row: coords[:dest_col])
+    dest = board.to_input(dest, col: coords[:dest_col], row: coords[:dest_row])
 
     taken_cell?(board, origin) &&
       !taken_cell?(board, dest) &&
@@ -71,7 +71,6 @@ class ChessRule
 
       piece.valid.each do |v|
         if valid?(board, piece.color, origin_col: col, origin_row: row, dest_col: col + v[0], dest_row: row + v[1])
-          p "#{piece.class.name}, #{col}, #{row}"
           return false
         end
       end
@@ -106,14 +105,19 @@ class ChessRule
   end
 
   def removes_check?(board, origin = nil, dest = nil, **coords)
+    return false unless valid_transition?(board, origin, dest, **coords)
+
     origin = board.to_input(origin, col: coords[:origin_col], row: coords[:origin_row])
     dest = board.to_input(dest, col: coords[:dest_col], row: coords[:dest_row])
-    # do not move unless origin/dest are valid piece move is valid, and not obstructed
-    # aka invalid move return false
+    piece = board.piece(origin)
+
+    return false unless
+      valid_piece_move?(board, piece, origin, dest) &&
+      !obstructed?(board, origin, dest)
+
     future = board.clone
     future.move_piece(origin, dest, **coords)
-    p "mp #{board.piece(origin)&.class&.name} from #{origin} to #{dest}"
-    !check?(future, board.piece(origin).color)
+    !check?(future, piece.color)
   end
 
   def valid_piece_move?(board, piece, origin = nil, dest = nil, **coords)
