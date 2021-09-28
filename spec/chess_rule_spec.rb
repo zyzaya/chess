@@ -54,6 +54,54 @@ describe ChessRule do
     end
   end
 
+  describe '#valid_transition?' do
+    let(:board) { instance_double('ChessBoard') }
+
+    origin = 'a5'
+    dest = 'a7'
+
+    before do
+      allow(board).to receive(:to_input).with(origin, col: nil, row: nil).and_return(origin)
+      allow(board).to receive(:to_input).with(dest, col: nil, row: nil).and_return(dest)
+      allow(board).to receive(:on_board?).with(dest).and_return(true)
+      allow(chess_rule).to receive(:taken_cell?).with(board, origin).and_return(true)
+      allow(chess_rule).to receive(:taken_cell?).with(board, dest).and_return(false)
+    end
+
+    it 'converts origin to input' do
+      expect(board).to receive(:to_input).with(origin, col: nil, row: nil)
+      chess_rule.valid_transition?(board, origin, dest)
+    end
+
+    it 'converts dest to input' do
+      expect(board).to receive(:to_input).with(dest, col: nil, row: nil)
+      chess_rule.valid_transition?(board, origin, dest)
+    end
+
+    it 'returns false if origin is not taken' do
+      allow(chess_rule).to receive(:taken_cell?).with(board, origin).and_return(false)
+      result = chess_rule.valid_transition?(board, origin, dest)
+      expect(result).to eql(false)
+    end
+
+    it 'returns false if dest is taken' do
+      allow(chess_rule).to receive(:taken_cell?).with(board, dest).and_return(true)
+      result = chess_rule.valid_transition?(board, origin, dest)
+      expect(result).to eql(false)
+    end
+
+    it 'returns false if dest is off board' do
+      allow(board).to receive(:on_board?).with(dest).and_return(false)
+      result = chess_rule.valid_transition?(board, origin, dest)
+      expect(result).to eql(false)
+    end
+
+    it 'returns true if origin is taken, dest is not taken, and dest is on the board' do
+      result = chess_rule.valid_transition?(board, origin, dest)
+      expect(result).to eql(true)
+    end
+  end
+
   describe '#removes_check?' do
     let(:board) { instance_double('ChessBoard') }
     let(:future) { instance_double('ChessBoard') }
