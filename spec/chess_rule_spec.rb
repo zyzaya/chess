@@ -17,12 +17,16 @@ describe ChessRule do
       allow(board).to receive(:piece).and_return(white_piece)
       allow(board).to receive(:to_input).with(origin, col: nil, row: nil).and_return(origin)
       allow(board).to receive(:to_input).with(dest, col: nil, row: nil).and_return(dest)
-      allow(board).to receive(:on_board?).and_return(true)
-      allow(chess_rule).to receive(:taken_cell?).with(board, origin).and_return(true)
-      allow(chess_rule).to receive(:taken_cell?).with(board, dest).and_return(false)
+      allow(chess_rule).to receive(:valid_transition?).and_return(true)
       allow(chess_rule).to receive(:valid_piece_move?).and_return(true)
       allow(chess_rule).to receive(:obstructed?).and_return(false)
       allow(chess_rule).to receive(:removes_check?).and_return(true)
+    end
+
+    it 'returns false if it is not a valid transition' do
+      allow(chess_rule).to receive(:valid_transition?).and_return(false)
+      result = chess_rule.valid?(board, :white, origin, dest)
+      expect(result).to eql(false)
     end
 
     it 'returns false if the origin is a different color' do
@@ -30,14 +34,14 @@ describe ChessRule do
       expect(result).to be(false)
     end
 
-    it 'returns false if origin is nil' do
-      allow(chess_rule).to receive(:taken_cell?).with(board, origin).and_return(false)
+    it 'returns false if the movement is not valid for the piece' do
+      allow(chess_rule).to receive(:valid_piece_move?).and_return(false)
       result = chess_rule.valid?(board, :white, origin, dest)
       expect(result).to be(false)
     end
 
-    it 'returns false if dest is not nil' do
-      allow(chess_rule).to receive(:taken_cell?).with(board, dest).and_return(true)
+    it 'returns false if the movement is obstructed' do
+      allow(chess_rule).to receive(:obstructed?).and_return(true)
       result = chess_rule.valid?(board, :white, origin, dest)
       expect(result).to be(false)
     end
@@ -46,11 +50,6 @@ describe ChessRule do
       allow(chess_rule).to receive(:removes_check?).and_return(false)
       result = chess_rule.valid?(board, :white, origin, dest)
       expect(result).to be(false)
-    end
-
-    it 'checks if dest is on board' do
-      expect(board).to receive(:on_board?).with(dest)
-      chess_rule.valid?(board, :white, origin, dest)
     end
   end
 

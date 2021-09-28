@@ -3,12 +3,14 @@
 # Validates chess movements
 class ChessRule
   def valid?(board, color, origin = nil, dest = nil, **coords)
+    return false unless valid_transition?(board, origin, dest, **coords)
+
     origin = board.to_input(origin, col: coords[:origin_col], row: coords[:origin_row])
     dest = board.to_input(dest, col: coords[:dest_col], row: coords[:dest_col])
-    return false unless
-      taken_cell?(board, origin) &&
-      !taken_cell?(board, dest) &&
-      board.on_board?(dest)
+    # return false unless
+    #   taken_cell?(board, origin) &&
+    #   !taken_cell?(board, dest) &&
+    #   board.on_board?(dest)
 
     origin_piece = board.piece(origin)
     # origin_piece.color.eql?(color) &&
