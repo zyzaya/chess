@@ -15,6 +15,21 @@ class ChessMove
   end
 
   def move_castle(board, rule, origin = nil, dest = nil, **coords)
+    return false unless
+      is_castle(board, rule, origin, dest, **coords) &&
+      can_castle(board, rule, origin, dest, **coords)
+    
+    castle(board, rule, origin, dest, **coords)
+    true
+  end
+
+  def is_castle(board, rule, origin = nil, dest = nil, **coords)
+  end
+
+  def can_castle(board, rule, origin = nil, dest = nil, **coords)
+  end
+
+  def castle(board, rule, origin = nil, dest = nil, **coords)
   end
 
   def move_pawn(board, rule, origin = nil, dest = nil, **coords)
