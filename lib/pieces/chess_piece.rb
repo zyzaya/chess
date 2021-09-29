@@ -3,6 +3,7 @@
 # A single piece of a Chess game
 class ChessPiece
   attr_reader :color, :valid
+  attr_accessor :moved
 
   def initialize(color)
     @color = color

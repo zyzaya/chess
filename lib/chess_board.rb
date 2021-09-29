@@ -69,6 +69,17 @@ class ChessBoard
     dest = to_coords(dest, col: coord[:dest_col], row: coord[:dest_row])
     return unless on_board?(**origin) && on_board?(**dest)
 
+    # if castling?(origin, dest, **coord)
+    #   move_castle(origin, dest, **coord)
+    # elsif en_passant?(origin, dest, **coord)
+    #   move_en_passant(origin, dest, **coord)
+    # else
+      # pawn stuff: add/remove capture
+      # move
+    # end
+    ## castling
+    ## en passant
+    ## pawn capture
     @board[dest[:col]][dest[:row]] = piece(**origin)
     @board[origin[:col]][origin[:row]] = nil
   end

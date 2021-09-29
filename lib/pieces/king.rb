@@ -4,8 +4,6 @@ require_relative 'chess_piece'
 
 # The King piece of a Chess game
 class King < ChessPiece
-  attr_reader :moved
-
   QUEENSIDE_CASTLE = [-3, 0].freeze
   KINGSIDE_CASTLE = [2, 0].freeze
 

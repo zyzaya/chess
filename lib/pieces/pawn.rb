@@ -4,8 +4,6 @@ require_relative 'chess_piece'
 
 # The Pawn piece in chess. u2659
 class Pawn < ChessPiece
-  attr_reader :moved
-  
   def initialize(color)
     super(color)
     @moved = false
