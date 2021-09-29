@@ -54,7 +54,6 @@ describe ChessMove do
   end
 
   describe '#move_castle' do
-    
     before do
       allow(chess_move).to receive(:is_castle).and_return(true)
       allow(chess_move).to receive(:can_castle).and_return(true)
@@ -75,6 +74,38 @@ describe ChessMove do
 
     it 'castles if the movement is a legal castle' do
       result = chess_move.move_castle(board, rule, origin, dest)
+      expect(result).to eql(true)
+    end
+  end
+
+  describe '#is_castle' do
+    let(:king) { instance_double('King', instance_of?: false) }
+    let(:not_king) { instance_double('ChessPiece', instance_of?: false) }
+    origin_coords = {col: 4, row: 0}
+    dest_coords = {col: 1, row: 0}
+    
+    before do
+      allow(board).to receive(:to_coords).with(origin, col: nil, row: nil).and_return(origin_coords)
+      allow(board).to receive(:to_coords).with(dest, col: nil, row: nil).and_return(dest_coords)
+      allow(board).to receive(:piece).and_return(king)
+      allow(king).to receive(:instance_of?).with(King).and_return(true)
+    end
+
+    it 'returns false if piece is not a king' do
+      allow(board).to receive(:piece).and_return(not_king)
+      result = chess_move.is_castle(board, origin, dest)
+      expect(result).to eql(false)
+    end
+
+    it 'returns false if the movement is not castling' do
+      not_castle = {col: 5, row: 1}
+      allow(board).to receive(:to_coords).with(dest, col: nil, row: nil).and_return(not_castle)
+      result = chess_move.is_castle(board, origin, dest)
+      expect(result).to eql(false)
+    end
+
+    it 'returns true if the the movemenet is castling' do
+      result = chess_move.is_castle(board, origin, dest)
       expect(result).to eql(true)
     end
   end

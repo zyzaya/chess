@@ -7,7 +7,7 @@ class ChessMove
     raise ArgumentError.new(
       "Expected a valid origin and destination, got #{origin}, #{dest}, #{coords}"
     ) unless rule.valid?(board, origin_piece&.color, dest, coords)
-    return if move_castle(board, rule, origin, dest, **coords)
+    return if move_castle(board, origin, dest, **coords)
 
     return if move_pawn(board, rule, origin, dest, **coords)
 
@@ -23,7 +23,15 @@ class ChessMove
     true
   end
 
-  def is_castle(board, rule, origin = nil, dest = nil, **coords)
+  def is_castle(board, origin = nil, dest = nil, **coords)
+    origin_coords = board.to_coords(origin, col: coords[:origin_col], row: coords[:origin_row])
+    origin_piece = board.piece(**origin_coords)
+    return false unless origin_piece.instance_of?(King)
+
+    dest_coords = board.to_coords(dest, col: coords[:dest_col], row: coords[:dest_row])
+    rel_col = dest_coords[:col] - origin_coords[:col]
+    rel_row = dest_coords[:row] - origin_coords[:row]
+    rel_row == 0 && [-3, 2].include?(rel_col)
   end
 
   def can_castle(board, rule, origin = nil, dest = nil, **coords)
