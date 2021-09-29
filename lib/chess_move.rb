@@ -7,13 +7,11 @@ class ChessMove
     raise ArgumentError.new(
       "Expected a valid origin and destination, got #{origin}, #{dest}, #{coords}"
     ) unless rule.valid?(board, origin_piece&.color, dest, coords)
-    # error if not a valid move
+    return if move_castle(board, rule, origin, dest, **coords)
 
-    # tries to castle
+    return if move_pawn(board, rule, origin, dest, **coords)
 
-    # tries to move a pawn
-
-    # generic move
+    generic_move(board, rule, origin, dest, **coords)
   end
 
   def move_castle(board, rule, origin = nil, dest = nil, **coords)
