@@ -167,6 +167,8 @@ describe ChessBoard do
   end
 
   describe '#move_piece' do
+    let(:piece) { instance_double('ChessPiece', instance_of?: false) }
+    let(:pawn) { instance_double('ChessPiece', instance_of?: false) }
     origin = 'b1'
     dest = 'c3'
     origin_coords = { col: 1, row: 0 }
@@ -179,6 +181,9 @@ describe ChessBoard do
       allow(chess_board).to receive(:to_coords).with(dest, empty_coords).and_return(dest_coords)
       allow(chess_board).to receive(:to_coords).with(nil, origin_coords).and_return(origin_coords)
       allow(chess_board).to receive(:to_coords).with(nil, dest_coords).and_return(dest_coords)
+      allow(chess_board).to receive(:move_castle).and_return(false)
+      allow(chess_board).to receive(:piece).with(**origin_coords).and_return(piece)
+      allow(pawn).to receive(:instance_of?).with(Pawn).and_return(true)
     end
 
     it 'converts to coords format' do
@@ -189,9 +194,30 @@ describe ChessBoard do
       chess_board.move_piece(**move)
     end
 
+    it 'tries to castle' do
+      expect(chess_board).to receive(:move_castle)
+      chess_board.move_piece(origin, dest)
+    end
+
+    it 'tries to move a pawn' do
+      expect(chess_board).to receive(:move_pawn)
+      chess_board.move_piece(origin, dest)
+    end
+
+    it 'returns if it successfully castles' do
+      allow(chess_board).to receive(:move_castle).and_return(true)
+      expect(chess_board).not_to receive(:piece)
+      chess_board.move_piece(origin, dest)
+    end
+
+    it 'returns if it moves a pawn' do
+      allow(chess_board).to receive(:move_pawn).and_return(true)
+      expect(chess_board).not_to receive(:piece)
+      chess_board.move_piece(origin, dest)
+    end
+
     it 'sets dest to the piece at origin' do
       board = chess_board.instance_variable_get(:@board)
-      piece = board[1][0]
       chess_board.move_piece(origin, dest)
       result = board[2][2]
       expect(result).to eql(piece)

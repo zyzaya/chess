@@ -65,23 +65,22 @@ class ChessBoard
   end
 
   def move_piece(origin = nil, dest = nil, **coord)
-    origin = to_coords(origin, col: coord[:origin_col], row: coord[:origin_row])
-    dest = to_coords(dest, col: coord[:dest_col], row: coord[:dest_row])
-    return unless on_board?(**origin) && on_board?(**dest)
+    origin_coords = to_coords(origin, col: coord[:origin_col], row: coord[:origin_row])
+    dest_coords = to_coords(dest, col: coord[:dest_col], row: coord[:dest_row])
+    return unless on_board?(**origin_coords) && on_board?(**dest_coords)
 
-    # if castling?(origin, dest, **coord)
-    #   move_castle(origin, dest, **coord)
-    # elsif en_passant?(origin, dest, **coord)
-    #   move_en_passant(origin, dest, **coord)
-    # else
-      # pawn stuff: add/remove capture
-      # move
-    # end
-    ## castling
-    ## en passant
-    ## pawn capture
-    @board[dest[:col]][dest[:row]] = piece(**origin)
-    @board[origin[:col]][origin[:row]] = nil
+    return if move_castle(origin, dest, **coord)
+
+    return if move_pawn(origin, dest, **coord)
+
+    @board[dest_coords[:col]][dest_coords[:row]] = piece(**origin_coords)
+    @board[origin_coords[:col]][origin_coords[:row]] = nil
+  end
+
+  def move_castle(origin = nil, dest = nil, **coord)
+  end
+
+  def move_pawn(origin = nil, dest = nil, **coord)
   end
 
   def piece(cell = nil, **coord)
