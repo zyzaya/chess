@@ -109,4 +109,7 @@ describe ChessMove do
       expect(result).to eql(true)
     end
   end
+
+   describe '#can_castle' do
+   end
 end

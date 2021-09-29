@@ -35,6 +35,10 @@ class ChessMove
   end
 
   def can_castle(board, rule, origin = nil, dest = nil, **coords)
+    # king has not moved
+    # rook has not moved
+    # origin -> rook is not obstructed
+    # none of the pieces from origin to dest are in check
   end
 
   def castle(board, rule, origin = nil, dest = nil, **coords)
