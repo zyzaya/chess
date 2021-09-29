@@ -73,8 +73,7 @@ class ChessBoard
 
     return if move_pawn(origin, dest, **coord)
 
-    # @board[dest_coords[:col]][dest_coords[:row]] = piece(**origin_coords)
-    # @board[origin_coords[:col]][origin_coords[:row]] = nil
+    force_move(origin, dest, **coord)
   end
 
   def move_castle(origin = nil, dest = nil, **coord)
