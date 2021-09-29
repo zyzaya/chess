@@ -216,26 +216,43 @@ describe ChessBoard do
       chess_board.move_piece(origin, dest)
     end
 
-    it 'sets dest to the piece at origin' do
-      board = chess_board.instance_variable_get(:@board)
-      chess_board.move_piece(origin, dest)
-      result = board[2][2]
-      expect(result).to eql(piece)
-    end
-
-    it 'sets the piece at origin to nil' do
-      board = chess_board.instance_variable_get(:@board)
-      chess_board.move_piece(origin, dest)
-      result = board[1][0]
-      expect(result).to eql(nil)
-    end
-
     it 'does nothing if origin or dest is off the board' do
       allow(chess_board).to receive(:on_board?).and_return(false)
       board = chess_board.instance_variable_get(:@board)
       chess_board.move_piece(origin, dest)
       result = board[1][0]
       expect(result).not_to eql(nil)
+    end
+  end
+
+  describe '#force_move' do
+    let(:piece) { instance_double('ChessPiece', instance_of?: false) }
+    origin = 'b1'
+    dest = 'c3'
+    origin_coords = { col: 1, row: 0 }
+    dest_coords = { col: 2, row: 2 }
+    empty_coords = { col: nil, row: nil }
+
+    before do
+      allow(chess_board).to receive(:to_coords).with(origin, empty_coords).and_return(origin_coords)
+      allow(chess_board).to receive(:to_coords).with(dest, empty_coords).and_return(dest_coords)
+      allow(chess_board).to receive(:to_coords).with(nil, origin_coords).and_return(origin_coords)
+      allow(chess_board).to receive(:to_coords).with(nil, dest_coords).and_return(dest_coords)
+      allow(chess_board).to receive(:piece).and_return(piece)
+    end
+
+    it 'sets dest to the piece at origin' do
+      board = chess_board.instance_variable_get(:@board)
+      chess_board.force_move(origin, dest)
+      result = board[2][2]
+      expect(result).to eql(piece)
+    end
+
+    it 'sets the piece at origin to nil' do
+      board = chess_board.instance_variable_get(:@board)
+      chess_board.force_move(origin, dest)
+      result = board[1][0]
+      expect(result).to eql(nil)
     end
   end
 

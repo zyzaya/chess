@@ -73,14 +73,29 @@ class ChessBoard
 
     return if move_pawn(origin, dest, **coord)
 
-    @board[dest_coords[:col]][dest_coords[:row]] = piece(**origin_coords)
-    @board[origin_coords[:col]][origin_coords[:row]] = nil
+    # @board[dest_coords[:col]][dest_coords[:row]] = piece(**origin_coords)
+    # @board[origin_coords[:col]][origin_coords[:row]] = nil
   end
 
   def move_castle(origin = nil, dest = nil, **coord)
+    # origin = to_coords(origin, col: coord[:origin_col], row: coord[:origin_row])
+    # dest = to_coords(dest, col: coord[:dest_col], row: coord[:dest_row])
+
+    # origin_piece = piece(origin)
+    # return false unless piece.instance_of?(King)
+
+    # retu
   end
 
   def move_pawn(origin = nil, dest = nil, **coord)
+  end
+
+  def force_move(origin = nil, dest = nil, **coord)
+    origin_coords = to_coords(origin, col: coord[:origin_col], row: coord[:origin_row])
+    dest_coords = to_coords(dest, col: coord[:dest_col], row: coord[:dest_row])
+
+    @board[dest_coords[:col]][dest_coords[:row]] = piece(**origin_coords)
+    @board[origin_coords[:col]][origin_coords[:row]] = nil
   end
 
   def piece(cell = nil, **coord)
