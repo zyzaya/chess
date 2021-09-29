@@ -228,6 +228,21 @@ describe ChessBoard do
     end
   end
 
+  describe '#move_castle' do
+    it 'returns false if the move is not castling' do
+      
+    end
+
+    it 'returns false if the origin piece is not a king' do
+      
+    end
+
+    it 'returns false if the origin piece has moved' do
+      
+    end
+    
+  end
+
   describe '#force_move' do
     let(:piece) { instance_double('ChessPiece', instance_of?: false) }
     origin = 'b1'

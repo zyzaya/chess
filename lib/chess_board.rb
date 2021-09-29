@@ -77,13 +77,22 @@ class ChessBoard
   end
 
   def move_castle(origin = nil, dest = nil, **coord)
-    # origin = to_coords(origin, col: coord[:origin_col], row: coord[:origin_row])
-    # dest = to_coords(dest, col: coord[:dest_col], row: coord[:dest_row])
+    return false unless is_castle(origin, dest, **coord)
 
-    # origin_piece = piece(origin)
-    # return false unless piece.instance_of?(King)
+    origin = to_coords(origin, col: coord[:origin_col], row: coord[:origin_row])
 
-    # retu
+    origin_piece = piece(origin)
+    return false unless origin_piece.instance_of?(King) && !origin_piece.moved
+
+    force_move(origin, dest, **coord)
+    move_rook_for_castle(origin, dest, **coord)
+    true
+  end
+
+  def is_castle(origin = nil, dest = nil, **coord)
+  end
+
+  def move_rook_for_castle(origin = nil, dest = nil, **coord)
   end
 
   def move_pawn(origin = nil, dest = nil, **coord)
