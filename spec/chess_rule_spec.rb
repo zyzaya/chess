@@ -104,18 +104,21 @@ describe ChessRule do
   describe '#removes_check?' do
     let(:board) { instance_double('ChessBoard') }
     let(:future) { instance_double('ChessBoard') }
-    let(:piece) { instance_double('ChessPiece') }
+    let(:piece) { instance_double('ChessPiece', color: :white) }
     origin = 'b8'
     dest = 'c6'
 
     before do
       allow(chess_rule).to receive(:check?).and_return(true)
+      allow(chess_rule).to receive(:valid_transition?).and_return(true)
+      allow(chess_rule).to receive(:valid_piece_move?).and_return(true)
+      allow(chess_rule).to receive(:obstructed?).and_return(false)
+      allow(chess_rule).to receive(:check?).with(future, :white).and_return(false)
       allow(board).to receive(:clone).and_return(future)
       allow(board).to receive(:piece).and_return(piece)
       allow(board).to receive(:to_input).with(origin, anything).and_return(origin)
       allow(board).to receive(:to_input).with(dest, anything).and_return(dest)
       allow(future).to receive(:move_piece)
-      allow(piece).to receive(:color).and_return(:white)
     end
 
     it 'converts origin to coords format' do
@@ -130,7 +133,25 @@ describe ChessRule do
 
     it 'clones the original board' do
       expect(board).to receive(:clone)
-      chess_rule.removes_check?(board, 'b8', 'c6')
+      chess_rule.removes_check?(board, origin, dest)
+    end
+
+    it 'returns false if the move is not a valid transition' do
+      allow(chess_rule).to receive(:valid_transition?).and_return(false)
+      result = chess_rule.removes_check?(board, origin, dest)
+      expect(result).to eql(false)
+    end
+
+    it 'returns false if the move of the piece is not legal' do
+      allow(chess_rule).to receive(:valid_piece_move?).and_return(false)
+      result = chess_rule.removes_check?(board, origin, dest)
+      expect(result).to eql(false)
+    end
+
+    it 'returns false if the move is obstructed' do
+      allow(chess_rule).to receive(:obstructed?).and_return(true)
+      result = chess_rule.removes_check?(board, origin, dest)
+      expect(result).to eql(false)
     end
 
     it 'moves piece from origin to dest on the future board' do
@@ -144,6 +165,11 @@ describe ChessRule do
       expect(chess_rule).to receive(:check?).with(eql(future), anything)
       expect(chess_rule).not_to receive(:check?).with(eql(board), anything)
       chess_rule.removes_check?(board, 'b8', 'c6')
+    end
+
+    it 'returns true if the move is legal and removes check' do
+      result = chess_rule.removes_check?(board, origin, dest)
+      expect(result).to eql(true)
     end
   end
 
