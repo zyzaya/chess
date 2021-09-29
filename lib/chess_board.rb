@@ -69,39 +69,6 @@ class ChessBoard
     dest_coords = to_coords(dest, col: coord[:dest_col], row: coord[:dest_row])
     return unless on_board?(**origin_coords) && on_board?(**dest_coords)
 
-    return if move_castle(origin, dest, **coord)
-
-    return if move_pawn(origin, dest, **coord)
-
-    force_move(origin, dest, **coord)
-  end
-
-  def move_castle(origin = nil, dest = nil, **coord)
-    return false unless is_castle(origin, dest, **coord)
-
-    origin = to_coords(origin, col: coord[:origin_col], row: coord[:origin_row])
-
-    origin_piece = piece(origin)
-    return false unless origin_piece.instance_of?(King) && !origin_piece.moved
-
-    force_move(origin, dest, **coord)
-    move_rook_for_castle(origin, dest, **coord)
-    true
-  end
-
-  def is_castle(origin = nil, dest = nil, **coord)
-  end
-
-  def move_rook_for_castle(origin = nil, dest = nil, **coord)
-  end
-
-  def move_pawn(origin = nil, dest = nil, **coord)
-  end
-
-  def force_move(origin = nil, dest = nil, **coord)
-    origin_coords = to_coords(origin, col: coord[:origin_col], row: coord[:origin_row])
-    dest_coords = to_coords(dest, col: coord[:dest_col], row: coord[:dest_row])
-
     @board[dest_coords[:col]][dest_coords[:row]] = piece(**origin_coords)
     @board[origin_coords[:col]][origin_coords[:row]] = nil
   end
