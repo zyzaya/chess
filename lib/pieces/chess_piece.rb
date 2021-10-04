@@ -16,16 +16,16 @@ class ChessPiece
     original.valid.each { |v| @valid << v.clone }
   end
 
-  def valid?(col, row)
-    @valid.include?([col, row])
+  def valid?(cell)
+    @valid.include?(cell)
   end
 
-  def add(col, row)
-    @valid << [col, row] unless @valid.include?([col, row])
+  def add(cell)
+    @valid << cell unless valid?(cell)
   end
 
-  def remove(col, row)
-    @valid.delete([col, row])
+  def remove(cell)
+    @valid.delete(cell)
   end
 
   def draw
