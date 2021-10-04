@@ -168,28 +168,13 @@ describe ChessBoard do
 
   describe '#move_piece' do
     let(:piece) { instance_double('ChessPiece', instance_of?: false) }
-    # let(:pawn) { instance_double('ChessPiece', instance_of?: false) }
-    origin = 'b1'
-    dest = 'c3'
-    origin_coords = { col: 1, row: 0 }
-    dest_coords = { col: 2, row: 2 }
-    empty_coords = { col: nil, row: nil }
+    let(:origin) { instance_double('Cell', col: 1, row: 0) }
+    let(:dest) { instance_double('Cell', col: 2, row: 2) }
+    let(:empty) { instance_double('Cell', col: nil, row: nil) }
 
     before do
       allow(chess_board).to receive(:on_board?).and_return(true)
-      allow(chess_board).to receive(:to_coords).with(origin, empty_coords).and_return(origin_coords)
-      allow(chess_board).to receive(:to_coords).with(dest, empty_coords).and_return(dest_coords)
-      allow(chess_board).to receive(:to_coords).with(nil, origin_coords).and_return(origin_coords)
-      allow(chess_board).to receive(:to_coords).with(nil, dest_coords).and_return(dest_coords)
       allow(chess_board).to receive(:piece).and_return(piece)
-    end
-
-    it 'converts to coords format' do
-      move = { origin_col: 1, origin_row: 0, dest_col: 2, dest_row: 2 }
-      allow(chess_board).to receive(:piece)
-      expect(chess_board).to receive(:to_coords).once.with(nil, origin_coords)
-      expect(chess_board).to receive(:to_coords).with(nil, dest_coords).once
-      chess_board.move_piece(**move)
     end
 
     it 'does nothing if origin or dest is off the board' do
