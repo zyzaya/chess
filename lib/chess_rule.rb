@@ -114,11 +114,11 @@ class ChessRule
     !check?(future, piece.color)
   end
 
-  def valid_piece_move?(board, piece, origin = nil, dest = nil, **coords)
-    origin = board.to_coords(origin, col: coords[:origin_col], row: coords[:origin_row])
-    dest = board.to_coords(dest, col: coords[:dest_col], row: coords[:dest_col])    
-    rel_col = dest[:col] - origin[:col]
-    rel_row = dest[:row] - origin[:row]
+  def valid_piece_move?(piece, origin, dest)
+    return false if [origin.input, dest.input].any?(&:nil?)
+
+    rel_col = dest.col - origin.col
+    rel_row = dest.row - origin.row
     piece.valid?(rel_col, rel_row)
   end
 

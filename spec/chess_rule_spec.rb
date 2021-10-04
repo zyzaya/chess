@@ -200,23 +200,23 @@ describe ChessRule do
 
   describe '#valid_piece_move?' do
     let(:piece) { instance_double('ChessPiece') }
-    let(:board) { instance_double('ChessBoard') }
-    origin = 'a7'
-    dest = 'a4'
-
-    before do
-      allow(board).to receive(:to_coords).with(origin, anything).and_return({ col: 0, row: 6 })
-      allow(board).to receive(:to_coords).with(dest, anything).and_return({ col: 0, row: 3 })
-    end
+    let(:origin) { instance_double('Cell', col: 0, row: 6, input: 'a7') }
+    let(:dest) { instance_double('Cell', col: 0, row: 3, input: 'a4') }
+    let(:invalid) { instance_double('Cell', col: 0, row: 3, input: nil) }
 
     it 'calls piece#valid? with the difference between the origin and destination column' do
       expect(piece).to receive(:valid?).with(0, anything)
-      chess_rule.valid_piece_move?(board, piece, origin, dest)
+      chess_rule.valid_piece_move?(piece, origin, dest)
     end
 
     it 'calls piece#valid? with the difference between the origin and destination column' do
       expect(piece).to receive(:valid?).with(anything, -3)
-      chess_rule.valid_piece_move?(board, piece, origin, dest)
+      chess_rule.valid_piece_move?(piece, origin, dest)
+    end
+
+    it 'returns false if any row or column is nil' do
+      result = chess_rule.valid_piece_move?(piece, invalid, dest)
+      expect(result).to eql(false)
     end
   end
 
