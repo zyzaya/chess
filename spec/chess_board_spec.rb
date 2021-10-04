@@ -241,17 +241,10 @@ describe ChessBoard do
 
     it 'does a deep copy of board' do
       clone = chess_board.clone
-      original = []
-      result = []
-      0.upto(7) do |col|
-        0.upto(7) do |row|
-          original << chess_board.piece(col: col, row: row)
-          result << clone.piece(col: col, row: row)
-        end
+      chess_board.each_cell do |piece, cell|
+        result = clone.piece(cell)
+        expect(result.class.name).to eq(piece.class.name)
       end
-      expect(result.each_with_index.none? do |v, i|
-        !v.nil? && v.equal?(original[i])
-      end).to eql(true)
     end
   end
 

@@ -22,14 +22,13 @@ class ChessRule
     # p "color: #{color}, from #{origin} to #{dest}"
     # p "check?: #{check?(board, color)}"
     return false unless origin_piece.color.eql?(color)
-    # p "is correct color, #{board.piece(col: 0, row: 0)&.class&.name}"
+    p 'is correct color'
     return false unless valid_piece_move?(origin_piece, origin, dest)
-    # p "is valid piece move, #{board.piece(col: 0, row: 0)&.class&.name}"
+    p 'is valid piece move'
     return false if obstructed?(board, origin, dest)
-    # p "is not obstructed, #{board.piece(col: 0, row: 0)&.class&.name}"
+    p 'is not obstructed'
     return false unless removes_check?(board, origin, dest)
-
-    # p "removes check, #{board.piece(col: 0, row: 0)&.class&.name}"
+    p 'removes check'
     true
   end
 
@@ -71,7 +70,10 @@ class ChessRule
 
       piece.valid.each do |v|
         dest.coords(cell.col + v.col, cell.row + v.row)
-        return false if valid?(board, piece.color, cell, dest)
+        if valid?(board, piece.color, cell, dest)
+          p "#{cell.input}, #{dest.input}"
+          return false
+        end
       end
     end
     true

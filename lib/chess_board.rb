@@ -17,9 +17,11 @@ class ChessBoard
   def initialize_copy(original)
     super
     @board = Array.new(8).map { Array.new(8, nil) }
+    cell = Cell.new(col: 0, row: 0)
     0.upto(7) do |col|
       0.upto(7) do |row|
-        @board[col][row] = original.piece(col: col, row: row).clone
+        cell.coords(col, row)
+        @board[col][row] = original.piece(cell).clone
       end
     end
   end
