@@ -101,19 +101,16 @@ class ChessRule
     end
   end
 
-  def removes_check?(board, origin = nil, dest = nil, **coords)
-    return false unless valid_transition?(board, origin, dest, **coords)
+  def removes_check?(board, origin, dest)
+    return false unless valid_transition?(board, origin, dest)
 
-    origin = board.to_input(origin, col: coords[:origin_col], row: coords[:origin_row])
-    dest = board.to_input(dest, col: coords[:dest_col], row: coords[:dest_row])
     piece = board.piece(origin)
-
     return false unless
       valid_piece_move?(board, piece, origin, dest) &&
       !obstructed?(board, origin, dest)
 
     future = board.clone
-    future.move_piece(origin, dest, **coords)
+    future.move_piece(origin, dest)
     !check?(future, piece.color)
   end
 

@@ -90,8 +90,8 @@ describe ChessRule do
     let(:board) { instance_double('ChessBoard') }
     let(:future) { instance_double('ChessBoard') }
     let(:piece) { instance_double('ChessPiece', color: :white) }
-    origin = 'b8'
-    dest = 'c6'
+    let(:origin) { instance_double('Cell', col: 1, row: 7) }
+    let(:dest) { instance_double('Cell', col: 2, row: 5) }
 
     before do
       allow(chess_rule).to receive(:check?).and_return(true)
@@ -101,19 +101,7 @@ describe ChessRule do
       allow(chess_rule).to receive(:check?).with(future, :white).and_return(false)
       allow(board).to receive(:clone).and_return(future)
       allow(board).to receive(:piece).and_return(piece)
-      allow(board).to receive(:to_input).with(origin, anything).and_return(origin)
-      allow(board).to receive(:to_input).with(dest, anything).and_return(dest)
       allow(future).to receive(:move_piece)
-    end
-
-    it 'converts origin to coords format' do
-      expect(board).to receive(:to_input).with(origin, col: nil, row: nil).at_least(1)
-      chess_rule.removes_check?(board, origin, dest)
-    end
-
-    it 'converts dest to coords format' do
-      expect(board).to receive(:to_input).with(dest, col: nil, row: nil)
-      chess_rule.removes_check?(board, origin, dest)
     end
 
     it 'clones the original board' do
@@ -140,8 +128,6 @@ describe ChessRule do
     end
 
     it 'moves piece from origin to dest on the future board' do
-      origin = 'b8'
-      dest = 'c6'
       expect(future).to receive(:move_piece).with(origin, dest)
       chess_rule.removes_check?(board, origin, dest)
     end
@@ -356,7 +342,6 @@ describe ChessRule do
     let(:white_piece) { instance_double('ChessPiece', valid: [cell, cell], color: :white) }
     let(:black_piece) { instance_double('ChessPiece', valid: [cell, cell], color: :black) }
     let(:king) { instance_double('King', color: :white) }
-
 
     before do
       allow(chess_rule).to receive(:removes_check?).and_return(true)
