@@ -89,9 +89,11 @@ class ChessBoard
   end
 
   def each_cell
+    cell = Cell.new('a1')
     0.upto(@board.length - 1) do |col|
       0.upto(@board[col].length - 1) do |row|
-        yield(piece(col: col, row: row), col, row)
+        cell.coords(col, row)
+        yield(piece(cell), cell)
       end
     end
   end

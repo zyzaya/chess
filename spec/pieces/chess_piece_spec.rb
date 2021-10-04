@@ -15,29 +15,29 @@ describe ChessPiece do
 
   describe '#valid?' do
     it 'returns false when the given value is not valid' do
-      result = piece.valid?(cell)
+      result = piece.valid?(cell.col, cell.row)
       expect(result).to be(false)
     end
 
     it 'returns true when the given value is valid' do
-      piece.add(cell)
-      result = piece.valid?(cell)
+      piece.add(cell.col, cell.row)
+      result = piece.valid?(cell.col, cell.row)
       expect(result).to be(true)
     end
   end
 
   describe '#remove' do
     it 'removes an existing relative cell to the valid moveset' do
-      piece.add(cell)
-      piece.remove(cell)
-      result = piece.valid?(cell)
+      piece.add(cell.col, cell.row)
+      piece.remove(cell.col, cell.row)
+      result = piece.valid?(cell.col, cell.row)
       expect(result).to be(false)
     end
   end
 
   describe '#clone' do
     before do
-      piece.add(cell)
+      piece.add(cell.col, cell.row)
     end
 
     it 'creates a new object' do

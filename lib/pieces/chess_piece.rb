@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative '../cell'
+
 # A single piece of a Chess game
 class ChessPiece
   attr_reader :color, :valid
@@ -16,16 +18,16 @@ class ChessPiece
     original.valid.each { |v| @valid << v.clone }
   end
 
-  def valid?(cell)
-    @valid.include?(cell)
+  def valid?(col, row)
+    @valid.include?(Cell.new(col: col, row: row))
   end
 
-  def add(cell)
-    @valid << cell unless valid?(cell)
+  def add(col, row)
+    @valid << Cell.new(col: col, row: row) unless valid?(col, row)
   end
 
-  def remove(cell)
-    @valid.delete(cell)
+  def remove(col, row)
+    @valid.delete(Cell.new(col: col, row: row))
   end
 
   def draw
