@@ -170,8 +170,8 @@ describe ChessRule do
     let(:board) { instance_double('ChessBoard') }
     let(:piece) { instance_double('ChessPiece') }
     let(:knight) { instance_double('Knight') }
-    origin = 'h1'
-    dest = 'h3'
+    let(:origin) { instance_double('Cell') }
+    let(:dest) { instance_double('Cell') }
 
     before do
       allow(piece).to receive(:instance_of?).with(Knight).and_return(false)

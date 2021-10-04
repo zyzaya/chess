@@ -128,10 +128,10 @@ class ChessRule
     !board.piece(cell).nil?
   end
 
-  def obstructed?(board, origin = nil, dest = nil, **coords)
+  def obstructed?(board, origin, dest)
     return false if board.piece(origin).instance_of?(Knight)
 
-    !cells_between(board, origin, dest, **coords).all?(&:nil?)
+    !cells_between(board, origin, dest).all?(&:nil?)
   end
 
   def cells_between(board, origin = nil, dest = nil, **coords)
