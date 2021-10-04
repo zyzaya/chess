@@ -55,7 +55,7 @@ class ChessRule
       next unless !piece.nil? && piece.color.eql?(color)
 
       piece.valid.each do |v|
-        dest.coords(cell.col + v[0], cell.row + v[1])
+        dest.coords(cell.col + v.col, cell.row + v.row)
         return false if removes_check?(board, cell, dest)
       end
     end
@@ -63,15 +63,15 @@ class ChessRule
   end
 
   def stalemate?(board, color)
+    dest = Cell.new(col: 0, row: 0)
     return false if check?(board, :white) || check?(board, :black)
 
-    board.each_cell do |piece, col, row|
+    board.each_cell do |piece, cell|
       next if piece.nil? || !piece.color.eql?(color)
 
       piece.valid.each do |v|
-        if valid?(board, piece.color, origin_col: col, origin_row: row, dest_col: col + v[0], dest_row: row + v[1])
-          return false
-        end
+        dest.coords(cell.col + v.col, cell.row + v.row)
+        return false if valid?(board, piece.color, cell, dest)
       end
     end
     true
