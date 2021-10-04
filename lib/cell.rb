@@ -12,15 +12,25 @@ class Cell
   end
 
   def col=(val)
+    @col = val
+    @input = to_input(@col, @row)
   end
 
   def row=(val)
+    @row = val
+    @input = to_input(@col, @row)
   end
 
   def coords(col, row)
+    @col = col
+    @row = row
+    @input = to_input(@col, @row)
   end
 
   def input=(val)
+    @input = val
+    @col = to_col(val)
+    @row = to_row(val)
   end
 
   private
