@@ -60,4 +60,10 @@ describe Cell do
     expect(cell.col).to eql(1)
     expect(cell.row).to eql(2)
   end
+
+  it 'defines == as the col and rows being the same' do
+    cell2 = Cell.new(col: cell.col, row: cell.row)
+    result = cell == cell2
+    expect(result).to eql(true)
+  end
 end

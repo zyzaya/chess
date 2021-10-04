@@ -45,6 +45,10 @@ class Cell
     @row = to_row(val)
   end
 
+  def ==(other)
+    other.instance_of?(Cell) && other.col == @col && other.row == @row
+  end
+
   private
 
   def to_input(col, row)
