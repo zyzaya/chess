@@ -24,7 +24,9 @@ describe ChessGame do
   end
 
   describe '#play_game' do
-    move = { origin_col: 0, origin_row: 1, dest_col: 0, dest_row: 3 }
+    let(:origin) { instance_double('Cell', col: 0, row: 1, input: 'a2') }
+    let(:dest) { instance_double('Cell', col: 0, row: 3, input: 'a4') }
+    let(:move) { { origin: origin, dest: dest } }
     draw = '[] <- a chess board'
 
     before do
@@ -45,7 +47,7 @@ describe ChessGame do
     end
 
     it 'updates the state of the board' do
-      expect(game.board).to receive(:move_piece).with(move).twice
+      expect(game.board).to receive(:move_piece).with(origin, dest).twice
       game.play_game
     end
 
