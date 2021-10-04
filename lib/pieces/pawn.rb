@@ -19,7 +19,7 @@ class Pawn < ChessPiece
   end
 
   def valid?(col, row)
-    super(col, row) || @en_passant.include?([col, row])
+    super(col, row) || @en_passant.include?(Cell.new(col: col, row: row))
   end
 
   def moved=(val)
@@ -65,15 +65,14 @@ class Pawn < ChessPiece
   end
 
   def en_passant(side)
-    row =
-      if @color.eql?(:black) then -1
-      elsif @color.eql?(:white) then 1 end
-    col =
-      if side.eql?(:left) then -1
-      elsif side.eql?(:right) then 1 end
-    unless @en_passant.include?([col, row])
-      @en_passant << [col, row]
-    end
+    row = case @color
+          when :black then -1
+          when :white then 1 end
+    col = case side
+          when :left then -1
+          when :right then 1 end
+    new_cell = Cell.new(col: col, row: row)
+    @en_passant << new_cell unless @en_passant.include?(new_cell)
   end
 
   def remove_en_passant
