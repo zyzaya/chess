@@ -12,18 +12,30 @@ class Cell
   end
 
   def col=(val)
-    @col = val
-    @input = to_input(@col, @row)
+    if on_board?(val)
+      @col = val
+      @input = to_input(@col, @row)
+    else
+      @col = nil
+      @input = nil
+    end
   end
 
   def row=(val)
-    @row = val
-    @input = to_input(@col, @row)
+    if on_board?(val)
+      @row = val
+      @input = to_input(@col, @row)
+    else
+      @row = nil
+      @input = nil
+    end
   end
 
   def coords(col, row)
-    @col = col
-    @row = row
+    @col = nil
+    @row = nil
+    @col = col if on_board?(col)
+    @row = row if on_board?(row)
     @input = to_input(@col, @row)
   end
 
@@ -36,9 +48,7 @@ class Cell
   private
 
   def to_input(col, row)
-    return nil unless
-      col >= 0 && col <= 7 &&
-      row >= 0 && row <= 7
+    return nil unless on_board?(col) && on_board?(row)
 
     "#{(col + 'a'.ord).chr}#{row + 1}"
   end
@@ -57,6 +67,10 @@ class Cell
     return nil unless valid_cell?(val)
 
     val[1].to_i - 1
+  end
+
+  def on_board?(val)
+    val >= 0 && val <= 7
   end
 
   def valid_cell?(val)
