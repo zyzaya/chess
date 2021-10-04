@@ -106,7 +106,7 @@ class ChessRule
 
     piece = board.piece(origin)
     return false unless
-      valid_piece_move?(board, piece, origin, dest) &&
+      valid_piece_move?(piece, origin, dest) &&
       !obstructed?(board, origin, dest)
 
     future = board.clone
