@@ -387,6 +387,7 @@ describe ChessRule do
   describe '#taken_cell?' do
     let(:board) { instance_double('ChessBoard') }
     let(:piece) { instance_double('ChessPiece') }
+    let(:cell) { instance_double('Cell') }
 
     before do
       allow(board).to receive(:on_board?).and_return(true)
@@ -395,19 +396,19 @@ describe ChessRule do
 
     it 'returns false if the cell is off of the board' do
       allow(board).to receive(:on_board?).and_return(false)
-      result = chess_rule.taken_cell?(board, col: 8, row: 8)
+      result = chess_rule.taken_cell?(board, cell)
       expect(result).to eql(false)
     end
 
     it 'returns false if the given cell is nil' do
       allow(board).to receive(:piece).and_return(nil)
-      result = chess_rule.taken_cell?(board, 'a1')
+      result = chess_rule.taken_cell?(board, cell)
       expect(result).to eql(false)
     end
 
     it 'returns if true if the given cell is taken' do
       allow(board).to receive(:piece).and_return(piece)
-      result = chess_rule.taken_cell?(board, 'a2')
+      result = chess_rule.taken_cell?(board, cell)
       expect(result).to eql(true)
     end
   end
