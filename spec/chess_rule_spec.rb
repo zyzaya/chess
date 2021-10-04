@@ -15,8 +15,6 @@ describe ChessRule do
 
     before do
       allow(board).to receive(:piece).and_return(white_piece)
-      allow(board).to receive(:to_input).with(origin, col: nil, row: nil).and_return(origin)
-      allow(board).to receive(:to_input).with(dest, col: nil, row: nil).and_return(dest)
       allow(chess_rule).to receive(:valid_transition?).and_return(true)
       allow(chess_rule).to receive(:valid_piece_move?).and_return(true)
       allow(chess_rule).to receive(:obstructed?).and_return(false)
@@ -55,26 +53,13 @@ describe ChessRule do
 
   describe '#valid_transition?' do
     let(:board) { instance_double('ChessBoard') }
-
-    origin = 'a5'
-    dest = 'a7'
+    let(:origin) { instance_double('Cell') }
+    let(:dest) { instance_double('Cell') }
 
     before do
-      allow(board).to receive(:to_input).with(origin, col: nil, row: nil).and_return(origin)
-      allow(board).to receive(:to_input).with(dest, col: nil, row: nil).and_return(dest)
       allow(board).to receive(:on_board?).with(dest).and_return(true)
       allow(chess_rule).to receive(:taken_cell?).with(board, origin).and_return(true)
       allow(chess_rule).to receive(:taken_cell?).with(board, dest).and_return(false)
-    end
-
-    it 'converts origin to input' do
-      expect(board).to receive(:to_input).with(origin, col: nil, row: nil)
-      chess_rule.valid_transition?(board, origin, dest)
-    end
-
-    it 'converts dest to input' do
-      expect(board).to receive(:to_input).with(dest, col: nil, row: nil)
-      chess_rule.valid_transition?(board, origin, dest)
     end
 
     it 'returns false if origin is not taken' do

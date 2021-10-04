@@ -33,10 +33,7 @@ class ChessRule
     true
   end
 
-  def valid_transition?(board, origin = nil, dest = nil, **coords)
-    origin = board.to_input(origin, col: coords[:origin_col], row: coords[:origin_row])
-    dest = board.to_input(dest, col: coords[:dest_col], row: coords[:dest_row])
-
+  def valid_transition?(board, origin, dest)
     taken_cell?(board, origin) &&
       !taken_cell?(board, dest) &&
       board.on_board?(dest)
