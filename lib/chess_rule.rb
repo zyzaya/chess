@@ -87,10 +87,9 @@ class ChessRule
       only_kings_and_one_knight?(pieces)
   end
 
-  def capture_king?(board, cell = nil, **coords)
-    piece = board.piece(cell, **coords)
+  def capture_king?(board, origin)
+    piece = board.piece(origin)
     enemy = piece.color.eql?(:white) ? :black : :white
-    origin = board.to_input(cell, **coords)
     king = find_king(board, enemy)
     valid_piece_move?(board, piece, origin, king) &&
       !obstructed?(board, origin, king)

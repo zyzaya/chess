@@ -283,42 +283,43 @@ describe ChessRule do
   describe '#capture_king?' do
     let(:board) { instance_double('ChessBoard') }
     let(:piece) { instance_double('ChessPiece', color: :white) }
-    coords = { col: 3, row: 5 }
+    let(:origin) { instance_double('Cell', col: 3, row: 5) }
+    let(:king) { instance_double('Cell', col: 4, row: 7) }
+    # coords = { col: 3, row: 5 }
 
     before do
       allow(board).to receive(:piece).and_return(piece)
-      allow(board).to receive(:to_input).with(nil, **coords).and_return('c6')
-      allow(chess_rule).to receive(:find_king).and_return('e8')
-      allow(chess_rule).to receive(:valid_piece_move?).with(board, piece, 'c6', 'e8').and_return(true)
+      allow(chess_rule).to receive(:find_king).and_return(king)
+      allow(chess_rule).to receive(:valid_piece_move?).with(board, piece, origin, king).and_return(true)
       allow(chess_rule).to receive(:obstructed?).and_return(true)
     end
 
     it 'gets the piece at col, row' do
-      expect(board).to receive(:piece).with(nil, coords)
-      chess_rule.capture_king?(board, **coords)
+      expect(board).to receive(:piece).with(origin)
+      chess_rule.capture_king?(board, origin)
     end
 
     it 'gets the location of the king of the opposite color when the piece is white' do
       expect(chess_rule).to receive(:find_king).with(board, :black)
-      chess_rule.capture_king?(board, **coords)
+      chess_rule.capture_king?(board, origin)
     end
 
     it 'gets the location of the king of the opposite color when the piece is white' do
       allow(piece).to receive(:color).and_return(:black)
       expect(chess_rule).to receive(:find_king).with(board, :white)
-      chess_rule.capture_king?(board, **coords)
+      chess_rule.capture_king?(board, origin)
     end
 
     it 'returns false if the pieces movement is obstructed' do
       allow(chess_rule).to receive(:obstructed?).and_return(true)
       expect(chess_rule).to receive(:obstructed?)
-      result = chess_rule.capture_king?(board, **coords)
+      result = chess_rule.capture_king?(board, origin)
       expect(result).to eql(false)
     end
 
     it 'checks if the piece can move to the location of the king' do
       allow(chess_rule).to receive(:obstructed?).and_return(false)
-      result = chess_rule.capture_king?(board, **coords)
+      result = chess_rule.capture_king?(board, origin)
       expect(result).to eql(true)
     end
   end
