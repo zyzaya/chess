@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
+require_relative 'cell'
+
 # Validates chess movements
 class ChessRule
-  def valid?(board, color, origin = nil, dest = nil, **coords)
-    return false unless valid_transition?(board, origin, dest, **coords)
+  def valid?(board, color, origin, dest)
+    return false unless valid_transition?(board, origin, dest)
 
-    origin = board.to_input(origin, col: coords[:origin_col], row: coords[:origin_row])
-    dest = board.to_input(dest, col: coords[:dest_col], row: coords[:dest_col])
+    # origin = board.to_input(origin, col: coords[:origin_col], row: coords[:origin_row])
+    # dest = board.to_input(dest, col: coords[:dest_col], row: coords[:dest_col])
     # return false unless
     #   taken_cell?(board, origin) &&
     #   !taken_cell?(board, dest) &&
@@ -17,16 +19,17 @@ class ChessRule
     #   valid_piece_move?(board, origin_piece, origin, dest) &&
     #   !obstructed?(board, origin, dest) &&
     #   removes_check?(board, origin, dest)
-    p "color: #{color}, from #{origin} to #{dest}"
+    # p "color: #{color}, from #{origin} to #{dest}"
     # p "check?: #{check?(board, color)}"
     return false unless origin_piece.color.eql?(color)
-    p "is correct color, #{board.piece(col: 0, row: 0)&.class&.name}"
+    # p "is correct color, #{board.piece(col: 0, row: 0)&.class&.name}"
     return false unless valid_piece_move?(board, origin_piece, origin, dest)
-    p "is valid piece move, #{board.piece(col: 0, row: 0)&.class&.name}"
-    return false unless !obstructed?(board, origin, dest)
-    p "is not obstructed, #{board.piece(col: 0, row: 0)&.class&.name}"
+    # p "is valid piece move, #{board.piece(col: 0, row: 0)&.class&.name}"
+    return false if obstructed?(board, origin, dest)
+    # p "is not obstructed, #{board.piece(col: 0, row: 0)&.class&.name}"
     return false unless removes_check?(board, origin, dest)
-    p "removes check, #{board.piece(col: 0, row: 0)&.class&.name}"
+
+    # p "removes check, #{board.piece(col: 0, row: 0)&.class&.name}"
     true
   end
 
