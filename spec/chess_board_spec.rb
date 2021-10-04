@@ -145,24 +145,16 @@ describe ChessBoard do
   end
 
   describe '#piece' do
+    let(:cell) { instance_double('Cell', col: 0, row: 0) }
+
     before do
       allow(chess_board).to receive(:on_board?).and_return(true)
     end
 
     it 'returns nil if the given input is off the board' do
       allow(chess_board).to receive(:on_board?).and_return(false)
-      result = chess_board.piece('a9')
+      result = chess_board.piece(cell)
       expect(result).to eql(nil)
-    end
-
-    it 'returns a piece when using a single string parameter' do
-      result = chess_board.piece('b7')
-      expect(result).not_to eql(nil)
-    end
-
-    it 'returns a piece when using col, row parameters' do
-      result = chess_board.piece(col: 1, row: 6)
-      expect(result).not_to eql(nil)
     end
   end
 

@@ -71,11 +71,10 @@ class ChessBoard
     @board[origin.col][origin.row] = nil
   end
 
-  def piece(cell = nil, **coord)
-    coord = to_coords(cell, **coord)
-    return nil unless on_board?(**coord)
+  def piece(cell)
+    return nil unless on_board?(cell)
 
-    @board[coord[:col]][coord[:row]]
+    @board[cell.col][cell.row]
   end
 
   def on_board?(cell = nil, **coord)
