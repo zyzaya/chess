@@ -9,9 +9,8 @@ describe ChessRule do
   describe '#valid?' do
     let(:white_piece) { instance_double('ChessPiece', color: :white) }
     let(:board) { instance_double('ChessBoard') }
-
-    origin = 'a5'
-    dest = 'a7'
+    let(:origin) { instance_double('Cell') }
+    let(:dest) { instance_double('Cell') }
 
     before do
       allow(board).to receive(:piece).and_return(white_piece)

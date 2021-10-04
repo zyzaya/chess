@@ -23,7 +23,7 @@ class ChessRule
     # p "check?: #{check?(board, color)}"
     return false unless origin_piece.color.eql?(color)
     # p "is correct color, #{board.piece(col: 0, row: 0)&.class&.name}"
-    return false unless valid_piece_move?(board, origin_piece, origin, dest)
+    return false unless valid_piece_move?(origin_piece, origin, dest)
     # p "is valid piece move, #{board.piece(col: 0, row: 0)&.class&.name}"
     return false if obstructed?(board, origin, dest)
     # p "is not obstructed, #{board.piece(col: 0, row: 0)&.class&.name}"
