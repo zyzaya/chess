@@ -23,7 +23,8 @@ class ChessPiece
   end
 
   def add(col, row)
-    @valid << Cell.new(col: col, row: row) unless valid?(col, row)
+    new_cell = Cell.new(col: col, row: row)
+    @valid << new_cell unless @valid.include?(new_cell)
   end
 
   def remove(col, row)

@@ -140,7 +140,7 @@ describe Pawn do
       right = black_pawn.valid?(1, -1)
       expect(left).to be(false)
       expect(right).to be(false)
-    end 
+    end
 
     it 'removes diagonal up if white' do
       white_pawn.remove_en_passant
