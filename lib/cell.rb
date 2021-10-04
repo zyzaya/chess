@@ -74,7 +74,7 @@ class Cell
   end
 
   def on_board?(val)
-    val >= 0 && val <= 7
+    !val.nil? && val >= 0 && val <= 7
   end
 
   def valid_cell?(val)
