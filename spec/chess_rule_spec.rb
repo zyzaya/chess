@@ -270,12 +270,11 @@ describe ChessRule do
     let(:piece) { instance_double('ChessPiece', color: :white) }
     let(:origin) { instance_double('Cell', col: 3, row: 5) }
     let(:king) { instance_double('Cell', col: 4, row: 7) }
-    # coords = { col: 3, row: 5 }
 
     before do
       allow(board).to receive(:piece).and_return(piece)
       allow(chess_rule).to receive(:find_king).and_return(king)
-      allow(chess_rule).to receive(:valid_piece_move?).with(board, piece, origin, king).and_return(true)
+      allow(chess_rule).to receive(:valid_piece_move?).with(piece, origin, king).and_return(true)
       allow(chess_rule).to receive(:obstructed?).and_return(true)
     end
 

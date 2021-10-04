@@ -91,7 +91,7 @@ class ChessRule
     piece = board.piece(origin)
     enemy = piece.color.eql?(:white) ? :black : :white
     king = find_king(board, enemy)
-    valid_piece_move?(board, piece, origin, king) &&
+    valid_piece_move?(piece, origin, king) &&
       !obstructed?(board, origin, king)
   end
 
