@@ -123,23 +123,21 @@ describe ChessBoard do
   end
 
   describe '#on_board?' do
+    let(:cell) { instance_double('Cell', col: 1, row: 1, input: 'b2', instance_of?: true) }
+    let(:off_board) { instance_double('Cell', col: nil, row: 1, input: nil) }
+
     it 'returns false if input is invalid' do
       result = chess_board.on_board?('asfdasfg')
       expect(result).to be(false)
     end
 
     it 'returns false if input is off the board' do
-      result = chess_board.on_board?('i8')
+      result = chess_board.on_board?(off_board)
       expect(result).to be(false)
     end
 
     it 'returns true if the cell is on the board' do
-      result = chess_board.on_board?('c3')
-      expect(result).to be(true)
-    end
-
-    it 'returns true when input is on the board and using col, row parameters' do
-      result = chess_board.on_board?(col: 3, row: 4)
+      result = chess_board.on_board?(cell)
       expect(result).to be(true)
     end
   end

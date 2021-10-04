@@ -6,6 +6,7 @@ require_relative 'pieces/knight'
 require_relative 'pieces/pawn'
 require_relative 'pieces/queen'
 require_relative 'pieces/rook'
+require_relative 'cell'
 
 # A Chess board
 class ChessBoard
@@ -77,12 +78,8 @@ class ChessBoard
     @board[cell.col][cell.row]
   end
 
-  def on_board?(cell = nil, **coord)
-    coord = to_coords(cell, **coord)
-    return false if coord.any? { |_, v| v.nil? }
-
-    coord[:col] >= 0 && coord[:col] < 8 &&
-      coord[:row] >= 0 && coord[:row] < 8
+  def on_board?(cell)
+    cell.instance_of?(Cell) && [cell.col, cell.row, cell.input].none?(&:nil?)
   end
 
   def each_cell
