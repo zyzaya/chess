@@ -70,10 +70,7 @@ class ChessRule
 
       piece.valid.each do |v|
         dest.coords(cell.col + v.col, cell.row + v.row)
-        if valid?(board, piece.color, cell, dest)
-          p "#{cell.input}, #{dest.input}"
-          return false
-        end
+        return false if valid?(board, piece.color, cell, dest)
       end
     end
     true
