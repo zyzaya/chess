@@ -361,6 +361,7 @@ describe ChessRule do
     let(:white_piece) { instance_double('ChessPiece', valid: [[0, 1], [0, 2]], color: :white) }
     let(:black_piece) { instance_double('ChessPiece', valid: [[0, 1], [0, 2]], color: :black) }
     let(:king) { instance_double('King', color: :white) }
+    let(:cell) { instance_double('Cell', col: 1, row: 2) }
 
     before do
       allow(chess_rule).to receive(:removes_check?).and_return(true)
@@ -368,27 +369,27 @@ describe ChessRule do
     end
 
     it 'iterates over every cell' do
-      allow(board).to receive(:each_cell).and_yield(nil, 0, 0)
+      allow(board).to receive(:each_cell).and_yield(nil, cell)
       expect(board).to receive(:each_cell)
       chess_rule.checkmate?(board, :white)
     end
 
     it 'checks if every potential move of every non-nil piece removes_check' do
-      allow(board).to receive(:each_cell).and_yield(black_piece, 0, 0)
+      allow(board).to receive(:each_cell).and_yield(black_piece, cell)
       expect(chess_rule).to receive(:removes_check?).exactly(1).times
       chess_rule.checkmate?(board, :black)
     end
 
     it 'does not check pieces of the wrong color' do
-      allow(board).to receive(:each_cell).and_yield(white_piece, 0, 0)
+      allow(board).to receive(:each_cell).and_yield(white_piece, cell)
       expect(black_piece).not_to receive(:valid)
       chess_rule.checkmate?(board, :black)
     end
 
     it 'returns false as soon as a legal move removes check' do
       allow(board).to receive(:each_cell)
-        .and_yield(white_piece, 0, 0)
-        .and_yield(white_piece, 0, 1)
+        .and_yield(white_piece, cell)
+        .and_yield(white_piece, cell)
       allow(chess_rule).to receive(:removes_check?).and_return(false, false, false, true)
       expect(chess_rule).to receive(:removes_check?).exactly(4).times
       result = chess_rule.checkmate?(board, :white)
@@ -396,7 +397,7 @@ describe ChessRule do
     end
 
     it 'returns true if no legal move removes check' do
-      allow(board).to receive(:each_cell).and_yield(black_piece, 0, 1)
+      allow(board).to receive(:each_cell).and_yield(black_piece, cell)
       allow(chess_rule).to receive(:removes_check?).and_return(false)
       result = chess_rule.checkmate?(board, :black)
       expect(result).to eql(true)

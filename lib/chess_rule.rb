@@ -50,14 +50,13 @@ class ChessRule
   end
 
   def checkmate?(board, color)
-    board.each_cell do |piece, col, row|
+    dest = Cell.new(col: 0, row: 0)
+    board.each_cell do |piece, cell|
       next unless !piece.nil? && piece.color.eql?(color)
 
       piece.valid.each do |v|
-        return false if
-          removes_check?(board,
-                         origin_col: col, origin_row: row,
-                         dest_col: col + v[0], dest_row: row + v[1])
+        dest.coords(cell.col + v[0], cell.row + v[1])
+        return false if removes_check?(board, cell, dest)
       end
     end
     true
