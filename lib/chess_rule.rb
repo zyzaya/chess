@@ -41,10 +41,10 @@ class ChessRule
 
   def check?(board, color)
     enemy = color.eql?(:white) ? :black : :white
-    board.each_cell do |piece, col, row|
+    board.each_cell do |piece, cell|
       return true if
         piece&.color.eql?(enemy) &&
-        capture_king?(board, col: col, row: row)
+        capture_king?(board, cell)
     end
     false
   end

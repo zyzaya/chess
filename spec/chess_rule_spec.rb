@@ -161,9 +161,10 @@ describe ChessRule do
   describe '#check?' do
     let(:board) { instance_double('ChessBoard') }
     let(:piece) { instance_double('ChessPiece', color: :black) }
+    let(:cell) { instance_double('Cell') }
 
     it 'calls capture_king once for each cell if capture_king? always returns false' do
-      allow(board).to receive(:each_cell).and_yield(piece, 0, 0)
+      allow(board).to receive(:each_cell).and_yield(piece, cell)
       allow(chess_rule).to receive(:capture_king?).and_return(false)
       expect(chess_rule).to receive(:capture_king?).with(board, anything).exactly(1).times
       result = chess_rule.check?(board, :white)
@@ -171,7 +172,7 @@ describe ChessRule do
     end
 
     it 'returns true as soon as capture_king? returns true' do
-      allow(board).to receive(:each_cell).and_yield(piece, 0, 0).and_yield(piece, 0, 1)
+      allow(board).to receive(:each_cell).and_yield(piece, cell).and_yield(piece, cell)
       allow(chess_rule).to receive(:capture_king?).and_return(false, true)
       expect(chess_rule).to receive(:capture_king?).with(board, anything).exactly(2).times
       result = chess_rule.check?(board, :white)
