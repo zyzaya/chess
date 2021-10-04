@@ -96,9 +96,8 @@ class ChessRule
   end
 
   def find_king(board, color)
-    board.each_cell do |piece, col, row|
-      return board.to_input(col: col, row: row) if
-        !piece.nil? && piece.color.eql?(color) && piece.instance_of?(King)
+    board.each_cell do |piece, cell|
+      return cell if piece&.color.eql?(color) && piece.instance_of?(King)
     end
   end
 

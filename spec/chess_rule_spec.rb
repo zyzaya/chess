@@ -328,15 +328,15 @@ describe ChessRule do
     let(:board) { instance_double('ChessBoard') }
     let(:king) { instance_double('King', color: :white) }
     let(:not_king) { instance_double('ChessPiece', color: :white) }
+    let(:cell) { instance_double('Cell') }
 
     before do
       allow(king).to receive(:instance_of?).with(King).and_return(true)
       allow(not_king).to receive(:instance_of?).with(King).and_return(false)
       allow(board).to receive(:each_cell)
-        .and_yield(nil, 0, 1)
-        .and_yield(not_king, 0, 2)
-        .and_yield(king, 0, 3)
-      allow(board).to receive(:to_input)
+        .and_yield(nil, cell)
+        .and_yield(not_king, cell)
+        .and_yield(king, cell)
     end
 
     it 'checks pieces if they are the right color' do
@@ -347,13 +347,6 @@ describe ChessRule do
     it 'checks pieces if they are an instance of King' do
       expect(not_king).to receive(:instance_of?).with(King).once
       chess_rule.find_king(board, :white)
-    end
-
-    it 'converts the call row to input format and returns it' do
-      input = 'e8'
-      allow(board).to receive(:to_input).and_return(input)
-      result = chess_rule.find_king(board, :white)
-      expect(result).to eql(input)
     end
   end
 
