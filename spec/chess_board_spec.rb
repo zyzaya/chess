@@ -294,15 +294,14 @@ describe ChessBoard do
       expect(count).to eql(64)
     end
 
-    it 'returns the piece, col, and row of each cell' do
+    it 'returns the piece, cell, of each cell' do
       count = 0
       expect(chess_board).to receive(:piece).exactly(64).times
-      chess_board.each_cell do |p, col, row|
+      chess_board.each_cell do |p, cell|
         expect(p).to eql(first_piece) if count.zero?
         expect(p).to eql(second_piece) if count == 1
 
-        expect(col).to be_a_kind_of(Integer)
-        expect(row).to be_a_kind_of(Integer)
+        expect(cell).to be_a_kind_of(Cell)
         count += 1
       end
     end
