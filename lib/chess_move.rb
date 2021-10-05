@@ -35,14 +35,21 @@ class ChessMove
     return false unless castling?(board, origin, dest)
 
     king = board.piece(origin)
-    rook_cell = find_castling_rook(board, origin, dest)
-    return false if king.moved || board.piece(rook_cell).moved
+    rook_cell = find_castling_rook(dest)
+    return false if king.moved || board.piece(rook_cell)&.moved
 
     !castle_obstructed?(board, origin, rook_cell) &&
       !castle_in_check?(board, king, rook_cell)
   end
 
-  def find_castling_rook(board, origin, dest)
+  def find_castling_rook(dest)
+    transition = {
+      'c8' => Cell.new('a8'),
+      'g8' => Cell.new('h8'),
+      'c1' => Cell.new('a1'),
+      'g1' => Cell.new('h1')
+    }
+    transition[dest.input]
   end
 
   def castle_obstructed?(board, king, rook)

@@ -150,4 +150,22 @@ describe ChessMove do
       expect(result).to eql(true)
     end
   end
+
+  describe '#find_castling_rook' do
+    it 'returns the related rook for the given destination' do
+      destinations = %w[c8 g8 c1 g1]
+      rooks = %w[a8 h8 a1 h1]
+      destinations.each.with_index do |d, i|
+        dest = instance_double('Cell', input: d)
+        result = chess_move.find_castling_rook(dest)
+        expect(result.input).to eql(rooks[i])
+      end
+    end
+
+    it 'returns nil if the destination is not a castling destination' do
+      dest = instance_double('Cell', input: 'b7')
+      result = chess_move.find_castling_rook(dest)
+      expect(result).to eql(nil)
+    end
+  end
 end
