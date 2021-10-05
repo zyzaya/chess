@@ -8,18 +8,11 @@ class ChessMove
     raise ArgumentError.new(
       "Expected a valid origin and destination, got #{origin}, #{dest}"
     ) unless rule.valid?(board, origin_piece&.color, origin, dest)
-    return if move_castle(board, rule, origin, dest)
+    return if castle(board, rule, origin, dest)
 
     return if move_pawn(board, rule, origin, dest)
 
     generic_move(board, rule, origin, dest)
-  end
-
-  def move_castle(board, rule, origin, dest)
-    return false unless can_castle?(board, rule, origin, dest)
-
-    castle(board, rule, origin, dest)
-    true
   end
 
   def castling?(board, origin, dest)
@@ -39,7 +32,7 @@ class ChessMove
     return false if king.moved || board.piece(rook_cell)&.moved
 
     !rule.obstructed?(board, origin, rook_cell) &&
-      !castle_in_check?(board, king, dest)
+      !castle_in_check?(board, rule, king, dest)
   end
 
   def find_castling_rook(dest)

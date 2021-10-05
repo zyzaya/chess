@@ -12,7 +12,7 @@ describe ChessMove do
 
   describe '#move_piece' do
     before do
-      allow(chess_move).to receive(:move_castle).and_return(false)
+      allow(chess_move).to receive(:castle).and_return(false)
       allow(chess_move).to receive(:move_pawn).and_return(false)
       allow(board).to receive(:piece).and_return(piece)
     end
@@ -25,12 +25,12 @@ describe ChessMove do
     end
 
     it 'tries to castle' do
-      expect(chess_move).to receive(:move_castle)
+      expect(chess_move).to receive(:castle)
       chess_move.move_piece(board, rule, origin, dest)
     end
 
     it 'returns if it castled' do
-      allow(chess_move).to receive(:move_castle).and_return(true)
+      allow(chess_move).to receive(:castle).and_return(true)
       expect(chess_move).not_to receive(:generic_move)
       chess_move.move_piece(board, rule, origin, dest)
     end
@@ -49,24 +49,6 @@ describe ChessMove do
     it 'calls generic move if the move is legal, is not castling, and is not a pawn' do
       expect(chess_move).to receive(:generic_move)
       chess_move.move_piece(board, rule, origin, dest)
-    end
-  end
-
-  describe '#move_castle' do
-    before do
-      allow(chess_move).to receive(:can_castle?).and_return(true)
-      allow(chess_move).to receive(:castle)
-    end
-
-    it 'returns false if the castle is not legal' do
-      allow(chess_move).to receive(:can_castle?).and_return(false)
-      result = chess_move.move_castle(board, rule, origin, dest)
-      expect(result).to eql(false)
-    end
-
-    it 'castles if the movement is a legal castle' do
-      result = chess_move.move_castle(board, rule, origin, dest)
-      expect(result).to eql(true)
     end
   end
 
