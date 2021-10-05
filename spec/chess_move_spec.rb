@@ -168,4 +168,46 @@ describe ChessMove do
       expect(result).to eql(nil)
     end
   end
+
+  describe '#castle_in_check' do
+    let(:future) { instance_double('ChessBoard') }
+    let(:piece) { instance_double('King', color: :black) }
+    let(:king) { instance_double('Cell', col: 4, row: 7, input: 'e8') }
+    let(:dest) { instance_double('Cell', col: 0, row: 7, input: 'a8') }
+
+    before do
+      allow(board).to receive(:clone).and_return(future)
+      allow(board).to receive(:piece).and_return(piece)
+      allow(future).to receive(:move_piece)
+      allow(rule).to receive(:check?).and_return(false)
+      allow(king).to receive(:input=)
+      allow(dest).to receive(:input=)
+    end
+
+    it 'iterates over every cell between king and rook' do
+      expect(future).to receive(:move_piece).exactly(3).times
+      chess_move.castle_in_check?(board, rule, king, dest)
+    end
+
+    it 'works on a clone of board' do
+      expect(board).to receive(:clone)
+      chess_move.castle_in_check?(board, rule, king, dest)
+    end
+
+    it 'places king in each cell and checks if it is in check' do
+      expect(rule).to receive(:check?).exactly(3).times
+      chess_move.castle_in_check?(board, rule, king, dest)
+    end
+
+    it 'returns true if any cell the king passes through is in check' do
+      allow(rule).to receive(:check?).and_return(true)
+      result = chess_move.castle_in_check?(board, rule, king, dest)
+      expect(result).to eql(true)
+    end
+
+    it 'returns false if no cell the king passes through is in check' do
+      result = chess_move.castle_in_check?(board, rule, king, dest)
+      expect(result).to eql(false)
+    end
+  end
 end

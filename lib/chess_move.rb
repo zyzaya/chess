@@ -39,7 +39,7 @@ class ChessMove
     return false if king.moved || board.piece(rook_cell)&.moved
 
     !rule.obstructed?(board, origin, rook_cell) &&
-      !castle_in_check?(board, king, rook_cell)
+      !castle_in_check?(board, king, dest)
   end
 
   def find_castling_rook(dest)
@@ -52,7 +52,20 @@ class ChessMove
     transition[dest.input]
   end
 
-  def castle_in_check?(board, king, rook)
+  def castle_in_check?(board, rule, king, dest)
+    color = board.piece(king).color
+    min = [king.col, dest.col].min
+    max = [king.col, dest.col].max
+    future = board.clone
+    origin = king
+    cell = Cell.new(col: 0, row: 0)
+    (min + 1).upto(max - 1) do |c|
+      cell.col = c
+      future.move_piece(origin, cell)
+      origin.input = dest.input
+      return true if rule.check?(board, color)
+    end
+    false
   end
 
   def castle(board, rule, origin, dest)
