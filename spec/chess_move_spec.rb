@@ -229,33 +229,39 @@ describe ChessMove do
     end
   end
 
-  describe 'castle' do
+  describe '#castle' do
     let(:origin) { instance_double('Cell', col: 4, row: 7, input: 'e8') }
     let(:dest) { instance_double('Cell', col: 0, row: 7, input: 'a8') }
+    let(:rook_origin) { instance_double('Cell', col: 0, row: 7, input: 'a8') }
+    let(:rook_dest) { instance_double('Cell', col: 3, row: 7, input: 'd8') }
 
     before do
       allow(chess_move).to receive(:can_castle?).and_return(true)
-
+      allow(chess_move).to receive(:find_castling_rook).with(dest).and_return(rook_origin)
+      allow(chess_move).to receive(:find_castling_rook_destination).with(rook_origin).and_return(rook_dest)
+      allow(board).to receive(:move_piece).with(origin, dest)
+      allow(board).to receive(:move_piece).with(rook_origin, rook_dest)
     end
 
     it 'returns false if the castle is not legal' do
-      allow(chess_move).to receive(:can_castle?).and_return(true)
-      result = castle(board, rule, origin, dest)
+      allow(chess_move).to receive(:can_castle?).and_return(false)
+      result = chess_move.castle(board, rule, origin, dest)
       expect(result).to eql(false)
     end
 
     it 'returns true if it successfully castled' do
-      result = castle(board, rule, origin, dest)
+      result = chess_move.castle(board, rule, origin, dest)
       expect(result).to eql(true)
     end
 
     it 'moves the king to destination' do
       expect(board).to receive(:move_piece).with(origin, dest)
-      castle(board, rule, origin, dest)
+      chess_move.castle(board, rule, origin, dest)
     end
 
     it 'moves the relevant rook to its destination' do
-      
+      expect(board).to receive(:move_piece).with(rook_origin, rook_dest)
+      chess_move.castle(board, rule, origin, dest)
     end
   end
 end

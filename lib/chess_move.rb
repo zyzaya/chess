@@ -79,11 +79,13 @@ class ChessMove
   end
 
   def castle(board, rule, origin, dest)
-    # can castle gaurd
-    # move king
-    # find rook destination
-    # move rook
+    return false unless can_castle?(board, rule, origin, dest)
 
+    board.move_piece(origin, dest)
+    rook_origin = find_castling_rook(dest)
+    rook_dest = find_castling_rook_destination(rook_origin)
+    board.move_piece(rook_origin, rook_dest)
+    true
   end
 
   def move_pawn(board, rule, origin, dest)
