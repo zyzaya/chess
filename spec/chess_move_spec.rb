@@ -81,7 +81,7 @@ describe ChessMove do
     let(:king) { instance_double('King', instance_of?: false) }
     let(:not_king) { instance_double('ChessPiece', instance_of?: false) }
     let(:origin) { instance_double('Cell', col: 4, row: 0) }
-    let(:dest) { instance_double('Cell', col: 1, row: 1) }
+    let(:dest) { instance_double('Cell', col: 1, row: 0) }
 
     before do
       allow(board).to receive(:piece).and_return(king)
