@@ -1,17 +1,16 @@
 # frozen_string_literal: true
 
-require 'chess_move.rb'
+require 'chess_move'
 
 describe ChessMove do
   let(:chess_move) { ChessMove.new }
   let(:rule) { instance_double('ChessRule', valid?: true) }
   let(:board) { instance_double('ChessBoard') }
-  let(:piece) { instance_double('ChessPiece', color: :white)}
-  origin = 'a1'
-  dest = 'b2'
+  let(:piece) { instance_double('ChessPiece', color: :white) }
+  let(:origin) { instance_double('Cell', col: 0, row: 0) }
+  let(:dest) { instance_double('Cell', col: 1, row: 1) }
 
   describe '#move_piece' do
-    
     before do
       allow(chess_move).to receive(:move_castle).and_return(false)
       allow(chess_move).to receive(:move_pawn).and_return(false)
@@ -55,19 +54,19 @@ describe ChessMove do
 
   describe '#move_castle' do
     before do
-      allow(chess_move).to receive(:is_castle).and_return(true)
-      allow(chess_move).to receive(:can_castle).and_return(true)
+      allow(chess_move).to receive(:castling?).and_return(true)
+      allow(chess_move).to receive(:can_castle?).and_return(true)
       allow(chess_move).to receive(:castle)
     end
 
     it 'returns false if the movement is not castling' do
-      allow(chess_move).to receive(:is_castle).and_return(false)
+      allow(chess_move).to receive(:castling?).and_return(false)
       result = chess_move.move_castle(board, rule, origin, dest)
       expect(result).to eql(false)
     end
 
     it 'returns false if the castle is not legal' do
-      allow(chess_move).to receive(:can_castle).and_return(false)
+      allow(chess_move).to receive(:can_castle?).and_return(false)
       result = chess_move.move_castle(board, rule, origin, dest)
       expect(result).to eql(false)
     end
@@ -78,38 +77,35 @@ describe ChessMove do
     end
   end
 
-  describe '#is_castle' do
+  describe 'castling?' do
     let(:king) { instance_double('King', instance_of?: false) }
     let(:not_king) { instance_double('ChessPiece', instance_of?: false) }
-    origin_coords = {col: 4, row: 0}
-    dest_coords = {col: 1, row: 0}
-    
+    let(:origin) { instance_double('Cell', col: 4, row: 0) }
+    let(:dest) { instance_double('Cell', col: 1, row: 1) }
+
     before do
-      allow(board).to receive(:to_coords).with(origin, col: nil, row: nil).and_return(origin_coords)
-      allow(board).to receive(:to_coords).with(dest, col: nil, row: nil).and_return(dest_coords)
       allow(board).to receive(:piece).and_return(king)
       allow(king).to receive(:instance_of?).with(King).and_return(true)
     end
 
     it 'returns false if piece is not a king' do
       allow(board).to receive(:piece).and_return(not_king)
-      result = chess_move.is_castle(board, origin, dest)
+      result = chess_move.castling?(board, origin, dest)
       expect(result).to eql(false)
     end
 
     it 'returns false if the movement is not castling' do
-      not_castle = {col: 5, row: 1}
-      allow(board).to receive(:to_coords).with(dest, col: nil, row: nil).and_return(not_castle)
-      result = chess_move.is_castle(board, origin, dest)
+      not_castle = instance_double('Cell', col: 5, row: 5)
+      result = chess_move.castling?(board, origin, not_castle)
       expect(result).to eql(false)
     end
 
     it 'returns true if the the movemenet is castling' do
-      result = chess_move.is_castle(board, origin, dest)
+      result = chess_move.castling?(board, origin, dest)
       expect(result).to eql(true)
     end
   end
 
-   describe '#can_castle' do
-   end
+  describe '#can_castle?' do
+  end
 end

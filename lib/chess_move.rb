@@ -2,51 +2,50 @@
 
 # Used to move pieces around on a ChessBoard
 class ChessMove
-  def move_piece(board, rule, origin = nil, dest = nil, **coords)
-    origin_piece = board.piece(origin, col: coords[:origin_col], row: coords[:origin_row])
+  def move_piece(board, rule, origin, dest)
+    # origin_piece = board.piece(origin, col: coords[:origin_col], row: coords[:origin_row])
+    origin_piece = board.piece(origin)
     raise ArgumentError.new(
-      "Expected a valid origin and destination, got #{origin}, #{dest}, #{coords}"
-    ) unless rule.valid?(board, origin_piece&.color, dest, coords)
-    return if move_castle(board, origin, dest, **coords)
+      "Expected a valid origin and destination, got #{origin}, #{dest}"
+    ) unless rule.valid?(board, origin_piece&.color, origin, dest)
+    return if move_castle(board, rule, origin, dest)
 
-    return if move_pawn(board, rule, origin, dest, **coords)
+    return if move_pawn(board, rule, origin, dest)
 
-    generic_move(board, rule, origin, dest, **coords)
+    generic_move(board, rule, origin, dest)
   end
 
-  def move_castle(board, rule, origin = nil, dest = nil, **coords)
+  def move_castle(board, rule, origin, dest)
     return false unless
-      is_castle(board, rule, origin, dest, **coords) &&
-      can_castle(board, rule, origin, dest, **coords)
-    
-    castle(board, rule, origin, dest, **coords)
+      castling?(board, origin, dest) &&
+      can_castle?(board, rule, origin, dest)
+
+    castle(board, rule, origin, dest)
     true
   end
 
-  def is_castle(board, origin = nil, dest = nil, **coords)
-    origin_coords = board.to_coords(origin, col: coords[:origin_col], row: coords[:origin_row])
-    origin_piece = board.piece(**origin_coords)
+  def castling?(board, origin, dest)
+    origin_piece = board.piece(origin)
     return false unless origin_piece.instance_of?(King)
 
-    dest_coords = board.to_coords(dest, col: coords[:dest_col], row: coords[:dest_row])
-    rel_col = dest_coords[:col] - origin_coords[:col]
-    rel_row = dest_coords[:row] - origin_coords[:row]
-    rel_row == 0 && [-3, 2].include?(rel_col)
+    rel_col = dest.col - origin.col
+    rel_row = dest.row - origin.row
+    rel_row.zero? && [-3, 2].include?(rel_col)
   end
 
-  def can_castle(board, rule, origin = nil, dest = nil, **coords)
+  def can_castle?(board, rule, origin, dest)
     # king has not moved
     # rook has not moved
     # origin -> rook is not obstructed
     # none of the pieces from origin to dest are in check
   end
 
-  def castle(board, rule, origin = nil, dest = nil, **coords)
+  def castle(board, rule, origin, dest)
   end
 
-  def move_pawn(board, rule, origin = nil, dest = nil, **coords)
+  def move_pawn(board, rule, origin, dest)
   end
 
-  def generic_move(board, rule, origin = nil, dest = nil, **coords)
+  def generic_move(board, rule, origin, dest)
   end
 end
