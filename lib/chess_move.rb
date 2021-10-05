@@ -52,6 +52,16 @@ class ChessMove
     transition[dest.input]
   end
 
+  def find_castling_rook_destination(rook)
+    transition = {
+      'a8' => Cell.new('d8'),
+      'h8' => Cell.new('f8'),
+      'a1' => Cell.new('d1'),
+      'h1' => Cell.new('f1')
+    }
+    transition[rook.input]
+  end
+
   def castle_in_check?(board, rule, king, dest)
     color = board.piece(king).color
     min = [king.col, dest.col].min
@@ -69,6 +79,11 @@ class ChessMove
   end
 
   def castle(board, rule, origin, dest)
+    # can castle gaurd
+    # move king
+    # find rook destination
+    # move rook
+
   end
 
   def move_pawn(board, rule, origin, dest)

@@ -169,6 +169,24 @@ describe ChessMove do
     end
   end
 
+  describe '#find_castling_rook_destination' do
+    it 'returns the related rook for the given destination' do
+      rooks = %w[a8 h8 a1 h1]
+      destinations = %w[d8 f8 d1 f1]
+      rooks.each.with_index do |d, i|
+        rook = instance_double('Cell', input: d)
+        result = chess_move.find_castling_rook_destination(rook)
+        expect(result.input).to eql(destinations[i])
+      end
+    end
+
+    it 'returns nil if the destination is not a castling destination' do
+      dest = instance_double('Cell', input: 'b7')
+      result = chess_move.find_castling_rook_destination(dest)
+      expect(result).to eql(nil)
+    end
+  end
+
   describe '#castle_in_check' do
     let(:future) { instance_double('ChessBoard') }
     let(:piece) { instance_double('King', color: :black) }
@@ -208,6 +226,36 @@ describe ChessMove do
     it 'returns false if no cell the king passes through is in check' do
       result = chess_move.castle_in_check?(board, rule, king, dest)
       expect(result).to eql(false)
+    end
+  end
+
+  describe 'castle' do
+    let(:origin) { instance_double('Cell', col: 4, row: 7, input: 'e8') }
+    let(:dest) { instance_double('Cell', col: 0, row: 7, input: 'a8') }
+
+    before do
+      allow(chess_move).to receive(:can_castle?).and_return(true)
+
+    end
+
+    it 'returns false if the castle is not legal' do
+      allow(chess_move).to receive(:can_castle?).and_return(true)
+      result = castle(board, rule, origin, dest)
+      expect(result).to eql(false)
+    end
+
+    it 'returns true if it successfully castled' do
+      result = castle(board, rule, origin, dest)
+      expect(result).to eql(true)
+    end
+
+    it 'moves the king to destination' do
+      expect(board).to receive(:move_piece).with(origin, dest)
+      castle(board, rule, origin, dest)
+    end
+
+    it 'moves the relevant rook to its destination' do
+      
     end
   end
 end
