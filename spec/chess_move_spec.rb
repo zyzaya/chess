@@ -107,5 +107,54 @@ describe ChessMove do
   end
 
   describe '#can_castle?' do
+    let(:king) { instance_double('King', moved: false) }
+    let(:rook) { instance_double('Rook', moved: false) }
+    let(:rook_cell) { instance_double('Cell', col: 0, row: 0) }
+    let(:origin) { instance_double('Cell', col: 4, row: 0) }
+    let(:dest) { instance_double('Cell', col: 1, row: 0) }
+
+    before do
+      allow(chess_move).to receive(:castling?).and_return(true)
+      allow(chess_move).to receive(:find_castling_rook).and_return(rook_cell)
+      allow(chess_move).to receive(:castle_obstructed?).and_return(false)
+      allow(chess_move).to receive(:castle_in_check?).and_return(false)
+      allow(board).to receive(:piece).with(origin).and_return(king)
+      allow(board).to receive(:piece).with(rook_cell).and_return(rook)
+    end
+
+    it 'returns false if the move is not castling' do
+      allow(chess_move).to receive(:castling?).and_return(false)
+      result = chess_move.can_castle?(board, origin, dest)
+      expect(result).to eql(false)
+    end
+
+    it 'returns false if the king has moved' do
+      allow(king).to receive(:moved).and_return(true)
+      result = chess_move.can_castle?(board, origin, dest)
+      expect(result).to eql(false)
+    end
+
+    it 'returns false if the rook has moved' do
+      allow(rook).to receive(:moved).and_return(true)
+      result = chess_move.can_castle?(board, origin, dest)
+      expect(result).to eql(false)
+    end
+
+    it 'returns false if any of the cells between the king and rook are taken' do
+      allow(chess_move).to receive(:castle_obstructed?).and_return(true)
+      result = chess_move.can_castle?(board, origin, dest)
+      expect(result).to eql(false)
+    end
+
+    it 'returns false if any the cells the king moves through are in check' do
+      allow(chess_move).to receive(:castle_in_check?).and_return(true)
+      result = chess_move.can_castle?(board, origin, dest)
+      expect(result).to eql(false)
+    end
+
+    it 'returns true when the castling is valid' do
+      result = chess_move.can_castle?(board, origin, dest)
+      expect(result).to eql(true)
+    end
   end
 end
