@@ -26,24 +26,6 @@ class ChessBoard
     end
   end
 
-  def to_input(cell = nil, **coords)
-    return cell unless cell.nil?
-
-    return nil unless
-      coords[:col] >= 0 && coords[:col] <= 7 &&
-      coords[:row] >= 0 && coords[:row] <= 7
-
-    "#{(coords[:col] + 'a'.ord).chr}#{coords[:row] + 1}"
-  end
-
-  def to_coords(cell = nil, **coords)
-    return coords if
-      cell.nil? &&
-      [coords[:col], coords[:row]].none?(&:nil?)
-
-    cell.nil? ? { col: nil, row: nil } : { col: col(cell), row: row(cell) }
-  end
-
   def col(val)
     return nil unless valid_cell(val)
 

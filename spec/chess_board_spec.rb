@@ -193,45 +193,6 @@ describe ChessBoard do
     end
   end
 
-  describe '#to_input' do
-    it 'accepts a single two character argument' do
-      result = chess_board.to_input('b1')
-      expect(result).not_to eql(nil)
-    end
-
-    it 'accepts named col and named row arguments' do
-      result = chess_board.to_input(col: 1, row: 0)
-      expect(result).not_to eql(nil)
-    end
-
-    it 'converts named col and row arguments to a two character return value' do
-      result = chess_board.to_input(col: 1, row: 0)
-      expect(result).to eql('b1')
-    end
-  end
-
-  describe '#to_coords' do
-    it 'accepts a single two character argument' do
-      result = chess_board.to_coords('b1')
-      expect(result).not_to eql(nil)
-    end
-
-    it 'accepts named col and named row arguments' do
-      result = chess_board.to_coords(col: 1, row: 0)
-      expect(result).not_to eql(nil)
-    end
-
-    it 'converts a single two character argument to a two value hash' do
-      result = chess_board.to_coords('b1')
-      expect(result).to eql({ col: 1, row: 0 })
-    end
-
-    it 'returns a a two character with col and row as nil when only one nil argument' do
-      result = chess_board.to_coords(nil)
-      expect(result).to eql({col: nil, row: nil})
-    end
-  end
-
   describe '#clone' do
     it 'creates a new objects' do
       clone = chess_board.clone
