@@ -16,7 +16,7 @@ class ChessMove
   end
 
   def move_castle(board, rule, origin, dest)
-    return false unless can_castle?(board, origin, dest)
+    return false unless can_castle?(board, rule, origin, dest)
 
     castle(board, rule, origin, dest)
     true
@@ -31,14 +31,14 @@ class ChessMove
     rel_row.zero? && [-3, 2].include?(rel_col)
   end
 
-  def can_castle?(board, origin, dest)
+  def can_castle?(board, rule, origin, dest)
     return false unless castling?(board, origin, dest)
 
     king = board.piece(origin)
     rook_cell = find_castling_rook(dest)
     return false if king.moved || board.piece(rook_cell)&.moved
 
-    !castle_obstructed?(board, origin, rook_cell) &&
+    !rule.obstructed?(board, origin, rook_cell) &&
       !castle_in_check?(board, king, rook_cell)
   end
 
@@ -50,9 +50,6 @@ class ChessMove
       'g1' => Cell.new('h1')
     }
     transition[dest.input]
-  end
-
-  def castle_obstructed?(board, king, rook)
   end
 
   def castle_in_check?(board, king, rook)
