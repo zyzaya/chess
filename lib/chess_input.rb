@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'input'
+require_relative 'cell'
 
 # Allows for the retrieval of Chess related input
 class ChessInput
@@ -11,11 +12,15 @@ class ChessInput
       valid_turn_input?(board, rule, color, val)
     end
     result = result.split
+    # {
+    #   origin_col: board.col(result[0]),
+    #   origin_row: board.row(result[0]),
+    #   dest_col: board.col(result[2]),
+    #   dest_row: board.row(result[2])
+    # }
     {
-      origin_col: board.col(result[0]),
-      origin_row: board.row(result[0]),
-      dest_col: board.col(result[2]),
-      dest_row: board.row(result[2])
+      origin: Cell.new(result[0]),
+      dest: Cell.new(result[2])
     }
   end
 

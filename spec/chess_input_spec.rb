@@ -38,10 +38,10 @@ describe ChessInput do
       allow(board).to receive(:col).with('a3').and_return(0)
       allow(board).to receive(:row).with('a3').and_return(2)
       result = input.turn(board, rule, :white)
-      expect(result[:origin_col]).to eql(0)
-      expect(result[:origin_row]).to eql(0)
-      expect(result[:dest_col]).to eql(0)
-      expect(result[:dest_row]).to eql(2)
+      expect(result[:origin].col).to eql(0)
+      expect(result[:origin].row).to eql(0)
+      expect(result[:dest].col).to eql(0)
+      expect(result[:dest].row).to eql(2)
     end
   end
 
