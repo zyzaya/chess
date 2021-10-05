@@ -54,15 +54,8 @@ describe ChessMove do
 
   describe '#move_castle' do
     before do
-      allow(chess_move).to receive(:castling?).and_return(true)
       allow(chess_move).to receive(:can_castle?).and_return(true)
       allow(chess_move).to receive(:castle)
-    end
-
-    it 'returns false if the movement is not castling' do
-      allow(chess_move).to receive(:castling?).and_return(false)
-      result = chess_move.move_castle(board, rule, origin, dest)
-      expect(result).to eql(false)
     end
 
     it 'returns false if the castle is not legal' do

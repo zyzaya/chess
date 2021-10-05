@@ -16,9 +16,7 @@ class ChessMove
   end
 
   def move_castle(board, rule, origin, dest)
-    return false unless
-      castling?(board, origin, dest) &&
-      can_castle?(board, origin, dest)
+    return false unless can_castle?(board, origin, dest)
 
     castle(board, rule, origin, dest)
     true
@@ -42,10 +40,6 @@ class ChessMove
 
     !castle_obstructed?(board, origin, rook_cell) &&
       !castle_in_check?(board, king, rook_cell)
-    # king (origin) has not moved
-    # rook (find_castling_rook(origin, dest)) has not moved
-    # origin -> rook is not obstructed
-    # none of the pieces from origin to dest are in check
   end
 
   def find_castling_rook(board, origin, dest)
