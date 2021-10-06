@@ -105,7 +105,7 @@ class Pawn < ChessPiece
   end
 
   def double_move?(origin, dest)
-    (dest.col - origin.col).abs == 2
+    (dest.row - origin.row).abs == 2
   end
 
   def draw

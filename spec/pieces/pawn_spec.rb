@@ -215,4 +215,20 @@ describe Pawn do
       expect(result.row).to eql(row + 1)
     end
   end
+
+  describe '#double_move?' do
+    let(:origin) { instance_double('Cell', col: 2, row: 6) }
+    let(:dest) { instance_double('Cell', col: 2, row: 4) }
+
+    it 'returns true if the movement is two rows and zero columns' do
+      result = white_pawn.double_move?(origin, dest)
+      expect(result).to eql(true)
+    end
+
+    it 'returns false if the movement is not a double move' do
+      wrong_dest = instance_double('Cell', col: 2, row: 5)
+      result = white_pawn.double_move?(origin, wrong_dest)
+      expect(result).to eql(false)
+    end
+  end
 end
