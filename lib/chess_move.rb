@@ -13,7 +13,6 @@ class ChessMove
     unless rule.valid?(board, origin_piece&.color, origin, dest)
       raise ArgumentError, "Expected a valid origin and destination, got #{origin}, #{dest}"
     end
-
     remove_en_passant(board)
     moved = castle(board, rule, origin, dest)
     moved ||= move_pawn(input, board, origin, dest)
@@ -46,7 +45,7 @@ class ChessMove
     min = [king.col, dest.col].min
     max = [king.col, dest.col].max
     future = board.clone
-    origin = king
+    origin = Cell.new(king.input)
     cell = Cell.new(col: 0, row: 0)
     (min + 1).upto(max - 1) do |c|
       cell.col = c
@@ -60,8 +59,8 @@ class ChessMove
   def castle(board, rule, origin, dest)
     return false unless can_castle?(board, rule, origin, dest)
 
-    board.move_piece(origin, dest)
     king = board.piece(origin)
+    board.move_piece(origin, dest)
     rook_origin = king.castling_rook(dest)
     rook_dest = king.castling_rook_destination(rook_origin)
     p "#{rook_origin}, #{rook_dest}"

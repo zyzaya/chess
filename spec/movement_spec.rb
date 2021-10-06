@@ -50,8 +50,8 @@ describe 'movement' do
       dest = Cell.new('c1')
       move.move_piece(input, board, rule, origin, dest)
       result = board.piece(Cell.new('d1'))
-      puts board.draw
       expect(result).to be_instance_of(Rook)
+      # puts board.draw
     end
   end
 
