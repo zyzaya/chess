@@ -4,7 +4,7 @@ require_relative 'chess_piece'
 
 # The King piece of a Chess game
 class King < ChessPiece
-  QUEENSIDE_CASTLE = [-3, 0].freeze
+  QUEENSIDE_CASTLE = [-2, 0].freeze
   KINGSIDE_CASTLE = [2, 0].freeze
 
   def initialize(color)

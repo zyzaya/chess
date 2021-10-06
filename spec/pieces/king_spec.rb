@@ -43,7 +43,7 @@ describe King do
     end
 
     it 'can castle queenside if it has not moved' do
-      result = king.valid?(-3, 0)
+      result = king.valid?(-2, 0)
       expect(result).to be(true)
     end
 
