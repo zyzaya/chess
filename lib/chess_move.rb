@@ -14,7 +14,7 @@ class ChessMove
     remove_en_passant(board)
     moved = castle(board, rule, origin, dest)
     moved ||= move_pawn(board, origin, dest)
-    generic_move(board, rule, origin, dest) unless moved
+    board.move_piece(origin, dest) unless moved
     update_pawn_captures(board)
   end
 
@@ -93,10 +93,7 @@ class ChessMove
     # promotion
     true
   end
-
-  def generic_move(board, rule, origin, dest)
-  end
-
+  
   def remove_en_passant(board)
     board.each_cell do |cell|
       cell.remove_en_passant if cell.instance_of?(Pawn)

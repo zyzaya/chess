@@ -17,6 +17,7 @@ describe ChessMove do
       allow(chess_move).to receive(:remove_en_passant)
       allow(chess_move).to receive(:update_pawn_captures)
       allow(board).to receive(:piece).and_return(piece)
+      allow(board).to receive(:move_piece)
     end
 
     it 'raises an error if the given move is not valid' do
@@ -43,7 +44,7 @@ describe ChessMove do
 
     it 'returns if it castled' do
       allow(chess_move).to receive(:castle).and_return(true)
-      expect(chess_move).not_to receive(:generic_move)
+      expect(board).not_to receive(:move_piece)
       chess_move.move_piece(board, rule, origin, dest)
     end
 
@@ -54,12 +55,12 @@ describe ChessMove do
 
     it 'returns if it moved a pawn' do
       allow(chess_move).to receive(:move_pawn).and_return(true)
-      expect(chess_move).not_to receive(:generic_move)
+      expect(board).not_to receive(:move_piece)
       chess_move.move_piece(board, rule, origin, dest)
     end
 
-    it 'calls generic move if the move is legal, is not castling, and is not a pawn' do
-      expect(chess_move).to receive(:generic_move)
+    it 'moves a piece if the move is legal, is not castling, and is not a pawn' do
+      expect(board).to receive(:move_piece).with(origin, dest)
       chess_move.move_piece(board, rule, origin, dest)
     end
   end
