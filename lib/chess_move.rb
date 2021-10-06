@@ -13,7 +13,7 @@ class ChessMove
 
     remove_en_passant(board)
     moved = castle(board, rule, origin, dest)
-    moved ||= move_pawn(board, rule, origin, dest)
+    moved ||= move_pawn(board, origin, dest)
     generic_move(board, rule, origin, dest) unless moved
     update_pawn_captures(board)
   end
