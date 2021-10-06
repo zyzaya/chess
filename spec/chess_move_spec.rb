@@ -258,4 +258,34 @@ describe ChessMove do
       chess_move.castle(board, rule, origin, dest)
     end
   end
+
+  describe '#remove_en_passant' do
+    let(:pawn) { instance_double('Pawn') }
+    let(:not_pawn) { instance_double('Rook') }
+
+    before do
+      allow(board).to receive(:each_cell)
+        .and_yield(pawn)
+        .and_yield(not_pawn)
+        .and_yield(nil)
+      allow(not_pawn).to receive(:instance_of?).and_return(false)
+      allow(pawn).to receive(:remove_en_passant)
+      allow(pawn).to receive(:instance_of?).and_return(false)
+      allow(pawn).to receive(:instance_of?).with(Pawn).and_return(true)
+    end
+
+    it 'iterates through all cells' do
+      expect(board).to receive(:each_cell)
+      chess_move.remove_en_passant(board)
+    end
+
+    it 'removes en_passant if the piece is a pawn' do
+      expect(pawn).to receive(:remove_en_passant)
+      chess_move.remove_en_passant(board)
+    end
+
+    it 'does nothing if the piece is not a pawn' do
+      chess_move.remove_en_passant(board)
+    end
+  end
 end

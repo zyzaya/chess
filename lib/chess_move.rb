@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative 'pieces/pawn'
+
 # Used to move pieces around on a ChessBoard
 class ChessMove
   def move_piece(board, rule, origin, dest)
@@ -105,6 +107,9 @@ class ChessMove
   end
 
   def remove_en_passant(board)
+    board.each_cell do |cell|
+      cell.remove_en_passant if cell.instance_of?(Pawn)
+    end
   end
 
   def update_pawn_captures(board)
