@@ -346,7 +346,7 @@ describe ChessMove do
 
     before do
       allow(pawn).to receive(:instance_of?).with(Pawn).and_return(true)
-      allow(chess_move).to receive(:double_move?).and_return(false)
+      allow(pawn).to receive(:double_move?).and_return(false)
       allow(board).to receive(:piece).with(origin).and_return(pawn)
       allow(board).to receive(:move_piece)
     end
@@ -363,7 +363,7 @@ describe ChessMove do
     end
 
     it 'updates en_passant if the movement is a double move' do
-      allow(chess_move).to receive(:double_move?).and_return(true)
+      allow(pawn).to receive(:double_move?).and_return(true)
       expect(chess_move).to receive(:update_en_passant).with(board, dest)
       chess_move.move_pawn(board, origin, dest)
     end

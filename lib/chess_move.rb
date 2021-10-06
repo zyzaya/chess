@@ -85,10 +85,11 @@ class ChessMove
   end
 
   def move_pawn(board, origin, dest)
-    return false unless board.piece(origin).instance_of?(Pawn)
+    piece = board.piece(origin)
+    return false unless piece.instance_of?(Pawn)
 
     board.move_piece(origin, dest)
-    update_en_passant(board, dest) if double_move?(origin, dest)
+    update_en_passant(board, dest) if piece.double_move?(origin, dest)
     # promotion
     true
   end
