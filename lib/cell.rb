@@ -49,6 +49,11 @@ class Cell
     other.instance_of?(Cell) && other.col == @col && other.row == @row
   end
 
+  def adjacent(side)
+    new_col = side.eql?(:left) ? @col - 1 : @col + 1
+    Cell.new(col: new_col, row: @row)
+  end
+
   private
 
   def to_input(col, row)

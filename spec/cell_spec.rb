@@ -66,4 +66,21 @@ describe Cell do
     result = cell == cell2
     expect(result).to eql(true)
   end
+
+  describe '#adjacent' do
+    it 'does not change the row' do
+      result = cell.adjacent(:left)
+      expect(result.row).to eql(cell.row)
+    end
+
+    it 'adds one to the column if the side is right' do
+      result = cell.adjacent(:right)
+      expect(result.col).to eql(cell.col + 1)
+    end
+
+    it 'subtracts one from the column if the side is left' do
+      result = cell.adjacent(:left)
+      expect(result.col).to eql(cell.col - 1)
+    end
+  end
 end
