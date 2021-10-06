@@ -384,8 +384,8 @@ describe ChessMove do
     before do
       allow(board).to receive(:piece).and_return(nil)
       allow(board).to receive(:piece).with(cell).and_return(pawn)
-      allow(chess_move).to receive(:adjacent_piece).with(cell, :left).and_return(left)
-      allow(chess_move).to receive(:adjacent_piece).with(cell, :right).and_return(right)
+      allow(cell).to receive(:adjacent).with(:left).and_return(left)
+      allow(cell).to receive(:adjacent).with(:right).and_return(right)
       allow(pawn).to receive(:en_passant)
     end
 

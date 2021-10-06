@@ -106,8 +106,8 @@ class ChessMove
   def update_en_passant(board, cell)
     piece = board.piece(cell)
     enemy = piece.color.eql?(:black) ? :white : :black
-    left = adjacent_piece(cell, :left)
-    right = adjacent_piece(cell, :right)
+    left = cell.adjacent(:left)
+    right = cell.adjacent(:right)
     piece.en_passant(:right) if board.piece(left)&.color.eql?(enemy)
     piece.en_passant(:left) if board.piece(right)&.color.eql?(enemy)
   end
@@ -120,12 +120,5 @@ class ChessMove
       piece.remove_capture(:right)
       piece.add_all_captures(board, col, row)
     end
-  end
-
-  private
-
-  def adjacent_piece(cell, side)
-    col = side.eql?(:left) ? cell.col - 1 : cell.col + 1
-    Cell.new(col: col, row: cell.row)
   end
 end
