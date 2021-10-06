@@ -84,23 +84,13 @@ class ChessMove
     true
   end
 
-  def move_pawn(board, rule, origin, dest)
-    # pawn_captures:
-    # 1 - after everymove iterate through each pawn.
-    #     for each pawn
-    # 1 - remove all captures
-    # 2 - check potential captures for enemy pieces
-    # 3 - add capture if it is an enemy piece.
-    # en_passant:
-    #  - can only occur immediately following a pawn
-    #     makes a move of two squares and it could've been
-    #     captured by an enemy pawn if it had only moved one square
-    # 1 - before every move remove all en_passants from all remaining pawns
-    # 2 - if the move is a pawn and the pawn moves two squares
-    #     then check left, and right for a pawn
-    # 3 - if either is an enemy pawn
-    #     then add en_passant to that pawn
+  def move_pawn(board, origin, dest)
+    return false unless board.piece(origin).instance_of?(Pawn)
+
+    board.move_piece(origin, dest)
+    update_en_passant(board, dest) if double_move?(origin, dest)
     # promotion
+    true
   end
 
   def generic_move(board, rule, origin, dest)
@@ -110,6 +100,18 @@ class ChessMove
     board.each_cell do |cell|
       cell.remove_en_passant if cell.instance_of?(Pawn)
     end
+  end
+
+  def update_en_passant(board, cell)
+    # en_passant:
+    #  - can only occur immediately following a pawn
+    #     makes a move of two squares and it could've been
+    #     captured by an enemy pawn if it had only moved one square
+    # 1 - before every move remove all en_passants from all remaining pawns
+    # 2 - if the move is a pawn and the pawn moves two squares
+    #     then check left, and right for a pawn
+    # 3 - if either is an enemy pawn
+    #     then add en_passant to that pawn
   end
 
   def update_pawn_captures(board)
@@ -128,6 +130,9 @@ class ChessMove
   end
 
   private
+
+  def double_move?(origin, dest)
+  end
 
   def add_black_pawn_captures(board, piece, col, row)
     left_capture = pawn_capture(col, row, :black, :left)

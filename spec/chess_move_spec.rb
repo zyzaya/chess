@@ -353,4 +353,40 @@ describe ChessMove do
       chess_move.update_pawn_captures(board)
     end
   end
+
+  describe '#move_pawn' do
+    let(:pawn) { instance_double('Pawn') }
+    let(:not_pawn) { instance_double('Rook', instance_of?: false) }
+    let(:origin) { instance_double('Cell') }
+    let(:dest) { instance_double('Cell') }
+
+    before do
+      allow(pawn).to receive(:instance_of?).with(Pawn).and_return(true)
+      allow(chess_move).to receive(:double_move?).and_return(false)
+      allow(board).to receive(:piece).with(origin).and_return(pawn)
+      allow(board).to receive(:move_piece)
+    end
+
+    it 'returns false if the piece at origin is not a pawn' do
+      allow(board).to receive(:piece).with(origin).and_return(not_pawn)
+      result = chess_move.move_pawn(board, origin, dest)
+      expect(result).to eql(false)
+    end
+
+    it 'moves the piece if it is a pawn' do
+      expect(board).to receive(:move_piece).with(origin, dest)
+      chess_move.move_pawn(board, origin, dest)
+    end
+
+    it 'updates en_passant if the movement is a double move' do
+      allow(chess_move).to receive(:double_move?).and_return(true)
+      expect(chess_move).to receive(:update_en_passant).with(board, dest)
+      chess_move.move_pawn(board, origin, dest)
+    end
+
+    it 'returns true if it moved a pawn' do
+      result = chess_move.move_pawn(board, origin, dest)
+      expect(result).to eql(true)
+    end
+  end
 end
