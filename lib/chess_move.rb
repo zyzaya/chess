@@ -58,8 +58,9 @@ class ChessMove
     return false unless can_castle?(board, rule, origin, dest)
 
     board.move_piece(origin, dest)
-    rook_origin = find_castling_rook(dest)
-    rook_dest = find_castling_rook_destination(rook_origin)
+    king = board.piece(origin)
+    rook_origin = king.castling_rook(dest)
+    rook_dest = king.castling_rook_destination(rook_origin)
     board.move_piece(rook_origin, rook_dest)
     true
   end

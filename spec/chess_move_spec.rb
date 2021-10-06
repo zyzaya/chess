@@ -189,6 +189,7 @@ describe ChessMove do
   end
 
   describe '#castle' do
+    let(:king) { instance_double('King') }
     let(:origin) { instance_double('Cell', col: 4, row: 7, input: 'e8') }
     let(:dest) { instance_double('Cell', col: 0, row: 7, input: 'a8') }
     let(:rook_origin) { instance_double('Cell', col: 0, row: 7, input: 'a8') }
@@ -196,8 +197,9 @@ describe ChessMove do
 
     before do
       allow(chess_move).to receive(:can_castle?).and_return(true)
-      allow(chess_move).to receive(:find_castling_rook).with(dest).and_return(rook_origin)
-      allow(chess_move).to receive(:find_castling_rook_destination).with(rook_origin).and_return(rook_dest)
+      allow(king).to receive(:castling_rook).with(dest).and_return(rook_origin)
+      allow(king).to receive(:castling_rook_destination).with(rook_origin).and_return(rook_dest)
+      allow(board).to receive(:piece).with(origin).and_return(king)
       allow(board).to receive(:move_piece).with(origin, dest)
       allow(board).to receive(:move_piece).with(rook_origin, rook_dest)
     end
