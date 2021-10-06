@@ -193,7 +193,6 @@ describe ChessBoard do
     end
   end
 
-
   describe '#force_piece' do
     let(:cell) { instance_double('Cell', col: 4, row: 3) }
     let(:piece) { instance_double('ChessPiece', kind_of?: true) }

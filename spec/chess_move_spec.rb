@@ -9,6 +9,7 @@ describe ChessMove do
   let(:piece) { instance_double('ChessPiece', color: :white) }
   let(:origin) { instance_double('Cell', col: 0, row: 0) }
   let(:dest) { instance_double('Cell', col: 1, row: 1) }
+  let(:input) { instance_double('ChessInput') }
 
   describe '#move_piece' do
     before do
@@ -23,45 +24,45 @@ describe ChessMove do
     it 'raises an error if the given move is not valid' do
       allow(rule).to receive(:valid?).and_return(false)
       expect do
-        chess_move.move_piece(board, rule, origin, dest)
+        chess_move.move_piece(input, board, rule, origin, dest)
       end.to raise_exception(ArgumentError)
     end
 
     it 'removes en_passant movements from pawns' do
       expect(chess_move).to receive(:remove_en_passant)
-      chess_move.move_piece(board, rule, origin, dest)
+      chess_move.move_piece(input, board, rule, origin, dest)
     end
 
     it 'updates pawn capture movements' do
       expect(chess_move).to receive(:update_pawn_captures)
-      chess_move.move_piece(board, rule, origin, dest)
+      chess_move.move_piece(input, board, rule, origin, dest)
     end
 
     it 'tries to castle' do
       expect(chess_move).to receive(:castle)
-      chess_move.move_piece(board, rule, origin, dest)
+      chess_move.move_piece(input, board, rule, origin, dest)
     end
 
     it 'returns if it castled' do
       allow(chess_move).to receive(:castle).and_return(true)
       expect(board).not_to receive(:move_piece)
-      chess_move.move_piece(board, rule, origin, dest)
+      chess_move.move_piece(input, board, rule, origin, dest)
     end
 
     it 'tries to move a pawn' do
       expect(chess_move).to receive(:move_pawn)
-      chess_move.move_piece(board, rule, origin, dest)
+      chess_move.move_piece(input, board, rule, origin, dest)
     end
 
     it 'returns if it moved a pawn' do
       allow(chess_move).to receive(:move_pawn).and_return(true)
       expect(board).not_to receive(:move_piece)
-      chess_move.move_piece(board, rule, origin, dest)
+      chess_move.move_piece(input, board, rule, origin, dest)
     end
 
     it 'moves a piece if the move is legal, is not castling, and is not a pawn' do
       expect(board).to receive(:move_piece).with(origin, dest)
-      chess_move.move_piece(board, rule, origin, dest)
+      chess_move.move_piece(input, board, rule, origin, dest)
     end
   end
 
@@ -297,7 +298,6 @@ describe ChessMove do
       chess_move.update_pawn_captures(board)
     end
 
-
     it 'adds captures to the pawn' do
       expect(white_pawn).to receive(:add_all_captures)
       expect(black_pawn).to receive(:add_all_captures)
@@ -322,30 +322,30 @@ describe ChessMove do
 
     it 'returns false if the piece at origin is not a pawn' do
       allow(board).to receive(:piece).with(origin).and_return(not_pawn)
-      result = chess_move.move_pawn(board, input, origin, dest)
+      result = chess_move.move_pawn(input, board, origin, dest)
       expect(result).to eql(false)
     end
 
     it 'moves the piece if it is a pawn' do
       expect(board).to receive(:move_piece).with(origin, dest)
-      chess_move.move_pawn(board, input, origin, dest)
+      chess_move.move_pawn(input, board, origin, dest)
     end
 
     it 'updates en_passant if the movement is a double move' do
       allow(pawn).to receive(:double_move?).and_return(true)
       expect(chess_move).to receive(:update_en_passant).with(board, dest)
-      chess_move.move_pawn(board, input, origin, dest)
+      chess_move.move_pawn(input, board, origin, dest)
     end
 
     it 'returns true if it moved a pawn' do
-      result = chess_move.move_pawn(board, input, origin, dest)
+      result = chess_move.move_pawn(input, board, origin, dest)
       expect(result).to eql(true)
     end
 
     it 'promotes a pawn when it arrives at the final row' do
       allow(pawn).to receive(:promote?).and_return(true)
-      expect(chess_move).to receive(:promote_piece).with(dest, input)
-      chess_move.move_pawn(board, input, origin, dest)
+      expect(chess_move).to receive(:promote_piece).with(input, board, dest)
+      chess_move.move_pawn(input, board, origin, dest)
     end
   end
 
@@ -395,25 +395,25 @@ describe ChessMove do
     it 'sets dest to a bishop when input is input' do
       allow(input).to receive(:promote).and_return('bishop')
       expect(board).to receive(:force_piece).with(cell, instance_of(Bishop))
-      chess_move.promote_piece(board, cell, input)
+      chess_move.promote_piece(input, board, cell)
     end
 
     it 'sets dest to a knight when input is input' do
       allow(input).to receive(:promote).and_return('knight')
       expect(board).to receive(:force_piece).with(cell, instance_of(Knight))
-      chess_move.promote_piece(board, cell, input)
+      chess_move.promote_piece(input, board, cell)
     end
 
     it 'sets dest to a queen when input is input' do
       allow(input).to receive(:promote).and_return('queen')
       expect(board).to receive(:force_piece).with(cell, instance_of(Queen))
-      chess_move.promote_piece(board, cell, input)
+      chess_move.promote_piece(input, board, cell)
     end
 
     it 'sets dest to a rook when input is input' do
       allow(input).to receive(:promote).and_return('rook')
       expect(board).to receive(:force_piece).with(cell, instance_of(Rook))
-      chess_move.promote_piece(board, cell, input)
+      chess_move.promote_piece(input, board, cell)
     end
   end
 end

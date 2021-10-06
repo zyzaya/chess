@@ -8,8 +8,7 @@ require_relative 'pieces/rook'
 
 # Used to move pieces around on a ChessBoard
 class ChessMove
-  def move_piece(board, rule, origin, dest)
-    # origin_piece = board.piece(origin, col: coords[:origin_col], row: coords[:origin_row])
+  def move_piece(input, board, rule, origin, dest)
     origin_piece = board.piece(origin)
     unless rule.valid?(board, origin_piece&.color, origin, dest)
       raise ArgumentError, "Expected a valid origin and destination, got #{origin}, #{dest}"
@@ -17,7 +16,7 @@ class ChessMove
 
     remove_en_passant(board)
     moved = castle(board, rule, origin, dest)
-    moved ||= move_pawn(board, origin, dest)
+    moved ||= move_pawn(input, board, origin, dest)
     board.move_piece(origin, dest) unless moved
     update_pawn_captures(board)
   end
@@ -69,23 +68,17 @@ class ChessMove
     true
   end
 
-  def move_pawn(board, input, origin, dest)
+  def move_pawn(input, board, origin, dest)
     piece = board.piece(origin)
     return false unless piece.instance_of?(Pawn)
 
     board.move_piece(origin, dest)
     update_en_passant(board, dest) if piece.double_move?(origin, dest)
-    promote_piece(board, dest, input) if piece.promote?(dest)
-
-    # promotion
-    # if piece (dest) is at final row (determine by pawn.promote?)
-    # ask the user for which piece to promote to
-    # - can only promot to queen, knight, rook, or bishop
-    # set dest to that piece of the original color.
+    promote_piece(input, board, dest) if piece.promote?(dest)
     true
   end
 
-  def promote_piece(board, cell, input)
+  def promote_piece(input, board, cell)
     color = board.piece(cell).color
     case input.promote
     when 'bishop' then board.force_piece(cell, Bishop.new(color))
