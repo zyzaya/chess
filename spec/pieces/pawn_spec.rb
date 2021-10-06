@@ -158,7 +158,37 @@ describe Pawn do
     end
   end
 
-  describe '#add_all_caputres' do
+  describe '#add_all_captures' do
+    let(:board) { instance_double('ChessBoard') }
+    let(:left) { instance_double('Cell') }
+    let(:right) { instance_double('Cell') }
+    col = 5
+    row = 6
+
+    before do
+      allow(board).to receive(:on_board?).and_return(true)
+      allow(board).to receive(:capture_cell).with(col, row, :left).and_return(left)
+      allow(board).to receive(:capture_cell).with(col, row, :right).and_return(right)
+      allow(board).to receive(:piece).and_return(black_pawn)
+    end
+
+    it 'does not add capture if target is off of the board' do
+      allow(board).to receive(:on_board?).and_return(false)
+      expect(white_pawn).not_to receive(:add_capture)
+      white_pawn.add_all_captures(board, col, row)
+    end
+
+    it 'does not add capture if the piece is the same color' do
+      allow(board).to receive(:piece).and_return(white_pawn)
+      expect(white_pawn).not_to receive(:add_capture)
+      white_pawn.add_all_captures(board, col, row)
+    end
+
+    it 'adds capture if target is on board and of the opposite color' do
+      expect(white_pawn).to receive(:add_capture).with(:left)
+      expect(white_pawn).to receive(:add_capture).with(:right)
+      white_pawn.add_all_captures(board, col, row)
+    end
   end
 
   describe '#capture_cell' do
