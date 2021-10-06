@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative 'pieces/chess_piece'
 require_relative 'pieces/bishop'
 require_relative 'pieces/king'
 require_relative 'pieces/knight'
@@ -63,6 +64,9 @@ class ChessBoard
   end
 
   def force_piece(cell, piece)
+    return unless on_board?(cell) && piece.kind_of?(ChessPiece)
+
+    @board[cell.col][cell.row] = piece
   end
 
   def on_board?(cell)

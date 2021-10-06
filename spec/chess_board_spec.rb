@@ -193,6 +193,31 @@ describe ChessBoard do
     end
   end
 
+
+  describe '#force_piece' do
+    let(:cell) { instance_double('Cell', col: 4, row: 3) }
+    let(:piece) { instance_double('ChessPiece', kind_of?: true) }
+
+    before do
+      allow(chess_board).to receive(:on_board?).and_return(true)
+    end
+
+    it 'does nothing if the cell is off the board' do
+      board = chess_board.instance_variable_get(:@board)
+      allow(chess_board).to receive(:on_board?).and_return(false)
+      chess_board.force_piece(cell, piece)
+      result = board[4][3]
+      expect(result).to eql(nil)
+    end
+
+    it 'sets the cell to the piece' do
+      board = chess_board.instance_variable_get(:@board)
+      chess_board.force_piece(cell, piece)
+      result = board[4][3]
+      expect(result).to eql(piece)
+    end
+  end
+
   describe '#clone' do
     it 'creates a new objects' do
       clone = chess_board.clone
