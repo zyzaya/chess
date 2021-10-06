@@ -79,4 +79,40 @@ describe King do
       expect(result).to be(true)
     end
   end
+
+  describe '#castling_rook' do
+    it 'returns the related rook for the given destination' do
+      destinations = %w[c8 g8 c1 g1]
+      rooks = %w[a8 h8 a1 h1]
+      destinations.each.with_index do |d, i|
+        dest = instance_double('Cell', input: d)
+        result = king.castling_rook(dest)
+        expect(result.input).to eql(rooks[i])
+      end
+    end
+
+    it 'returns nil if the destination is not a castling destination' do
+      dest = instance_double('Cell', input: 'b7')
+      result = king.castling_rook(dest)
+      expect(result).to eql(nil)
+    end
+  end
+
+  describe '#castling_rook_destination' do
+    it 'returns the related rook for the given destination' do
+      rooks = %w[a8 h8 a1 h1]
+      destinations = %w[d8 f8 d1 f1]
+      rooks.each.with_index do |d, i|
+        rook = instance_double('Cell', input: d)
+        result = king.castling_rook_destination(rook)
+        expect(result.input).to eql(destinations[i])
+      end
+    end
+
+    it 'returns nil if the destination is not a castling destination' do
+      dest = instance_double('Cell', input: 'b7')
+      result = king.castling_rook_destination(dest)
+      expect(result).to eql(nil)
+    end
+  end
 end

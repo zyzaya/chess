@@ -32,6 +32,26 @@ class King < ChessPiece
     @color.eql?(:white) ? '♔' : '♚'
   end
 
+  def castling_rook(dest)
+    transition = {
+      'c8' => Cell.new('a8'),
+      'g8' => Cell.new('h8'),
+      'c1' => Cell.new('a1'),
+      'g1' => Cell.new('h1')
+    }
+    transition[dest.input]
+  end
+
+  def castling_rook_destination(rook)
+    transition = {
+      'a8' => Cell.new('d8'),
+      'h8' => Cell.new('f8'),
+      'a1' => Cell.new('d1'),
+      'h1' => Cell.new('f1')
+    }
+    transition[rook.input]
+  end
+
   private
 
   def add_diagonal
