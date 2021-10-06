@@ -297,13 +297,16 @@ describe ChessMove do
     let(:cell) { instance_double('Cell') }
 
     before do
-      allow(chess_move).to receive(:pawn_capture).and_return(nil)
       allow(white_pawn).to receive(:instance_of?).with(Pawn).and_return(true)
       allow(white_pawn).to receive(:add_capture)
       allow(white_pawn).to receive(:remove_capture)
+      allow(white_pawn).to receive(:add_all_captures)
+
       allow(black_pawn).to receive(:instance_of?).with(Pawn).and_return(true)
       allow(black_pawn).to receive(:add_capture)
       allow(black_pawn).to receive(:remove_capture)
+      allow(black_pawn).to receive(:add_all_captures)
+
       allow(board).to receive(:piece).and_return(nil)
       allow(board).to receive(:on_board?).and_return(true)
       allow(board).to receive(:each_cell)
@@ -320,36 +323,17 @@ describe ChessMove do
     end
 
     it 'removes captures for each pawn' do
-      expect(white_pawn).to receive(:remove_capture).exactly(2).times
-      expect(black_pawn).to receive(:remove_capture).exactly(2).times
+      expect(white_pawn).to receive(:remove_capture).with(:left)
+      expect(white_pawn).to receive(:remove_capture).with(:right)
+      expect(black_pawn).to receive(:remove_capture).with(:left)
+      expect(black_pawn).to receive(:remove_capture).with(:right)
       chess_move.update_pawn_captures(board)
     end
 
-    it 'adds left capture to a black pawn if the cell [-1, -1] is an enemy' do
-      allow(chess_move).to receive(:pawn_capture).with(anything, anything, :black, :left).and_return(cell)
-      allow(board).to receive(:piece).with(cell).and_return(white_piece)
-      expect(black_pawn).to receive(:add_capture).with(:left)
-      chess_move.update_pawn_captures(board)
-    end
 
-    it 'adds right capture to a black pawn if the cell [1, -1] is an enemy' do
-      allow(chess_move).to receive(:pawn_capture).with(anything, anything, :black, :right).and_return(cell)
-      allow(board).to receive(:piece).with(cell).and_return(white_piece)
-      expect(black_pawn).to receive(:add_capture).with(:right)
-      chess_move.update_pawn_captures(board)
-    end
-
-    it 'adds left capture to a white pawn if the cell [-1, 1] is an enemy' do
-      allow(chess_move).to receive(:pawn_capture).with(anything, anything, :white, :left).and_return(cell)
-      allow(board).to receive(:piece).with(cell).and_return(black_piece)
-      expect(white_pawn).to receive(:add_capture).with(:left)
-      chess_move.update_pawn_captures(board)
-    end
-
-    it 'adds right capture to a white pawn if the cell [1, 1] is an enemy' do
-      allow(chess_move).to receive(:pawn_capture).with(anything, anything, :white, :right).and_return(cell)
-      allow(board).to receive(:piece).with(cell).and_return(black_piece)
-      expect(white_pawn).to receive(:add_capture).with(:right)
+    it 'adds captures to the pawn' do
+      expect(white_pawn).to receive(:add_all_captures)
+      expect(black_pawn).to receive(:add_all_captures)
       chess_move.update_pawn_captures(board)
     end
   end

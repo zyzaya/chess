@@ -117,12 +117,6 @@ class ChessMove
 
       piece.remove_capture(:left)
       piece.remove_capture(:right)
-      # case piece.color
-      # when :black
-      #   add_black_pawn_captures(board, piece, col, row)
-      # when :white
-      #   add_white_pawn_captures(board, piece, col, row)
-      # end
       piece.add_all_captures(board, col, row)
     end
   end
