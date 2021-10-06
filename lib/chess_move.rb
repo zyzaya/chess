@@ -107,12 +107,12 @@ class ChessMove
   end
 
   def update_pawn_captures(board)
-    board.each_cell do |piece, col, row|
+    board.each_cell do |piece, cell|
       next unless piece.instance_of?(Pawn)
 
       piece.remove_capture(:left)
       piece.remove_capture(:right)
-      piece.add_all_captures(board, col, row)
+      piece.add_all_captures(board, cell)
     end
   end
 end

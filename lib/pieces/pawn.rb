@@ -34,9 +34,9 @@ class Pawn < ChessPiece
     end
   end
 
-  def add_all_captures(board, col, row)
-    right = capture_cell(col, row, :right)
-    left = capture_cell(col, row, :left)
+  def add_all_captures(board, cell)
+    right = capture_cell(cell, :right)
+    left = capture_cell(cell, :left)
     enemy = @color.eql?(:black) ? :white : :black
     add_capture(:left) if
       board.on_board?(left) &&
@@ -46,17 +46,17 @@ class Pawn < ChessPiece
       board.piece(right)&.color.eql?(enemy)
   end
 
-  def capture_cell(col, row, side)
-    cell = Cell.new(col: col, row: row)
+  def capture_cell(cell, side)
+    new_cell = Cell.new(cell.input)
     case @color
-    when :black then cell.row -= 1
-    when :white then cell.row += 1
+    when :black then new_cell.row -= 1
+    when :white then new_cell.row += 1
     end
     case side
-    when :left then cell.col -= 1
-    when :right then cell.col += 1
+    when :left then new_cell.col -= 1
+    when :right then new_cell.col += 1
     end
-    cell
+    new_cell
   end
 
   def add_capture(side)

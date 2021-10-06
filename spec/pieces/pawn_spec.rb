@@ -192,27 +192,26 @@ describe Pawn do
   end
 
   describe '#capture_cell' do
-    col = 5
-    row = 6
+    let(:cell) { instance_double('Cell', col: 5, row: 5, input: 'f6') }
 
     it 'subtracts one from col if side is left' do
-      result = white_pawn.capture_cell(col, row, :left)
-      expect(result.col).to eql(col - 1)
+      result = white_pawn.capture_cell(cell, :left)
+      expect(result.col).to eql(cell.col - 1)
     end
 
     it 'adds one to col if side is right' do
-      result = white_pawn.capture_cell(col, row, :right)
-      expect(result.col).to eql(col + 1)
+      result = white_pawn.capture_cell(cell, :right)
+      expect(result.col).to eql(cell.col + 1)
     end
 
     it 'subtracts one from row if color is black' do
-      result = black_pawn.capture_cell(col, row, :right)
-      expect(result.row).to eql(row - 1)
+      result = black_pawn.capture_cell(cell, :right)
+      expect(result.row).to eql(cell.row - 1)
     end
 
     it 'adds one to row if color is white' do
-      result = white_pawn.capture_cell(col, row, :left)
-      expect(result.row).to eql(row + 1)
+      result = white_pawn.capture_cell(cell, :left)
+      expect(result.row).to eql(cell.row + 1)
     end
   end
 
