@@ -5,14 +5,15 @@ class ChessMove
   def move_piece(board, rule, origin, dest)
     # origin_piece = board.piece(origin, col: coords[:origin_col], row: coords[:origin_row])
     origin_piece = board.piece(origin)
-    raise ArgumentError.new(
-      "Expected a valid origin and destination, got #{origin}, #{dest}"
-    ) unless rule.valid?(board, origin_piece&.color, origin, dest)
-    return if castle(board, rule, origin, dest)
+    unless rule.valid?(board, origin_piece&.color, origin, dest)
+      raise ArgumentError, "Expected a valid origin and destination, got #{origin}, #{dest}"
+    end
 
-    return if move_pawn(board, rule, origin, dest)
-
-    generic_move(board, rule, origin, dest)
+    remove_en_passant(board)
+    moved = castle(board, rule, origin, dest)
+    moved ||= move_pawn(board, rule, origin, dest)
+    generic_move(board, rule, origin, dest) unless moved
+    update_pawn_captures(board)
   end
 
   def castling?(board, origin, dest)
@@ -82,8 +83,30 @@ class ChessMove
   end
 
   def move_pawn(board, rule, origin, dest)
+    # pawn_captures:
+    # 1 - after everymove iterate through each pawn.
+    #     for each pawn
+    # 1 - remove all captures
+    # 2 - check potential captures for enemy pieces
+    # 3 - add capture if it is an enemy piece.
+    # en_passant:
+    #  - can only occur immediately following a pawn
+    #     makes a move of two squares and it could've been
+    #     captured by an enemy pawn if it had only moved one square
+    # 1 - before every move remove all en_passants from all remaining pawns
+    # 2 - if the move is a pawn and the pawn moves two squares
+    #     then check left, and right for a pawn
+    # 3 - if either is an enemy pawn
+    #     then add en_passant to that pawn
+    # promotion
   end
 
   def generic_move(board, rule, origin, dest)
+  end
+
+  def remove_en_passant(board)
+  end
+
+  def update_pawn_captures(board)
   end
 end

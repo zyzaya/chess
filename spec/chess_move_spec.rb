@@ -14,6 +14,8 @@ describe ChessMove do
     before do
       allow(chess_move).to receive(:castle).and_return(false)
       allow(chess_move).to receive(:move_pawn).and_return(false)
+      allow(chess_move).to receive(:remove_en_passant)
+      allow(chess_move).to receive(:update_pawn_captures)
       allow(board).to receive(:piece).and_return(piece)
     end
 
@@ -22,6 +24,16 @@ describe ChessMove do
       expect do
         chess_move.move_piece(board, rule, origin, dest)
       end.to raise_exception(ArgumentError)
+    end
+
+    it 'removes en_passant movements from pawns' do
+      expect(chess_move).to receive(:remove_en_passant)
+      chess_move.move_piece(board, rule, origin, dest)
+    end
+
+    it 'updates pawn capture movements' do
+      expect(chess_move).to receive(:update_pawn_captures)
+      chess_move.move_piece(board, rule, origin, dest)
     end
 
     it 'tries to castle' do
