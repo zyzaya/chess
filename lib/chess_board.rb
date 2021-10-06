@@ -62,6 +62,9 @@ class ChessBoard
     @board[cell.col][cell.row]
   end
 
+  def force_piece(cell, piece)
+  end
+
   def on_board?(cell)
     cell.instance_of?(Cell) && [cell.col, cell.row, cell.input].none?(&:nil?)
   end

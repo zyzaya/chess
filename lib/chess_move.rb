@@ -75,15 +75,8 @@ class ChessMove
 
     board.move_piece(origin, dest)
     update_en_passant(board, dest) if piece.double_move?(origin, dest)
-    promote_piece(dest, input) if piece.promote?(dest)
-    # if piece.promote?(dest)
-    #   case input.promote
-    #   when 'bishop' then board.force_piece(dest, Bishop.new(piece.color))
-    #   when 'knight' then board.force_piece(dest, Bishop.new(piece.color))
-    #   when 'queen' then board.force_piece(dest, Bishop.new(piece.color))
-    #   when 'rook' then board.force_piece(dest, Bishop.new(piece.color))
-    #   end
-    # end
+    promote_piece(board, dest, input) if piece.promote?(dest)
+
     # promotion
     # if piece (dest) is at final row (determine by pawn.promote?)
     # ask the user for which piece to promote to
@@ -92,7 +85,17 @@ class ChessMove
     true
   end
 
-  def promote_piece(cell, input)
+  def promote_piece(board, cell, input)
+    color = board.piece(cell).color
+    case input.promote
+    when 'bishop' then board.force_piece(cell, Bishop.new(color))
+    when 'knight' then board.force_piece(cell, Knight.new(color))
+    when 'queen' then board.force_piece(cell, Queen.new(color))
+    when 'rook'
+      rook = Rook.new(color, :left)
+      rook.moved = true
+      board.force_piece(cell, rook)
+    end
   end
 
   def remove_en_passant(board)

@@ -12,12 +12,6 @@ class ChessInput
       valid_turn_input?(board, rule, color, val)
     end
     result = result.split
-    # {
-    #   origin_col: board.col(result[0]),
-    #   origin_row: board.row(result[0]),
-    #   dest_col: board.col(result[2]),
-    #   dest_row: board.row(result[2])
-    # }
     {
       origin: Cell.new(result[0]),
       dest: Cell.new(result[2])
@@ -42,5 +36,8 @@ class ChessInput
       [board.col(origin), board.row(origin), board.col(dest), board.row(dest)].any?(&:nil?)
     p 'is on board'
     rule.valid?(board, color, origin, dest)
+  end
+
+  def promote
   end
 end

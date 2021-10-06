@@ -381,4 +381,39 @@ describe ChessMove do
       chess_move.update_en_passant(board, cell)
     end
   end
+
+  describe '#promote_piece' do
+    let(:input) { instance_double('ChessInput') }
+    let(:cell) { instance_double('Cell') }
+    let(:piece) { instance_double('ChessPiece', color: :white) }
+
+    before do
+      allow(board).to receive(:piece).and_return(piece)
+      allow(board).to receive(:force_piece)
+    end
+
+    it 'sets dest to a bishop when input is input' do
+      allow(input).to receive(:promote).and_return('bishop')
+      expect(board).to receive(:force_piece).with(cell, instance_of(Bishop))
+      chess_move.promote_piece(board, cell, input)
+    end
+
+    it 'sets dest to a knight when input is input' do
+      allow(input).to receive(:promote).and_return('knight')
+      expect(board).to receive(:force_piece).with(cell, instance_of(Knight))
+      chess_move.promote_piece(board, cell, input)
+    end
+
+    it 'sets dest to a queen when input is input' do
+      allow(input).to receive(:promote).and_return('queen')
+      expect(board).to receive(:force_piece).with(cell, instance_of(Queen))
+      chess_move.promote_piece(board, cell, input)
+    end
+
+    it 'sets dest to a rook when input is input' do
+      allow(input).to receive(:promote).and_return('rook')
+      expect(board).to receive(:force_piece).with(cell, instance_of(Rook))
+      chess_move.promote_piece(board, cell, input)
+    end
+  end
 end
