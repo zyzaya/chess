@@ -38,7 +38,7 @@ class ChessMove
     return false if king.moved || board.piece(rook_cell)&.moved
 
     !rule.obstructed?(board, origin, rook_cell) &&
-      !castle_in_check?(board, rule, king, dest)
+      !castle_in_check?(board, rule, origin, dest)
   end
 
   def castle_in_check?(board, rule, king, dest)

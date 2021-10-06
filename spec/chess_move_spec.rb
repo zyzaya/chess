@@ -70,7 +70,7 @@ describe ChessMove do
     let(:king) { instance_double('King', instance_of?: false) }
     let(:not_king) { instance_double('ChessPiece', instance_of?: false) }
     let(:origin) { instance_double('Cell', col: 4, row: 0) }
-    let(:dest) { instance_double('Cell', col: 1, row: 0) }
+    let(:dest) { instance_double('Cell', col: 2, row: 0) }
 
     before do
       allow(board).to receive(:piece).and_return(king)
@@ -89,7 +89,7 @@ describe ChessMove do
       expect(result).to eql(false)
     end
 
-    it 'returns true if the the movemenet is castling' do
+    it 'returns true if the the movement is castling' do
       result = chess_move.castling?(board, origin, dest)
       expect(result).to eql(true)
     end
