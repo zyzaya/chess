@@ -76,11 +76,9 @@ describe 'movement' do
     it 'allows the pawn to capture diagonally' do
       origin = Cell.new('f2')
       dest = Cell.new('e3')
-      puts board.draw
-      p board.piece(origin).valid
       move.move_piece(input, board, rule, origin, dest)
       result = board.piece(dest)
-      expect(result.color).to eql(:black)
+      expect(result.color).to eql(:white)
     end
   end
 
