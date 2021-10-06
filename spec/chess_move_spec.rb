@@ -389,4 +389,37 @@ describe ChessMove do
       expect(result).to eql(true)
     end
   end
+
+  describe '#update_en_passant' do
+    let(:pawn) { instance_double('Pawn', color: :white) }
+    let(:enemy) { instance_double('ChessPiece', color: :black) }
+    let(:cell) { instance_double('Cell') }
+    let(:left) { instance_double('Cell') }
+    let(:right) { instance_double('Cell') }
+
+    before do
+      allow(board).to receive(:piece).and_return(nil)
+      allow(board).to receive(:piece).with(cell).and_return(pawn)
+      allow(chess_move).to receive(:adjacent_piece).with(cell, :left).and_return(left)
+      allow(chess_move).to receive(:adjacent_piece).with(cell, :right).and_return(right)
+      allow(pawn).to receive(:en_passant)
+    end
+
+    it 'adds en_passant to right if the piece to the left is an enemy' do
+      allow(board).to receive(:piece).with(left).and_return(enemy)
+      expect(pawn).to receive(:en_passant).with(:right)
+      chess_move.update_en_passant(board, cell)
+    end
+
+    it 'adds en_passant to the left if the piece to the right is an enemy' do
+      allow(board).to receive(:piece).with(right).and_return(enemy)
+      expect(pawn).to receive(:en_passant).with(:left)
+      chess_move.update_en_passant(board, cell)
+    end
+
+    it 'does nothing if no adjacent pieces are enemies' do
+      expect(pawn).not_to receive(:en_passant)
+      chess_move.update_en_passant(board, cell)
+    end
+  end
 end

@@ -103,15 +103,12 @@ class ChessMove
   end
 
   def update_en_passant(board, cell)
-    # en_passant:
-    #  - can only occur immediately following a pawn
-    #     makes a move of two squares and it could've been
-    #     captured by an enemy pawn if it had only moved one square
-    # 1 - before every move remove all en_passants from all remaining pawns
-    # 2 - if the move is a pawn and the pawn moves two squares
-    #     then check left, and right for a pawn
-    # 3 - if either is an enemy pawn
-    #     then add en_passant to that pawn
+    piece = board.piece(cell)
+    enemy = piece.color.eql?(:black) ? :white : :black
+    left = adjacent_piece(cell, :left)
+    right = adjacent_piece(cell, :right)
+    piece.en_passant(:right) if board.piece(left)&.color.eql?(enemy)
+    piece.en_passant(:left) if board.piece(right)&.color.eql?(enemy)
   end
 
   def update_pawn_captures(board)
@@ -132,6 +129,11 @@ class ChessMove
   private
 
   def double_move?(origin, dest)
+  end
+
+  def adjacent_piece(cell, side)
+    col = side.eql?(:left) ? cell.col - 1 : cell.col + 1
+    Cell.new(col: col, row: cell.row)
   end
 
   def add_black_pawn_captures(board, piece, col, row)
