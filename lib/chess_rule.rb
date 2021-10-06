@@ -33,9 +33,12 @@ class ChessRule
   end
 
   def valid_transition?(board, origin, dest)
-    taken_cell?(board, origin) &&
-      !taken_cell?(board, dest) &&
-      board.on_board?(dest)
+    return false unless taken_cell?(board, origin)
+
+    enemy = board.piece(origin).color.eql?(:black) ? :white : :black
+    board.on_board?(dest) &&
+      (!taken_cell?(board, dest) ||
+      board.piece(dest)&.color.eql?(enemy))
   end
 
   def check?(board, color)

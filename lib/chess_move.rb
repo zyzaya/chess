@@ -13,6 +13,7 @@ class ChessMove
     unless rule.valid?(board, origin_piece&.color, origin, dest)
       raise ArgumentError, "Expected a valid origin and destination, got #{origin}, #{dest}"
     end
+
     remove_en_passant(board)
     moved = castle(board, rule, origin, dest)
     moved ||= move_pawn(input, board, origin, dest)
@@ -63,7 +64,6 @@ class ChessMove
     board.move_piece(origin, dest)
     rook_origin = king.castling_rook(dest)
     rook_dest = king.castling_rook_destination(rook_origin)
-    p "#{rook_origin}, #{rook_dest}"
     board.move_piece(rook_origin, rook_dest)
     true
   end

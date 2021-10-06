@@ -52,11 +52,15 @@ describe ChessRule do
 
   describe '#valid_transition?' do
     let(:board) { instance_double('ChessBoard') }
+    let(:origin_piece) { instance_double('ChessPiece', color: :black) }
+    let(:dest_piece) { instance_double('ChessPiece', color: :white )}
     let(:origin) { instance_double('Cell') }
     let(:dest) { instance_double('Cell') }
 
     before do
       allow(board).to receive(:on_board?).with(dest).and_return(true)
+      allow(board).to receive(:piece).with(origin).and_return(origin_piece)
+      allow(board).to receive(:piece).with(dest).and_return(dest_piece)
       allow(chess_rule).to receive(:taken_cell?).with(board, origin).and_return(true)
       allow(chess_rule).to receive(:taken_cell?).with(board, dest).and_return(false)
     end
@@ -67,10 +71,18 @@ describe ChessRule do
       expect(result).to eql(false)
     end
 
-    it 'returns false if dest is taken' do
+    it 'returns false if dest is taken by an ally' do
       allow(chess_rule).to receive(:taken_cell?).with(board, dest).and_return(true)
+      allow(board).to receive(:piece).with(dest).and_return(origin_piece)
       result = chess_rule.valid_transition?(board, origin, dest)
       expect(result).to eql(false)
+    end
+
+    it 'returns true if dest is taken by an enemy' do
+      allow(chess_rule).to receive(:taken_cell?).with(board, dest).and_return(true)
+      allow(board).to receive(:piece).with(dest).and_return(dest_piece)
+      result = chess_rule.valid_transition?(board, origin, dest)
+      expect(result).to eql(true)
     end
 
     it 'returns false if dest is off board' do
@@ -83,6 +95,8 @@ describe ChessRule do
       result = chess_rule.valid_transition?(board, origin, dest)
       expect(result).to eql(true)
     end
+
+    
   end
 
   describe '#removes_check?' do

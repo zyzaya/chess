@@ -17,6 +17,16 @@ class CastlingBoard < ChessBoard
   end
 end
 
+class PawnCaptureBoard < ChessBoard
+  def reset_board
+    board = Array.new(8).map { Array.new(8, nil) }
+    board[4][0] = King.new(:white)
+    board[5][1] = Pawn.new(:white)
+    board[4][2] = Pawn.new(:black)
+    board
+  end
+end
+
 describe 'movement' do
   let(:move) { ChessMove.new }
   let(:input) { ChessInput.new }
@@ -37,6 +47,7 @@ describe 'movement' do
 
   describe 'castling' do
     let(:board) { CastlingBoard.new }
+    
     it 'moves the king from e1 to c1' do
       origin = Cell.new('e1')
       dest = Cell.new('c1')
@@ -56,7 +67,21 @@ describe 'movement' do
   end
 
   describe 'pawn capture' do
-    
+    let(:board) { PawnCaptureBoard.new }
+
+    before do
+      move.update_pawn_captures(board)
+    end
+
+    it 'allows the pawn to capture diagonally' do
+      origin = Cell.new('f2')
+      dest = Cell.new('e3')
+      puts board.draw
+      p board.piece(origin).valid
+      move.move_piece(input, board, rule, origin, dest)
+      result = board.piece(dest)
+      expect(result.color).to eql(:black)
+    end
   end
 
   describe 'en passant' do
