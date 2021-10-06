@@ -129,6 +129,7 @@ class ChessMove
   private
 
   def double_move?(origin, dest)
+    (dest.col - origin.col).abs == 2
   end
 
   def adjacent_piece(cell, side)
