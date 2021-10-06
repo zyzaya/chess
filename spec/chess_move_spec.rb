@@ -278,11 +278,11 @@ describe ChessMove do
       allow(board).to receive(:piece).and_return(nil)
       allow(board).to receive(:on_board?).and_return(true)
       allow(board).to receive(:each_cell)
-        .and_yield(nil, 0, 0)
-        .and_yield(white_pawn, 1, 2)
-        .and_yield(black_piece, 0, 0)
-        .and_yield(black_pawn, 3, 4)
-        .and_yield(white_piece, 0, 0)
+        .and_yield(nil, cell)
+        .and_yield(white_pawn, cell)
+        .and_yield(black_piece, cell)
+        .and_yield(black_pawn, cell)
+        .and_yield(white_piece, cell)
     end
 
     it 'iterates through all cells' do
