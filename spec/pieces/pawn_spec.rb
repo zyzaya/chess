@@ -231,4 +231,24 @@ describe Pawn do
       expect(result).to eql(false)
     end
   end
+
+  describe '#promote?' do
+    it 'returns true if the color is black and the row is 0' do
+      dest = instance_double('Cell', col: 3, row: 0)
+      result = black_pawn.promote?(dest)
+      expect(result).to eql(true)
+    end
+
+    it 'returns true if the color is white and the row is 7' do
+      dest = instance_double('Cell', col: 3, row: 7)
+      result = white_pawn.promote?(dest)
+      expect(result).to eql(true)
+    end
+
+    it 'returns false if the pawn is not at the opposite end' do
+      dest = instance_double('Cell', col: 3, row: 2)
+      result = black_pawn.promote?(dest)
+      expect(result).to eql(false)
+    end
+  end
 end

@@ -109,6 +109,8 @@ class Pawn < ChessPiece
   end
 
   def promote?(dest)
+    (@color.eql?(:black) && dest.row.zero?) ||
+      (@color.eql?(:white) && dest.row == 7)
   end
 
   def draw
