@@ -103,4 +103,22 @@ describe ChessInput do
       expect(result).to eql(false)
     end
   end
+
+  describe '#promote' do
+    valid = %w[bishop knight queen rook]
+
+    before do
+      allow(input).to receive(:gets).and_return('asdfasd', 'queen')
+    end
+
+    it "uses #get to receive an input between #{valid}" do
+      expect(input).to receive(:get).with(anything, anything, array_including('bishop', 'knight', 'queen', 'rook'))
+      input.promote
+    end
+
+    it 'returns the name of the piece the user chose' do
+      result = input.promote
+      expect(valid.include?(result)).to eql(true)
+    end
+  end
 end

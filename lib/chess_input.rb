@@ -39,5 +39,8 @@ class ChessInput
   end
 
   def promote
+    get('Pawn promotion. Select bishop, knight, queen, or rook.',
+        'Invalid. Select bishop, knight, queen, or rook.',
+        %w[bishop knight queen rook])
   end
 end
