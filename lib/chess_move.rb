@@ -113,5 +113,54 @@ class ChessMove
   end
 
   def update_pawn_captures(board)
+    board.each_cell do |piece, col, row|
+      next unless piece.instance_of?(Pawn)
+
+      piece.remove_capture(:left)
+      piece.remove_capture(:right)
+      case piece.color
+      when :black
+        add_black_pawn_captures(board, piece, col, row)
+      when :white
+        add_white_pawn_captures(board, piece, col, row)
+      end
+    end
+  end
+
+  private
+
+  def add_black_pawn_captures(board, piece, col, row)
+    left_capture = pawn_capture(col, row, :black, :left)
+    right_capture = pawn_capture(col, row, :black, :right)
+    piece.add_capture(:left) if
+      board.on_board?(left_capture) &&
+      board.piece(left_capture)&.color.eql?(:white)
+    piece.add_capture(:right) if
+      board.on_board?(right_capture) &&
+      board.piece(right_capture)&.color.eql?(:white)
+  end
+
+  def add_white_pawn_captures(board, piece, col, row)
+    left_capture = pawn_capture(col, row, :white, :left)
+    right_capture = pawn_capture(col, row, :white, :right)
+    piece.add_capture(:left) if
+      board.on_board?(left_capture) &&
+      board.piece(left_capture)&.color.eql?(:black)
+    piece.add_capture(:right) if
+      board.on_board?(right_capture) &&
+      board.piece(right_capture)&.color.eql?(:black)
+  end
+
+  def pawn_capture(col, row, color, side)
+    cell = Cell.new(col: col, row: row)
+    case color
+    when :black then cell.row -= 1
+    when :white then cell.row += 1
+    end
+    case side
+    when :left then cell.col -= 1
+    when :right then cell.col += 1
+    end
+    cell
   end
 end
