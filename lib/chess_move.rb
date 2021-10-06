@@ -27,7 +27,7 @@ class ChessMove
 
     rel_col = dest.col - origin.col
     rel_row = dest.row - origin.row
-    rel_row.zero? && [-3, 2].include?(rel_col)
+    rel_row.zero? && [-2, 2].include?(rel_col)
   end
 
   def can_castle?(board, rule, origin, dest)
@@ -64,6 +64,7 @@ class ChessMove
     king = board.piece(origin)
     rook_origin = king.castling_rook(dest)
     rook_dest = king.castling_rook_destination(rook_origin)
+    p "#{rook_origin}, #{rook_dest}"
     board.move_piece(rook_origin, rook_dest)
     true
   end
