@@ -137,38 +137,38 @@ class ChessMove
     Cell.new(col: col, row: cell.row)
   end
 
-  def add_black_pawn_captures(board, piece, col, row)
-    left_capture = pawn_capture(col, row, :black, :left)
-    right_capture = pawn_capture(col, row, :black, :right)
-    piece.add_capture(:left) if
-      board.on_board?(left_capture) &&
-      board.piece(left_capture)&.color.eql?(:white)
-    piece.add_capture(:right) if
-      board.on_board?(right_capture) &&
-      board.piece(right_capture)&.color.eql?(:white)
-  end
+  # def add_black_pawn_captures(board, piece, col, row)
+  #   left_capture = pawn_capture(col, row, :black, :left)
+  #   right_capture = pawn_capture(col, row, :black, :right)
+  #   piece.add_capture(:left) if
+  #     board.on_board?(left_capture) &&
+  #     board.piece(left_capture)&.color.eql?(:white)
+  #   piece.add_capture(:right) if
+  #     board.on_board?(right_capture) &&
+  #     board.piece(right_capture)&.color.eql?(:white)
+  # end
 
-  def add_white_pawn_captures(board, piece, col, row)
-    left_capture = pawn_capture(col, row, :white, :left)
-    right_capture = pawn_capture(col, row, :white, :right)
-    piece.add_capture(:left) if
-      board.on_board?(left_capture) &&
-      board.piece(left_capture)&.color.eql?(:black)
-    piece.add_capture(:right) if
-      board.on_board?(right_capture) &&
-      board.piece(right_capture)&.color.eql?(:black)
-  end
+  # def add_white_pawn_captures(board, piece, col, row)
+  #   left_capture = pawn_capture(col, row, :white, :left)
+  #   right_capture = pawn_capture(col, row, :white, :right)
+  #   piece.add_capture(:left) if
+  #     board.on_board?(left_capture) &&
+  #     board.piece(left_capture)&.color.eql?(:black)
+  #   piece.add_capture(:right) if
+  #     board.on_board?(right_capture) &&
+  #     board.piece(right_capture)&.color.eql?(:black)
+  # end
 
-  def pawn_capture(col, row, color, side)
-    cell = Cell.new(col: col, row: row)
-    case color
-    when :black then cell.row -= 1
-    when :white then cell.row += 1
-    end
-    case side
-    when :left then cell.col -= 1
-    when :right then cell.col += 1
-    end
-    cell
-  end
+  # def pawn_capture(col, row, color, side)
+  #   cell = Cell.new(col: col, row: row)
+  #   case color
+  #   when :black then cell.row -= 1
+  #   when :white then cell.row += 1
+  #   end
+  #   case side
+  #   when :left then cell.col -= 1
+  #   when :right then cell.col += 1
+  #   end
+  #   cell
+  # end
 end

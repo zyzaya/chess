@@ -26,12 +26,37 @@ class Pawn < ChessPiece
     @moved = val
     return unless val
 
-    case color
+    case @color
     when :black
       remove(0, -2)
     when :white
       remove(0, 2)
     end
+  end
+
+  def add_all_captures(board, col, row)
+    right = capture_cell(col, row, :right)
+    left = capture(col, row, :left)
+    enemy = @color.eql?(:black) ? :white : :black
+    add_capture(:left) if
+      board.on_board?(left) &&
+      board.piece(left)&.color.eql?(enemy)
+    add_capture(:right) if
+      board.on_board?(right) &&
+      board.piece(right)&.color.eql?(enemy)
+  end
+
+  def capture_cell(col, row, side)
+    cell = Cell.new(col: col, row: row)
+    case @color
+    when :black then cell.row -= 1
+    when :white then cell.row += 1
+    end
+    case side
+    when :left then cell.col -= 1
+    when :right then cell.col += 1
+    end
+    cell
   end
 
   def add_capture(side)
