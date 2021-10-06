@@ -167,8 +167,8 @@ describe Pawn do
 
     before do
       allow(board).to receive(:on_board?).and_return(true)
-      allow(board).to receive(:capture_cell).with(col, row, :left).and_return(left)
-      allow(board).to receive(:capture_cell).with(col, row, :right).and_return(right)
+      allow(white_pawn).to receive(:capture_cell).with(col, row, :left).and_return(left)
+      allow(white_pawn).to receive(:capture_cell).with(col, row, :right).and_return(right)
       allow(board).to receive(:piece).and_return(black_pawn)
     end
 

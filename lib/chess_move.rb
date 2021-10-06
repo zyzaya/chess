@@ -123,10 +123,6 @@ class ChessMove
 
   private
 
-  def double_move?(origin, dest)
-    (dest.col - origin.col).abs == 2
-  end
-
   def adjacent_piece(cell, side)
     col = side.eql?(:left) ? cell.col - 1 : cell.col + 1
     Cell.new(col: col, row: cell.row)

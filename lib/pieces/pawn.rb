@@ -104,6 +104,10 @@ class Pawn < ChessPiece
     @en_passant.clear
   end
 
+  def double_move?(origin, dest)
+    (dest.col - origin.col).abs == 2
+  end
+
   def draw
     @color.eql?(:white) ? '♙' : '♟︎'
   end
