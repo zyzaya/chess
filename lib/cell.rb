@@ -90,4 +90,8 @@ class Cell
       val[1].to_i >= 1 &&
       val[1].to_i <= 8
   end
+
+  def to_s
+    "#{@input}: (#{@col}, #{@row})"
+  end
 end
