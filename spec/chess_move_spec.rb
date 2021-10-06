@@ -102,8 +102,8 @@ describe ChessMove do
     let(:dest) { instance_double('Cell', col: 1, row: 0) }
 
     before do
+      allow(king).to receive(:castling_rook).and_return(rook_cell)
       allow(chess_move).to receive(:castling?).and_return(true)
-      allow(chess_move).to receive(:find_castling_rook).and_return(rook_cell)
       allow(chess_move).to receive(:castle_in_check?).and_return(false)
       allow(rule).to receive(:obstructed?).and_return(false)
       allow(board).to receive(:piece).with(origin).and_return(king)

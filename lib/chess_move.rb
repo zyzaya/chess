@@ -31,7 +31,7 @@ class ChessMove
     return false unless castling?(board, origin, dest)
 
     king = board.piece(origin)
-    rook_cell = find_castling_rook(dest)
+    rook_cell = king.castling_rook(dest)
     return false if king.moved || board.piece(rook_cell)&.moved
 
     !rule.obstructed?(board, origin, rook_cell) &&
