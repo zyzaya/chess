@@ -108,6 +108,9 @@ class Pawn < ChessPiece
     (dest.row - origin.row).abs == 2
   end
 
+  def promote?(dest)
+  end
+
   def draw
     @color.eql?(:white) ? '♙' : '♟︎'
   end

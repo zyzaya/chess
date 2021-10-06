@@ -310,34 +310,42 @@ describe ChessMove do
     let(:not_pawn) { instance_double('Rook', instance_of?: false) }
     let(:origin) { instance_double('Cell') }
     let(:dest) { instance_double('Cell') }
+    let(:input) { instance_double('ChessInput') }
 
     before do
       allow(pawn).to receive(:instance_of?).with(Pawn).and_return(true)
       allow(pawn).to receive(:double_move?).and_return(false)
+      allow(pawn).to receive(:promote?).and_return(false)
       allow(board).to receive(:piece).with(origin).and_return(pawn)
       allow(board).to receive(:move_piece)
     end
 
     it 'returns false if the piece at origin is not a pawn' do
       allow(board).to receive(:piece).with(origin).and_return(not_pawn)
-      result = chess_move.move_pawn(board, origin, dest)
+      result = chess_move.move_pawn(board, input, origin, dest)
       expect(result).to eql(false)
     end
 
     it 'moves the piece if it is a pawn' do
       expect(board).to receive(:move_piece).with(origin, dest)
-      chess_move.move_pawn(board, origin, dest)
+      chess_move.move_pawn(board, input, origin, dest)
     end
 
     it 'updates en_passant if the movement is a double move' do
       allow(pawn).to receive(:double_move?).and_return(true)
       expect(chess_move).to receive(:update_en_passant).with(board, dest)
-      chess_move.move_pawn(board, origin, dest)
+      chess_move.move_pawn(board, input, origin, dest)
     end
 
     it 'returns true if it moved a pawn' do
-      result = chess_move.move_pawn(board, origin, dest)
+      result = chess_move.move_pawn(board, input, origin, dest)
       expect(result).to eql(true)
+    end
+
+    it 'promotes a pawn when it arrives at the final row' do
+      allow(pawn).to receive(:promote?).and_return(true)
+      expect(chess_move).to receive(:promote_piece).with(dest, input)
+      chess_move.move_pawn(board, input, origin, dest)
     end
   end
 

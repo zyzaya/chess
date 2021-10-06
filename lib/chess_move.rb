@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 require_relative 'pieces/pawn'
+require_relative 'pieces/bishop'
+require_relative 'pieces/knight'
+require_relative 'pieces/queen'
+require_relative 'pieces/rook'
 
 # Used to move pieces around on a ChessBoard
 class ChessMove
@@ -65,14 +69,30 @@ class ChessMove
     true
   end
 
-  def move_pawn(board, origin, dest)
+  def move_pawn(board, input, origin, dest)
     piece = board.piece(origin)
     return false unless piece.instance_of?(Pawn)
 
     board.move_piece(origin, dest)
     update_en_passant(board, dest) if piece.double_move?(origin, dest)
+    promote_piece(dest, input) if piece.promote?(dest)
+    # if piece.promote?(dest)
+    #   case input.promote
+    #   when 'bishop' then board.force_piece(dest, Bishop.new(piece.color))
+    #   when 'knight' then board.force_piece(dest, Bishop.new(piece.color))
+    #   when 'queen' then board.force_piece(dest, Bishop.new(piece.color))
+    #   when 'rook' then board.force_piece(dest, Bishop.new(piece.color))
+    #   end
+    # end
     # promotion
+    # if piece (dest) is at final row (determine by pawn.promote?)
+    # ask the user for which piece to promote to
+    # - can only promot to queen, knight, rook, or bishop
+    # set dest to that piece of the original color.
     true
+  end
+
+  def promote_piece(cell, input)
   end
 
   def remove_en_passant(board)
