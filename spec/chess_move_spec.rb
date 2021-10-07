@@ -362,12 +362,18 @@ describe ChessMove do
     let(:right) { instance_double('Cell') }
 
     before do
+      allow(chess_move).to receive(:remove_en_passant)
       allow(board).to receive(:piece).and_return(nil)
       allow(board).to receive(:piece).with(cell).and_return(pawn)
       allow(cell).to receive(:adjacent).with(:left).and_return(left)
       allow(cell).to receive(:adjacent).with(:right).and_return(right)
       allow(enemy).to receive(:instance_of?).with(Pawn).and_return(true)
       allow(enemy).to receive(:en_passant)
+    end
+
+    it 'removes en passant' do
+      expect(chess_move).to receive(:remove_en_passant)
+      chess_move.update_en_passant(board, cell)
     end
 
     it 'adds en_passant(left) to right piece if it is an enemy' do
