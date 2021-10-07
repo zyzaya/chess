@@ -50,8 +50,15 @@ class Cell
   end
 
   def adjacent(side)
-    new_col = side.eql?(:left) ? @col - 1 : @col + 1
-    Cell.new(col: new_col, row: @row)
+    new_col = @col
+    new_row = @row
+    case side
+    when :left then new_col -= 1
+    when :right then new_col += 1
+    when :up then new_row += 1
+    when :down then new_row -= 1
+    end
+    Cell.new(col: new_col, row: new_row)
   end
 
   private

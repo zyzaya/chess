@@ -68,9 +68,24 @@ describe Cell do
   end
 
   describe '#adjacent' do
-    it 'does not change the row' do
+    it 'does not change the row when argument is left or right' do
       result = cell.adjacent(:left)
       expect(result.row).to eql(cell.row)
+    end
+
+    it 'does not change the column when argument is up or down' do
+      result = cell.adjacent(:up)
+      expect(result.col).to eql(cell.col)
+    end
+
+    it 'adds one to the row if the side is up' do
+      result = cell.adjacent(:up)
+      expect(result.row).to eql(cell.row + 1)
+    end
+
+    it 'subtracts one from the row if the side is down' do
+      result = cell.adjacent(:down)
+      expect(result.row).to eql(cell.row - 1)
     end
 
     it 'adds one to the column if the side is right' do
