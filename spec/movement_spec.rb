@@ -118,6 +118,6 @@ describe 'movement' do
   end
 
   describe 'promotion' do
-    
+
   end
 end

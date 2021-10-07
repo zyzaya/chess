@@ -75,18 +75,16 @@ class ChessMove
     return false unless piece.instance_of?(Pawn)
 
     board.move_piece(origin, dest)
-    capture_by_en_passant(board, origin, dest) if piece.en_passant?(origin, dest)
+    capture_by_en_passant(board, dest) if piece.en_passant?(origin, dest)
     promote_piece(input, board, dest) if piece.promote?(dest)
     true
   end
 
-  def capture_by_en_passant(board, origin, dest)
-    p "cbep: #{board.piece(origin)}, #{board.piece(dest)}"
+  def capture_by_en_passant(board, dest)
     case board.piece(dest)&.color
     when :black then target = dest.adjacent(:up)
     when :white then target = dest.adjacent(:down)
     end
-    p target
     board.force_piece(target, nil)
   end
 
