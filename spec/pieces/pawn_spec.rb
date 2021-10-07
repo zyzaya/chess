@@ -249,4 +249,8 @@ describe Pawn do
       expect(result).to eql(false)
     end
   end
+
+  describe '#en_passant?' do
+    it 'returns true if '
+  end
 end
