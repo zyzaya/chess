@@ -8,14 +8,21 @@ class ChessInput
   include Input
 
   def turn(board, rule, color)
-    result = get("#{color}'s turn.", 'Invalid input.') do |val|
+    result = get("#{color}'s turn.", 'Invalid input.', %w[save exit]) do |val|
       valid_turn_input?(board, rule, color, val)
     end
+    save(board) if result.eql?('save')
+    return nil if %w[save exit].include?(result)
+
     result = result.split
     {
       origin: Cell.new(result[0]),
       dest: Cell.new(result[2])
     }
+  end
+
+  def save(board)
+    
   end
 
   def replay

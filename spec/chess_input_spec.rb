@@ -22,10 +22,6 @@ describe ChessInput do
     end
 
     it 'checks the inputs validity with valid_turn_input?' do
-      allow(board).to receive(:col).with('a1').and_return(0)
-      allow(board).to receive(:row).with('a1').and_return(0)
-      allow(board).to receive(:col).with('a3').and_return(0)
-      allow(board).to receive(:row).with('a3').and_return(2)
       allow(input).to receive(:valid_turn_input?).and_return(false, false, false, true)
       expect(input).to receive(:valid_turn_input?).with(board, rule, :white, anything)
       input.turn(board, rule, :white)
@@ -33,15 +29,38 @@ describe ChessInput do
 
     it 'returns a hash containing values for origin and destination' do
       allow(input).to receive(:get).and_return('a1 to a3')
-      allow(board).to receive(:col).with('a1').and_return(0)
-      allow(board).to receive(:row).with('a1').and_return(0)
-      allow(board).to receive(:col).with('a3').and_return(0)
-      allow(board).to receive(:row).with('a3').and_return(2)
       result = input.turn(board, rule, :white)
       expect(result[:origin].col).to eql(0)
       expect(result[:origin].row).to eql(0)
       expect(result[:dest].col).to eql(0)
       expect(result[:dest].row).to eql(2)
+    end
+
+    it 'calls save if the input is save' do
+      allow(input).to receive(:gets).and_return('save')
+      allow(input).to receive(:save)
+      expect(input).to receive(:save).with(board)
+      input.turn(board, rule, :white)
+    end
+
+    it 'does not call save if the input is exit' do
+      allow(input).to receive(:gets).and_return('exit')
+      expect(input).not_to receive(:save)
+      input.turn(board, rule, :white)
+    end
+
+    it 'returns nil if the input is save' do
+      allow(input).to receive(:gets).and_return('save')
+      allow(input).to receive(:save)
+      result = input.turn(board, rule, :white)
+      expect(result).to eql(nil)
+    end
+
+    it 'returns nil if the input is save' do
+      allow(input).to receive(:gets).and_return('exit')
+      allow(input).to receive(:save)
+      result = input.turn(board, rule, :white)
+      expect(result).to eql(nil)
     end
   end
 
