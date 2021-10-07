@@ -98,12 +98,15 @@ class ChessMove
   end
 
   def update_en_passant(board, cell)
+    # en passant adds to the other piece, not the piece that moved
     piece = board.piece(cell)
     enemy = piece.color.eql?(:black) ? :white : :black
-    left = cell.adjacent(:left)
-    right = cell.adjacent(:right)
-    piece.en_passant(:right) if board.piece(left)&.color.eql?(enemy)
-    piece.en_passant(:left) if board.piece(right)&.color.eql?(enemy)
+    left = board.piece(cell.adjacent(:left))
+    right = board.piece(cell.adjacent(:right))
+    # piece.en_passant(:right) if board.piece(left)&.color.eql?(enemy)
+    # piece.en_passant(:left) if board.piece(right)&.color.eql?(enemy)
+    left.en_passant(:right) if left.instance_of?(Pawn) && left.color.eql?(enemy)
+    right.en_passant(:left) if right.instance_of?(Pawn) && right.color.eql?(enemy)
   end
 
   def update_pawn_captures(board)

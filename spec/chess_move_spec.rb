@@ -351,7 +351,7 @@ describe ChessMove do
 
   describe '#update_en_passant' do
     let(:pawn) { instance_double('Pawn', color: :white) }
-    let(:enemy) { instance_double('ChessPiece', color: :black) }
+    let(:enemy) { instance_double('Pawn', color: :black) }
     let(:cell) { instance_double('Cell') }
     let(:left) { instance_double('Cell') }
     let(:right) { instance_double('Cell') }
@@ -361,18 +361,19 @@ describe ChessMove do
       allow(board).to receive(:piece).with(cell).and_return(pawn)
       allow(cell).to receive(:adjacent).with(:left).and_return(left)
       allow(cell).to receive(:adjacent).with(:right).and_return(right)
-      allow(pawn).to receive(:en_passant)
+      allow(enemy).to receive(:instance_of?).with(Pawn).and_return(true)
+      allow(enemy).to receive(:en_passant)
     end
 
-    it 'adds en_passant to right if the piece to the left is an enemy' do
-      allow(board).to receive(:piece).with(left).and_return(enemy)
-      expect(pawn).to receive(:en_passant).with(:right)
+    it 'adds en_passant(left) to right piece if it is an enemy' do
+      allow(board).to receive(:piece).with(right).and_return(enemy)
+      expect(enemy).to receive(:en_passant).with(:left)
       chess_move.update_en_passant(board, cell)
     end
 
-    it 'adds en_passant to the left if the piece to the right is an enemy' do
-      allow(board).to receive(:piece).with(right).and_return(enemy)
-      expect(pawn).to receive(:en_passant).with(:left)
+    it 'adds en_passant(right) to the left piece if it is an enemy' do
+      allow(board).to receive(:piece).with(left).and_return(enemy)
+      expect(enemy).to receive(:en_passant).with(:right)
       chess_move.update_en_passant(board, cell)
     end
 

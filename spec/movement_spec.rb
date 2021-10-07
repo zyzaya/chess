@@ -27,6 +27,17 @@ class PawnCaptureBoard < ChessBoard
   end
 end
 
+class EnPassantBoard < ChessBoard
+  def reset_board
+    board = Array.new(8).map { Array.new(8, nil) }
+    board[4][0] = King.new(:white)
+    board[5][4] = Pawn.new(:white)
+    board[4][7] = King.new(:black)
+    board[6][6] = Pawn.new(:black)
+    board
+  end
+end
+
 describe 'movement' do
   let(:move) { ChessMove.new }
   let(:input) { ChessInput.new }
@@ -34,7 +45,7 @@ describe 'movement' do
 
   describe 'common move' do
     let(:board) { ChessBoard.new }
-    
+
     it 'moves a pawn from d2 to d4' do
       origin = Cell.new('d2')
       dest = Cell.new('d4')
@@ -47,7 +58,7 @@ describe 'movement' do
 
   describe 'castling' do
     let(:board) { CastlingBoard.new }
-    
+
     it 'moves the king from e1 to c1' do
       origin = Cell.new('e1')
       dest = Cell.new('c1')
@@ -83,7 +94,24 @@ describe 'movement' do
   end
 
   describe 'en passant' do
-    
+    let(:board) { EnPassantBoard.new }
+    origin = Cell.new('f5')
+    dest = Cell.new('g6')
+
+    before do
+      move.move_piece(input, board, rule, Cell.new('g7'), Cell.new('g5'))
+    end
+
+    it 'moves allied pawn' do
+      move.move_piece(input, board, rule, origin, dest)
+      result = board.piece(dest)
+      expect(result).to be_instance_of(Pawn)
+      expect(result.color).to eql(:white)
+    end
+
+    it 'removes the enemy pawn' do
+      # it doesn't do this
+    end
   end
 
   describe 'promotion' do
