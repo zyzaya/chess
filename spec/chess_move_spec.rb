@@ -424,4 +424,30 @@ describe ChessMove do
       chess_move.promote_piece(input, board, cell)
     end
   end
+
+  describe '#capture_by_en_passant' do
+    let(:origin) { instance_double('Cell') }
+    let(:dest) { instance_double('Cell') }
+    let(:down) { instance_double('Cell') }
+    let(:up) { instance_double('Cell') }
+    let(:white_piece) { instance_double('Pawn', color: :white) }
+    let(:black_piece) { instance_double('Pawn', color: :black) }
+
+    before do
+      allow(dest).to receive(:adjacent).with(:down).and_return(down)
+      allow(dest).to receive(:adjacent).with(:up).and_return(up)
+    end
+
+    it 'sets the row below the dest to nil if the origin is white' do
+      allow(board).to receive(:piece).with(origin).and_return(white_piece)
+      expect(board).to receive(:force_piece).with(down, nil)
+      chess_move.capture_by_en_passant(board, origin, dest)
+    end
+
+    it 'sets the row above the dest to nil if the origin is black' do
+      allow(board).to receive(:piece).with(origin).and_return(black_piece)
+      expect(board).to receive(:force_piece).with(up, nil)
+      chess_move.capture_by_en_passant(board, origin, dest)
+    end
+  end
 end

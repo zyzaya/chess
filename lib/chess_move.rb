@@ -81,6 +81,7 @@ class ChessMove
   end
 
   def capture_by_en_passant(board, origin, dest)
+    
   end
 
   def promote_piece(input, board, cell)
