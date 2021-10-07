@@ -17,7 +17,7 @@ class ChessInput
       valid_turn_input?(board, rule, color, val)
     end
     save(board, color) if result.eql?('save')
-    return nil if %w[save exit].include?(result)
+    return result if %w[save exit].include?(result)
 
     result = result.split
     {
