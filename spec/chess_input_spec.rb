@@ -39,7 +39,7 @@ describe ChessInput do
     it 'calls save if the input is save' do
       allow(input).to receive(:gets).and_return('save')
       allow(input).to receive(:save)
-      expect(input).to receive(:save).with(board)
+      expect(input).to receive(:save).with(board, :white)
       input.turn(board, rule, :white)
     end
 

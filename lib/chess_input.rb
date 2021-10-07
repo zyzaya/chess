@@ -16,7 +16,7 @@ class ChessInput
     result = get("#{color}'s turn.", 'Invalid input.', %w[save exit]) do |val|
       valid_turn_input?(board, rule, color, val)
     end
-    save(board) if result.eql?('save')
+    save(board, color) if result.eql?('save')
     return nil if %w[save exit].include?(result)
 
     result = result.split
