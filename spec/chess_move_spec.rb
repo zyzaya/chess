@@ -6,7 +6,8 @@ describe ChessMove do
   let(:chess_move) { ChessMove.new }
   let(:rule) { instance_double('ChessRule', valid?: true) }
   let(:board) { instance_double('ChessBoard') }
-  let(:piece) { instance_double('ChessPiece', color: :white) }
+  let(:piece) { instance_double('ChessPiece', color: :white, instance_of?: false) }
+  let(:pawn) { instance_double('Pawn', color: :white, instance_of?: false) }
   let(:origin) { instance_double('Cell', col: 0, row: 0) }
   let(:dest) { instance_double('Cell', col: 1, row: 1) }
   let(:input) { instance_double('ChessInput') }
@@ -17,6 +18,7 @@ describe ChessMove do
       allow(chess_move).to receive(:move_pawn).and_return(false)
       allow(chess_move).to receive(:remove_en_passant)
       allow(chess_move).to receive(:update_pawn_captures)
+      allow(pawn).to receive(:instance_of?).with(Pawn).and_return(true)
       allow(board).to receive(:piece).and_return(piece)
       allow(board).to receive(:move_piece)
     end
@@ -28,8 +30,10 @@ describe ChessMove do
       end.to raise_exception(ArgumentError)
     end
 
-    it 'removes en_passant movements from pawns' do
-      expect(chess_move).to receive(:remove_en_passant)
+    it 'updates en_passant if the move is a double by a pawn' do
+      allow(board).to receive(:piece).and_return(pawn)
+      allow(pawn).to receive(:double_move?).and_return(true)
+      expect(chess_move).to receive(:update_en_passant)
       chess_move.move_piece(input, board, rule, origin, dest)
     end
 
