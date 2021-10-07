@@ -33,7 +33,7 @@ class ChessInput
         val.match(/[A-Za-z]*/)
       end
     end
-    @filename = "saves/#{@filename}.ch"
+    @filename = "saves/#{@filename}.sav"
     File.open(@filename, 'w') do |file|
       file.puts("turn: #{current}")
       file.puts(YAML.dump(board))
