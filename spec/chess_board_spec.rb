@@ -195,8 +195,8 @@ describe ChessBoard do
 
   describe '#force_piece' do
     let(:cell) { instance_double('Cell', col: 4, row: 3) }
-    let(:taken_cell) { instance_double('Cell', col: 1, row: 1)}
-    let(:piece) { instance_double('ChessPiece', kind_of?: true) }
+    let(:taken_cell) { instance_double('Cell', col: 1, row: 1) }
+    let(:piece) { instance_double('ChessPiece', is_a?: true) }
 
     before do
       allow(chess_board).to receive(:on_board?).and_return(true)
