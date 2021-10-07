@@ -251,6 +251,22 @@ describe Pawn do
   end
 
   describe '#en_passant?' do
-    
+    let(:origin) { instance_double('Cell', col: 3, row: 4) }
+    let(:dest) { instance_double('Cell', col: 4, row: 5) }
+
+    before do
+      white_pawn.en_passant(:right)
+    end
+
+    it 'returns false if the movement is not an active en passant move' do
+      cell = instance_double('Cell', col: 3, row: 4)
+      result = white_pawn.en_passant?(origin, cell)
+      expect(result).to eql(false)
+    end
+
+    it 'returns true if the movement is an active en passant move' do
+      result = white_pawn.en_passant?(origin, dest)
+      expect(result).to eql(true)
+    end
   end
 end

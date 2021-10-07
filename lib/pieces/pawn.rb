@@ -100,16 +100,8 @@ class Pawn < ChessPiece
     @en_passant << new_cell unless @en_passant.include?(new_cell)
   end
 
-  def en_passant?(board, origin, dest)
-    # origin - dest must be in @en_passant
-    # and dest - 1 for white must be black
-    # or dest + 1 for black must be white
-    relative_move = Cell.new(col: dest.col - origin.col, row: dest.row - origin.row)
-    relative_row = @color.eql?(:black) ? 1 : -1
-    enemy = @color.eql?(:black) ? :white : :black
-    target = Cell.new(col: dest.col, row: relative_row)
-    @en_passant.include?(relative_move) &&
-      board.piece(target)&.color.eql?(enemy)
+  def en_passant?(origin, dest)
+    @en_passant.include?(relative(origin, dest))
   end
 
   def remove_en_passant
