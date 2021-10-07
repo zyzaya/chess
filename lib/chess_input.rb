@@ -9,12 +9,13 @@ class ChessInput
   include Input
 
   def initialize
-    @filename = ''
+    @filename = 'saves/savefile.sav'
   end
 
   def turn(board, rule, color)
-    result = get("#{color}'s turn.", 'Invalid input.', %w[save exit load]) do |val|
-      valid_turn_input?(board, rule, color, val)
+    result = get("#{color}'s turn.", 'Invalid input.', %w[save exit]) do |val|
+      (val.eql?('load') && File.exist?(@filename)) ||
+        valid_turn_input?(board, rule, color, val)
     end
     return load if result.eql?('load')
 
@@ -25,14 +26,15 @@ class ChessInput
     { origin: Cell.new(result[0]), dest: Cell.new(result[2]) }
   end
 
+  def load
+    @filename = update_filename
+    File.open(@filename, 'r') do |file|
+    end
+  end
+
   def save(board, current)
     Dir.mkdir('saves') unless Dir.exist?('saves')
-    if @filename.eql?('')
-      @filename = get('Enter save name', 'invalid') do |val|
-        val.match(/[A-Za-z]*/)
-      end
-    end
-    @filename = "saves/#{@filename}.sav"
+
     File.open(@filename, 'w') do |file|
       file.puts("turn: #{current}")
       file.puts(YAML.dump(board))

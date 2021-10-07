@@ -64,6 +64,7 @@ describe ChessInput do
     end
 
     it 'loads a save if input is load' do
+      allow(File).to receive(:exist?).and_return(true)
       allow(input).to receive(:gets).and_return('load')
       allow(input).to receive(:load).and_return({ board: [], turn: :white })
       expect(input).to receive(:load)
@@ -169,11 +170,6 @@ describe ChessInput do
     it 'creates save directory if it doesn\'t exist do' do
       allow(Dir).to receive(:exist?).and_return(false)
       expect(Dir).to receive(:mkdir).with('saves')
-      input.save(board, :white)
-    end
-
-    it 'gets a name for the file if it doesn\'t already exist' do
-      expect(input).to receive(:get)
       input.save(board, :white)
     end
 
