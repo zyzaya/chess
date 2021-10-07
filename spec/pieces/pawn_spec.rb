@@ -251,6 +251,6 @@ describe Pawn do
   end
 
   describe '#en_passant?' do
-    it 'returns true if '
+    
   end
 end

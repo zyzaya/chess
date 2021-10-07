@@ -59,4 +59,24 @@ describe ChessPiece do
       end).to eql(true)
     end
   end
+
+  describe '#relative' do
+    let(:origin) { instance_double('Cell', col: 3, row: 6) }
+    let(:dest) { instance_double('Cell', col: 2, row: 8) }
+
+    it 'returns a cell' do
+      result = piece.relative(origin, dest)
+      expect(result).to be_instance_of(Cell)
+    end
+
+    it 'returns a cell with the column set to the difference between origin and dest columns' do
+      result = piece.relative(origin, dest)
+      expect(result.col).to eql(-1)
+    end
+
+    it 'returns a cell with the row set to the difference between origin and dest rows' do
+      result = piece.relative(origin, dest)
+      expect(result.row).to eql(2)
+    end
+  end
 end

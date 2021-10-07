@@ -31,6 +31,10 @@ class ChessPiece
     @valid.delete(Cell.new(col: col, row: row))
   end
 
+  def relative(origin, dest)
+    Cell.new(col: dest.col - origin.col, row: dest.row - origin.row)
+  end
+
   def draw
     '?'
   end
