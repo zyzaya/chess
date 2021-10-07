@@ -50,16 +50,15 @@ class ChessInput
 
   def valid_turn_input?(board, rule, color, val)
     return false unless val.is_a?(String)
-    p 'is a string'
+
     match = val.match(/\A[abcdefgh][12345678] to [abcdefgh][12345678]\z/)
     return false if match.nil?
-    p 'is a match'
+
     match = match[0].split
     origin = Cell.new(match[0])
     dest = Cell.new(match[2])
     return false unless board.on_board?(origin) && board.on_board?(dest)
 
-    p 'is on board'
     rule.valid?(board, color, origin, dest)
   end
 

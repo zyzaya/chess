@@ -6,22 +6,22 @@ require_relative 'cell'
 class ChessRule
   def valid?(board, color, origin, dest)
     return false unless valid_transition?(board, origin, dest)
-    p 'is valid transition'
+
     origin_piece = board.piece(origin)
     return false unless origin_piece.color.eql?(color)
-    p 'is correct color'
+
     return false unless valid_piece_move?(origin_piece, origin, dest)
-    p 'is valid piece move'
+
     return false if obstructed?(board, origin, dest)
-    p 'is not obstructed'
+
     return false unless removes_check?(board, origin, dest)
-    p 'removes check'
+
     true
   end
 
   def valid_transition?(board, origin, dest)
     return false unless taken_cell?(board, origin)
-    p 'origin is taken'
+
     enemy = board.piece(origin).color.eql?(:black) ? :white : :black
     board.on_board?(dest) &&
       (!taken_cell?(board, dest) ||
