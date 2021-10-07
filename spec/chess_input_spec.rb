@@ -56,11 +56,20 @@ describe ChessInput do
       expect(result).to eql('save')
     end
 
-    it 'returns nil if the input is save' do
+    it 'returns save if the input is save' do
       allow(input).to receive(:gets).and_return('exit')
       allow(input).to receive(:save)
       result = input.turn(board, rule, :white)
       expect(result).to eql('exit')
+    end
+
+    it 'loads a save if input is load' do
+      allow(input).to receive(:gets).and_return('load')
+      allow(input).to receive(:load).and_return({ board: [], turn: :white })
+      expect(input).to receive(:load)
+      result = input.turn(board, rule, :white)
+      expect(result[:board]).not_to eql(nil)
+      expect(result[:turn]).not_to eql(nil)
     end
   end
 

@@ -13,17 +13,16 @@ class ChessInput
   end
 
   def turn(board, rule, color)
-    result = get("#{color}'s turn.", 'Invalid input.', %w[save exit]) do |val|
+    result = get("#{color}'s turn.", 'Invalid input.', %w[save exit load]) do |val|
       valid_turn_input?(board, rule, color, val)
     end
+    return load if result.eql?('load')
+
     save(board, color) if result.eql?('save')
     return result if %w[save exit].include?(result)
 
     result = result.split
-    {
-      origin: Cell.new(result[0]),
-      dest: Cell.new(result[2])
-    }
+    { origin: Cell.new(result[0]), dest: Cell.new(result[2]) }
   end
 
   def save(board, current)
