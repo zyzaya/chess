@@ -20,13 +20,19 @@ class ChessGame
     until finish
       puts @board.draw
       move = @input.turn(@board, @rule, current)
+      if move.instance_of?(Hash) && [move[:board], move[:turn]].none?(&:nil?)
+        @board = move[:board]
+        current = move[:turn]
+        next
+      end
+
       return if move.eql?('exit')
       next if move.eql?('save')
 
       @board.move_piece(move[:origin], move[:dest])
-      if @rule.checkmate?(board, current) then finish = :checkmate
-      elsif @rule.stalemate?(board, next_turn(current)) then finish = :stalemate
-      elsif @rule.dead_position?(board) then finish = :dead_position end
+      if @rule.checkmate?(@board, current) then finish = :checkmate
+      elsif @rule.stalemate?(@board, next_turn(current)) then finish = :stalemate
+      elsif @rule.dead_position?(@board) then finish = :dead_position end
       break unless finish == false
 
       current = next_turn(current)
