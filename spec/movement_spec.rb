@@ -38,6 +38,17 @@ class EnPassantBoard < ChessBoard
   end
 end
 
+class PromotionBoard < ChessBoard
+  def reset_board
+    board = Array.new(8).map { Array.new(8, nil) }
+    board[4][0] = King.new(:white)
+    board[6][6] = Pawn.new(:white)
+    board[4][7] = King.new(:black)
+    board[3][6] = Pawn.new(:black)
+    board
+  end
+end
+
 describe 'movement' do
   let(:move) { ChessMove.new }
   let(:input) { ChessInput.new }
@@ -73,7 +84,6 @@ describe 'movement' do
       move.move_piece(input, board, rule, origin, dest)
       result = board.piece(Cell.new('d1'))
       expect(result).to be_instance_of(Rook)
-      # puts board.draw
     end
   end
 
@@ -112,12 +122,24 @@ describe 'movement' do
     it 'removes the enemy pawn' do
       move.move_piece(input, board, rule, origin, dest)
       result = board.piece(Cell.new('g5'))
-      puts board.draw
       expect(result).to eql(nil)
     end
   end
 
   describe 'promotion' do
+    let(:board) { PromotionBoard.new }
+    origin = Cell.new('g7')
+    dest = Cell.new('g8')
 
+    before do
+      allow(input).to receive(:gets).and_return('queen')
+    end
+
+    it 'changes the pawn' do
+      move.move_piece(input, board, rule, origin, dest)
+      result = board.piece(dest)
+      expect(result).to be_instance_of(Queen)
+      expect(result.color).to eql(:white)
+    end
   end
 end
