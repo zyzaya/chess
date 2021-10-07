@@ -216,14 +216,14 @@ describe ChessRule do
     let(:origin) { instance_double('Cell', col: 0, row: 6, input: 'a7') }
     let(:dest) { instance_double('Cell', col: 0, row: 3, input: 'a4') }
     let(:invalid) { instance_double('Cell', col: 0, row: 3, input: nil) }
+    let(:relative) { instance_double('Cell', col: 0, row: -3) }
 
-    it 'calls piece#valid? with the difference between the origin and destination column' do
-      expect(piece).to receive(:valid?).with(0, anything)
-      chess_rule.valid_piece_move?(piece, origin, dest)
+    before do
+      allow(piece).to receive(:relative).with(origin, dest).and_return(relative)
     end
 
-    it 'calls piece#valid? with the difference between the origin and destination column' do
-      expect(piece).to receive(:valid?).with(anything, -3)
+    it 'calls piece#valid? with the difference between the origin and destination' do
+      expect(piece).to receive(:valid?).with(relative.col, relative.row)
       chess_rule.valid_piece_move?(piece, origin, dest)
     end
 

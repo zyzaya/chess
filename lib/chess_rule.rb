@@ -119,9 +119,8 @@ class ChessRule
   def valid_piece_move?(piece, origin, dest)
     return false if [origin.input, dest.input].any?(&:nil?)
 
-    rel_col = dest.col - origin.col
-    rel_row = dest.row - origin.row
-    piece.valid?(rel_col, rel_row)
+    relative = piece.relative(origin, dest)
+    piece.valid?(relative.col, relative.row)
   end
 
   def taken_cell?(board, cell)
