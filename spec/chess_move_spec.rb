@@ -336,12 +336,6 @@ describe ChessMove do
       chess_move.move_pawn(input, board, origin, dest)
     end
 
-    it 'updates en_passant if the movement is a double move' do
-      allow(pawn).to receive(:double_move?).and_return(true)
-      expect(chess_move).to receive(:update_en_passant).with(board, dest)
-      chess_move.move_pawn(input, board, origin, dest)
-    end
-
     it 'returns true if it moved a pawn' do
       result = chess_move.move_pawn(input, board, origin, dest)
       expect(result).to eql(true)
