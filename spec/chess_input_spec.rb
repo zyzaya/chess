@@ -143,4 +143,47 @@ describe ChessInput do
       expect(valid.include?(result)).to eql(true)
     end
   end
+
+  describe '#save' do
+    let(:file) { instance_double(File) }
+    filename = 'savefile'
+
+    before do
+      allow(Dir).to receive(:exist?).and_return(false)
+      allow(Dir).to receive(:mkdir)
+      allow(File).to receive(:open)
+      allow(YAML).to receive(:dump)
+      allow(input).to receive(:get).and_return(filename)
+      allow(file).to receive(:puts)
+    end
+
+    it 'creates save directory if it doesn\'t exist do' do
+      allow(Dir).to receive(:exist?).and_return(false)
+      expect(Dir).to receive(:mkdir).with('saves')
+      input.save(board, :white)
+    end
+
+    it 'gets a name for the file if it doesn\'t already exist' do
+      expect(input).to receive(:get)
+      input.save(board, :white)
+    end
+
+    it 'writes the current turn to file' do
+      expect(file).to receive(:puts).with('turn: white')
+      allow(File).to receive(:open) do |_, _, &block|
+        block.call(file)
+      end
+      input.save(board, :white)
+    end
+
+    it 'writes the board to file' do
+      data = 'this is a bunch of data about a board'
+      allow(YAML).to receive(:dump).with(board).and_return(data)
+      expect(file).to receive(:puts).with(data)
+      allow(File).to receive(:open) do |_, _, &block|
+        block.call(file)
+      end
+      input.save(board, :white)
+    end
+  end
 end

@@ -2,10 +2,15 @@
 
 require_relative 'input'
 require_relative 'cell'
+require 'yaml'
 
 # Allows for the retrieval of Chess related input
 class ChessInput
   include Input
+
+  def initialize
+    @filename = ''
+  end
 
   def turn(board, rule, color)
     result = get("#{color}'s turn.", 'Invalid input.', %w[save exit]) do |val|
@@ -21,8 +26,18 @@ class ChessInput
     }
   end
 
-  def save(board)
-    
+  def save(board, current)
+    Dir.mkdir('saves') unless Dir.exist?('saves')
+    if @filename.eql?('')
+      @filename = get('Enter save name', 'invalid') do |val|
+        val.match(/[A-Za-z]*/)
+      end
+    end
+    @filename = "saves/#{@filename}.ch"
+    File.open(@filename, 'w') do |file|
+      file.puts("turn: #{current}")
+      file.puts(YAML.dump(board))
+    end
   end
 
   def replay
