@@ -26,8 +26,8 @@ class ChessGame
       elsif @rule.dead_position?(board) then finish = :dead_position end
       break unless finish == false
 
-      warn_check if @rule.check?(@board, current)
       current = next_turn(current)
+      warn_check(current) if @rule.check?(@board, current)
     end
     end_game(finish)
   end
@@ -47,5 +47,9 @@ class ChessGame
 
   def next_turn(current)
     current.eql?(:white) ? :black : :white
+  end
+
+  def warn_check(current)
+
   end
 end

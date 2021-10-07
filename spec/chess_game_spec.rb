@@ -102,6 +102,12 @@ describe ChessGame do
       game.play_game
     end
 
+    it 'warns the player if in check' do
+      allow(game.rule).to receive(:check?).and_return(true)
+      expect(game).to receive(:warn_check)
+      game.play_game
+    end
+
     it 'switches turns' do
       expect(game).to receive(:next_turn).with(:white).at_least(1)
       game.play_game
