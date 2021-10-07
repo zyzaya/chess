@@ -27,9 +27,11 @@ class ChessInput
   end
 
   def load
-    @filename = update_filename
-    File.open(@filename, 'r') do |file|
-    end
+    data = { board: nil, turn: nil }
+    info = File.read(@filename)
+    data[:turn] = info.lines.first.match(/turn: (white|black)/)[1].to_sym
+    data[:board] = YAML.load(info.lines[1..-1].join)
+    data
   end
 
   def save(board, current)

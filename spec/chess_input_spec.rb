@@ -191,4 +191,32 @@ describe ChessInput do
       input.save(board, :white)
     end
   end
+
+  describe '#load' do
+    before do
+      serialized_board = 'this is a bunch of board data'
+      file = <<~DATA
+        turn: black
+        #{serialized_board}
+      DATA
+      allow(File).to receive(:read).and_return(file)
+      allow(YAML).to receive(:load).with("#{serialized_board}\n").and_return(board)
+      allow(YAML).to receive(:load).with(serialized_board).and_return(board)
+    end
+
+    it 'reads the savefile' do
+      expect(File).to receive(:read)
+      input.load
+    end
+
+    it 'returns a hash containing a board object' do
+      result = input.load
+      expect(result[:board]).to eql(board)
+    end
+
+    it 'returns a hash containing the turn color' do
+      result = input.load
+      expect(result[:turn]).to eql(:black)
+    end
+  end
 end
