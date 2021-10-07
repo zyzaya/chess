@@ -100,6 +100,9 @@ class Pawn < ChessPiece
     @en_passant << new_cell unless @en_passant.include?(new_cell)
   end
 
+  def en_passant?(board, origin, dest)
+  end
+
   def remove_en_passant
     @en_passant.clear
   end

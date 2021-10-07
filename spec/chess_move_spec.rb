@@ -316,6 +316,7 @@ describe ChessMove do
       allow(pawn).to receive(:instance_of?).with(Pawn).and_return(true)
       allow(pawn).to receive(:double_move?).and_return(false)
       allow(pawn).to receive(:promote?).and_return(false)
+      allow(pawn).to receive(:en_passant?).and_return(false)
       allow(board).to receive(:piece).with(origin).and_return(pawn)
       allow(board).to receive(:move_piece)
     end
@@ -345,6 +346,12 @@ describe ChessMove do
     it 'promotes a pawn when it arrives at the final row' do
       allow(pawn).to receive(:promote?).and_return(true)
       expect(chess_move).to receive(:promote_piece).with(input, board, dest)
+      chess_move.move_pawn(input, board, origin, dest)
+    end
+
+    it 'captures the pawn when moving by en passant' do
+      allow(pawn).to receive(:en_passant?).and_return(true)
+      expect(chess_move).to receive(:capture_by_en_passant)
       chess_move.move_pawn(input, board, origin, dest)
     end
   end
