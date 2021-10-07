@@ -112,6 +112,18 @@ describe ChessGame do
       expect(game).to receive(:next_turn).with(:white).at_least(1)
       game.play_game
     end
+
+    it 'does not call end_game if exiting' do
+      allow(game.input).to receive(:turn).and_return('exit')
+      expect(game).not_to receive(:end_game)
+      game.play_game
+    end
+
+    it 'does not move a piece after saving' do
+      allow(game.input).to receive(:turn).and_return('save', 'exit')
+      expect(game.board).not_to receive(:move_piece)
+      game.play_game
+    end
   end
 
   describe '#next_turn' do
