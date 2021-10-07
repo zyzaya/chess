@@ -50,6 +50,6 @@ class ChessGame
   end
 
   def warn_check(current)
-
+    puts "#{current} is in check"
   end
 end
