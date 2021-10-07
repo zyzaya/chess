@@ -30,10 +30,10 @@ class ChessInput
     return false if match.nil?
     p 'is a match'
     match = match[0].split
-    origin = match[0]
-    dest = match[2]
-    return false if
-      [board.col(origin), board.row(origin), board.col(dest), board.row(dest)].any?(&:nil?)
+    origin = Cell.new(match[0])
+    dest = Cell.new(match[2])
+    return false unless board.on_board?(origin) && board.on_board?(dest)
+
     p 'is on board'
     rule.valid?(board, color, origin, dest)
   end

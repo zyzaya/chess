@@ -46,6 +46,10 @@ describe ChessInput do
   end
 
   describe '#valid_turn_input?' do
+    before do
+      allow(board).to receive(:on_board?).and_return(true)
+    end
+
     it 'returns false if val is not a string' do
       result = input.valid_turn_input?(board, rule, :white, 5)
       expect(result).to be(false)
@@ -57,8 +61,7 @@ describe ChessInput do
     end
 
     it 'returns false if either value is not on the board' do
-      allow(board).to receive(:col).and_return(nil)
-      allow(board).to receive(:row).and_return(nil)
+      allow(board).to receive(:on_board?).and_return(true)
       result = input.valid_turn_input?(board, rule, :white, 'a9 to b1')
       expect(result).to be(false)
     end
@@ -68,7 +71,7 @@ describe ChessInput do
       allow(board).to receive(:row).with('a1').and_return(0)
       allow(board).to receive(:col).with('a3').and_return(0)
       allow(board).to receive(:row).with('a3').and_return(2)
-      expect(rule).to receive(:valid?).with(board, :white, 'a1', 'a3')
+      expect(rule).to receive(:valid?).with(board, :white, instance_of(Cell), instance_of(Cell))
       result = input.valid_turn_input?(board, rule, :white, 'a1 to a3')
       p result
     end
