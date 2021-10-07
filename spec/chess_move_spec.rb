@@ -443,13 +443,13 @@ describe ChessMove do
     end
 
     it 'sets the row below the dest to nil if the origin is white' do
-      allow(board).to receive(:piece).with(origin).and_return(white_piece)
+      allow(board).to receive(:piece).with(dest).and_return(white_piece)
       expect(board).to receive(:force_piece).with(down, nil)
       chess_move.capture_by_en_passant(board, dest)
     end
 
     it 'sets the row above the dest to nil if the origin is black' do
-      allow(board).to receive(:piece).with(origin).and_return(black_piece)
+      allow(board).to receive(:piece).with(dest).and_return(black_piece)
       expect(board).to receive(:force_piece).with(up, nil)
       chess_move.capture_by_en_passant(board, dest)
     end
