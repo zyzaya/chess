@@ -72,7 +72,6 @@ class ChessMove
     piece = board.piece(origin)
     return false unless piece.instance_of?(Pawn)
 
-    # if the movement is en_passant then capture relevant piece
     board.move_piece(origin, dest)
     capture_by_en_passant(board, origin, dest) if piece.en_passant?(board, origin, dest)
     update_en_passant(board, dest) if piece.double_move?(origin, dest)
@@ -81,7 +80,11 @@ class ChessMove
   end
 
   def capture_by_en_passant(board, origin, dest)
-    
+    case board.piece(origin)&.color
+    when :black then target = dest.adjacent(:up)
+    when :white then target = dest.adjacent(:down)
+    end
+    board.force_piece(target, nil)
   end
 
   def promote_piece(input, board, cell)
