@@ -14,10 +14,12 @@ class ChessMove
       raise ArgumentError, "Expected a valid origin and destination, got #{origin}, #{dest}"
     end
 
-    remove_en_passant(board)
     moved = castle(board, rule, origin, dest)
     moved ||= move_pawn(input, board, origin, dest)
     board.move_piece(origin, dest) unless moved
+    update_en_passant(board, dest) if
+      origin_piece.instance_of?(Pawn) &&
+      origin_piece.double_move?(origin, dest)
     update_pawn_captures(board)
   end
 
@@ -73,17 +75,18 @@ class ChessMove
     return false unless piece.instance_of?(Pawn)
 
     board.move_piece(origin, dest)
-    capture_by_en_passant(board, origin, dest) if piece.en_passant?(board, origin, dest)
-    update_en_passant(board, dest) if piece.double_move?(origin, dest)
+    capture_by_en_passant(board, origin, dest) if piece.en_passant?(origin, dest)
     promote_piece(input, board, dest) if piece.promote?(dest)
     true
   end
 
   def capture_by_en_passant(board, origin, dest)
-    case board.piece(origin)&.color
+    p "cbep: #{board.piece(origin)}, #{board.piece(dest)}"
+    case board.piece(dest)&.color
     when :black then target = dest.adjacent(:up)
     when :white then target = dest.adjacent(:down)
     end
+    p target
     board.force_piece(target, nil)
   end
 
@@ -107,6 +110,7 @@ class ChessMove
   end
 
   def update_en_passant(board, cell)
+    remove_en_passant(board)
     piece = board.piece(cell)
     enemy = piece.color.eql?(:black) ? :white : :black
     left = board.piece(cell.adjacent(:left))

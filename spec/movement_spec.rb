@@ -112,8 +112,8 @@ describe 'movement' do
     it 'removes the enemy pawn' do
       move.move_piece(input, board, rule, origin, dest)
       result = board.piece(Cell.new('g5'))
+      puts board.draw
       expect(result).to eql(nil)
-      # it doesn't do this
     end
   end
 

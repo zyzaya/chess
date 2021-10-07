@@ -195,6 +195,7 @@ describe ChessBoard do
 
   describe '#force_piece' do
     let(:cell) { instance_double('Cell', col: 4, row: 3) }
+    let(:taken_cell) { instance_double('Cell', col: 1, row: 1)}
     let(:piece) { instance_double('ChessPiece', kind_of?: true) }
 
     before do
@@ -214,6 +215,13 @@ describe ChessBoard do
       chess_board.force_piece(cell, piece)
       result = board[4][3]
       expect(result).to eql(piece)
+    end
+
+    it 'allows setting the cell to nil' do
+      board = chess_board.instance_variable_get(:@board)
+      chess_board.force_piece(taken_cell, nil)
+      result = board[1][1]
+      expect(result).to eql(nil)
     end
   end
 

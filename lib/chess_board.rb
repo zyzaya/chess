@@ -64,7 +64,7 @@ class ChessBoard
   end
 
   def force_piece(cell, piece)
-    return unless on_board?(cell) && piece.is_a?(ChessPiece)
+    return unless on_board?(cell) && (piece.nil? || piece.is_a?(ChessPiece))
 
     @board[cell.col][cell.row] = piece
   end
