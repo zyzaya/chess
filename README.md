@@ -3,7 +3,7 @@ An assignment from [The Odin Project](https://www.theodinproject.com/) to implem
 
 Additional information can be found at https://www.theodinproject.com/lessons/ruby-ruby-final-project.
 
-![Board](board.png)
+![Board](doc/board.png)
 
 ## How to Play
 
@@ -23,7 +23,7 @@ Information on turns, invalid input, check, promotions, and checkmate will be pr
 - Ensures valid moves. This includes the common moves of each of the nine pieces as well as special cases such as *castling*, *promoting*, and *en passant*
 - Determines when the game ends. In addition to *checkmate* this includes *stalemate* and some *dead positions* (king against king, king against king and bishop, king against king and knight, king and bishop against king and bishop, with both bishops on squares of the same color). 
 
-![Stalemate](stalemate.png)
+![Stalemate](doc/stalemate.png)
 
 ## Technologies
 - Written in Ruby.
